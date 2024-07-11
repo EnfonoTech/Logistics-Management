@@ -3959,78 +3959,6 @@
   "is_standard": "Yes",
   "javascript": null,
   "json": null,
-  "letter_head": "HSM",
-  "modified": "2024-06-19 20:10:47.884292",
-  "module": "Logistics Management",
-  "name": "Reports-Sales Person",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Job Details",
-  "reference_report": null,
-  "report_name": "Reports-Sales Person",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "parent": "Reports-Sales Person",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "System Manager"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "No",
-  "javascript": null,
-  "json": "{\"columns\":[{\"label\":\"Posting Date\",\"fieldname\":\"posting_date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"posting_date\",\"name\":\"Posting Date\",\"editable\":false},{\"label\":\"Account\",\"fieldname\":\"account\",\"fieldtype\":\"Link\",\"options\":\"Account\",\"width\":180,\"id\":\"account\",\"name\":\"Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Debit (SAR)\",\"fieldname\":\"debit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"debit\",\"name\":\"Debit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Credit (SAR)\",\"fieldname\":\"credit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"credit\",\"name\":\"Credit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Balance (SAR)\",\"fieldname\":\"balance\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"balance\",\"name\":\"Balance (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Type\",\"fieldname\":\"voucher_type\",\"width\":120,\"id\":\"voucher_type\",\"name\":\"Voucher Type\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"cheque_no\",\"fieldtype\":\"Data\",\"label\":\"Reference Number\",\"insert_after_index\":6,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Journal Entry\",\"width\":100,\"id\":\"cheque_no\",\"name\":\"Reference Number\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"custom_refno\",\"fieldtype\":\"Data\",\"label\":\"Ref.No\",\"insert_after_index\":7,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Payment Entry\",\"width\":100,\"id\":\"custom_refno\",\"name\":\"Ref.No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Subtype\",\"fieldname\":\"voucher_subtype\",\"fieldtype\":\"Data\",\"width\":180,\"id\":\"voucher_subtype\",\"name\":\"Voucher Subtype\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher No\",\"fieldname\":\"voucher_no\",\"fieldtype\":\"Dynamic Link\",\"options\":\"voucher_type\",\"width\":180,\"id\":\"voucher_no\",\"name\":\"Voucher No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Account\",\"fieldname\":\"against\",\"width\":120,\"id\":\"against\",\"name\":\"Against Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party Type\",\"fieldname\":\"party_type\",\"width\":100,\"id\":\"party_type\",\"name\":\"Party Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party\",\"fieldname\":\"party\",\"width\":100,\"id\":\"party\",\"name\":\"Party\",\"editable\":false,\"compareValue\":null},{\"label\":\"Project\",\"options\":\"Project\",\"fieldname\":\"project\",\"width\":100,\"id\":\"project\",\"name\":\"Project\",\"editable\":false,\"compareValue\":null},{\"label\":\"Cost Center\",\"options\":\"Cost Center\",\"fieldname\":\"cost_center\",\"width\":100,\"id\":\"cost_center\",\"name\":\"Cost Center\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher Type\",\"fieldname\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher_type\",\"name\":\"Against Voucher Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher\",\"fieldname\":\"against_voucher\",\"fieldtype\":\"Dynamic Link\",\"options\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher\",\"name\":\"Against Voucher\",\"editable\":false,\"compareValue\":null},{\"label\":\"Supplier Invoice No\",\"fieldname\":\"bill_no\",\"fieldtype\":\"Data\",\"width\":100,\"id\":\"bill_no\",\"name\":\"Supplier Invoice No\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"company\":\"enfono\",\"from_date\":\"2024-05-01\",\"to_date\":\"2024-07-11\",\"account\":[\"Cash - E\"],\"party\":[],\"group_by\":\"Group by Voucher (Consolidated)\",\"cost_center\":[],\"project\":[],\"include_dimensions\":1,\"include_default_book_entries\":1}}",
-  "letter_head": "HSM",
-  "modified": "2024-07-11 07:16:46.278569",
-  "module": "Accounts",
-  "name": "Cash Ledger",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "GL Entry",
-  "reference_report": "General Ledger",
-  "report_name": "Cash Ledger",
-  "report_script": null,
-  "report_type": "Custom Report",
-  "roles": [
-   {
-    "parent": "Cash Ledger",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Accounts User"
-   },
-   {
-    "parent": "Cash Ledger",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Accounts Manager"
-   },
-   {
-    "parent": "Cash Ledger",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Auditor"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
   "letter_head": null,
   "modified": "2014-06-29 08:18:17.144598",
   "module": "Support",
@@ -4554,6 +4482,48 @@
   ]
  },
  {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"label\":\"Posting Date\",\"fieldname\":\"posting_date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"posting_date\",\"name\":\"Posting Date\",\"editable\":false},{\"label\":\"Account\",\"fieldname\":\"account\",\"fieldtype\":\"Link\",\"options\":\"Account\",\"width\":180,\"id\":\"account\",\"name\":\"Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Debit (SAR)\",\"fieldname\":\"debit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"debit\",\"name\":\"Debit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Credit (SAR)\",\"fieldname\":\"credit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"credit\",\"name\":\"Credit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Balance (SAR)\",\"fieldname\":\"balance\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"balance\",\"name\":\"Balance (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Type\",\"fieldname\":\"voucher_type\",\"width\":120,\"id\":\"voucher_type\",\"name\":\"Voucher Type\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"cheque_no\",\"fieldtype\":\"Data\",\"label\":\"Reference Number\",\"insert_after_index\":6,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Journal Entry\",\"width\":100,\"id\":\"cheque_no\",\"name\":\"Reference Number\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"custom_refno\",\"fieldtype\":\"Data\",\"label\":\"Ref.No\",\"insert_after_index\":7,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Payment Entry\",\"width\":100,\"id\":\"custom_refno\",\"name\":\"Ref.No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Subtype\",\"fieldname\":\"voucher_subtype\",\"fieldtype\":\"Data\",\"width\":180,\"id\":\"voucher_subtype\",\"name\":\"Voucher Subtype\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher No\",\"fieldname\":\"voucher_no\",\"fieldtype\":\"Dynamic Link\",\"options\":\"voucher_type\",\"width\":180,\"id\":\"voucher_no\",\"name\":\"Voucher No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Account\",\"fieldname\":\"against\",\"width\":120,\"id\":\"against\",\"name\":\"Against Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party Type\",\"fieldname\":\"party_type\",\"width\":100,\"id\":\"party_type\",\"name\":\"Party Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party\",\"fieldname\":\"party\",\"width\":100,\"id\":\"party\",\"name\":\"Party\",\"editable\":false,\"compareValue\":null},{\"label\":\"Project\",\"options\":\"Project\",\"fieldname\":\"project\",\"width\":100,\"id\":\"project\",\"name\":\"Project\",\"editable\":false,\"compareValue\":null},{\"label\":\"Cost Center\",\"options\":\"Cost Center\",\"fieldname\":\"cost_center\",\"width\":100,\"id\":\"cost_center\",\"name\":\"Cost Center\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher Type\",\"fieldname\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher_type\",\"name\":\"Against Voucher Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher\",\"fieldname\":\"against_voucher\",\"fieldtype\":\"Dynamic Link\",\"options\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher\",\"name\":\"Against Voucher\",\"editable\":false,\"compareValue\":null},{\"label\":\"Supplier Invoice No\",\"fieldname\":\"bill_no\",\"fieldtype\":\"Data\",\"width\":100,\"id\":\"bill_no\",\"name\":\"Supplier Invoice No\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"company\":\"enfono\",\"from_date\":\"2024-05-01\",\"to_date\":\"2024-07-11\",\"account\":[\"Cash - E\"],\"party\":[],\"group_by\":\"Group by Voucher (Consolidated)\",\"cost_center\":[],\"project\":[],\"include_dimensions\":1,\"include_default_book_entries\":1}}",
+  "letter_head": "HSM",
+  "modified": "2024-07-11 07:16:46.278569",
+  "module": "Accounts",
+  "name": "Cash Ledger",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "GL Entry",
+  "reference_report": "General Ledger",
+  "report_name": "Cash Ledger",
+  "report_script": null,
+  "report_type": "Custom Report",
+  "roles": [
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Auditor"
+   }
+  ]
+ },
+ {
   "add_total_row": 1,
   "columns": [],
   "disabled": 0,
@@ -5015,6 +4985,36 @@
   "roles": [
    {
     "parent": "Sales Person Reports",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-06-19 20:10:47.884292",
+  "module": "Logistics Management",
+  "name": "Reports-Sales Person",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Reports-Sales Person",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Reports-Sales Person",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "System Manager"
@@ -7816,6 +7816,36 @@
   "javascript": null,
   "json": null,
   "letter_head": null,
+  "modified": "2024-04-11 07:55:41.701281",
+  "module": "Logistics Management",
+  "name": "Job Detail Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Job Detail Report",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Job Detail Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
   "modified": "2018-09-07 12:18:21.850851",
   "module": "Accounts",
   "name": "Balance Sheet",
@@ -7928,36 +7958,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Auditor"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": null,
-  "modified": "2024-04-11 07:55:41.701281",
-  "module": "Logistics Management",
-  "name": "Job Detail Report",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Job Details",
-  "reference_report": null,
-  "report_name": "Job Detail Report",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "parent": "Job Detail Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "System Manager"
    }
   ]
  },
