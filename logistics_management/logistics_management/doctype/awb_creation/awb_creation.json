@@ -1,0 +1,161 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:HSM-AWB-{#}",
+ "creation": "2024-07-13 21:10:06.816981",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "mawb_no",
+  "shippers_account_no",
+  "shipper",
+  "notify",
+  "column_break_bwhw",
+  "hawb_no",
+  "consignee_ac_no",
+  "consignee",
+  "currency",
+  "section_break_evwi",
+  "origin_station",
+  "declared_value_for_carriage",
+  "amount_of_insurance",
+  "flight2datevia",
+  "reference_number",
+  "column_break_wokq",
+  "destination_station",
+  "declared_value_for_customs",
+  "flight1datevia",
+  "flight3datevia",
+  "handling_information"
+ ],
+ "fields": [
+  {
+   "fieldname": "mawb_no",
+   "fieldtype": "Data",
+   "label": "MAWB No."
+  },
+  {
+   "fieldname": "shippers_account_no",
+   "fieldtype": "Data",
+   "label": "Shippers Account No"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Data",
+   "label": "Shipper"
+  },
+  {
+   "fieldname": "notify",
+   "fieldtype": "Data",
+   "label": "Notify"
+  },
+  {
+   "fieldname": "column_break_bwhw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "hawb_no",
+   "fieldtype": "Data",
+   "label": "HAWB No."
+  },
+  {
+   "fieldname": "consignee_ac_no",
+   "fieldtype": "Data",
+   "label": "Consignee A/C No"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Data",
+   "label": "Currency"
+  },
+  {
+   "fieldname": "section_break_evwi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "origin_station",
+   "fieldtype": "Data",
+   "label": "Origin Station"
+  },
+  {
+   "fieldname": "declared_value_for_carriage",
+   "fieldtype": "Data",
+   "label": "Declared Value for Carriage"
+  },
+  {
+   "fieldname": "amount_of_insurance",
+   "fieldtype": "Data",
+   "label": "Amount of Insurance"
+  },
+  {
+   "fieldname": "flight2datevia",
+   "fieldtype": "Data",
+   "label": "Flight2/date/via "
+  },
+  {
+   "fieldname": "reference_number",
+   "fieldtype": "Small Text",
+   "label": "Reference Number"
+  },
+  {
+   "fieldname": "column_break_wokq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "destination_station",
+   "fieldtype": "Data",
+   "label": "Destination Station"
+  },
+  {
+   "fieldname": "declared_value_for_customs",
+   "fieldtype": "Data",
+   "label": "Declared Value for Customs"
+  },
+  {
+   "fieldname": "flight1datevia",
+   "fieldtype": "Data",
+   "label": "Flight1/date/via"
+  },
+  {
+   "fieldname": "flight3datevia",
+   "fieldtype": "Data",
+   "label": "Flight3/date/via "
+  },
+  {
+   "fieldname": "handling_information",
+   "fieldtype": "Small Text",
+   "label": "Handling Information"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-13 21:19:52.971801",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "AWB Creation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

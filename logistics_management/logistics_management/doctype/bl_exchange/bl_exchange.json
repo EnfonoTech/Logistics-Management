@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:BL-{reference_no}",
+ "creation": "2024-07-12 09:15:31.641581",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date_wtrk",
+  "supplier",
+  "column_break_mfxj",
+  "reference_no",
+  "customer",
+  "section_break_xvto",
+  "container_no",
+  "hbl_no",
+  "column_break_ribf",
+  "mblbl_no"
+ ],
+ "fields": [
+  {
+   "fieldname": "date_wtrk",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_mfxj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "reference_no",
+   "fieldtype": "Data",
+   "label": "Reference No",
+   "unique": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "section_break_xvto",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "container_no",
+   "fieldtype": "Data",
+   "label": "Container No"
+  },
+  {
+   "fieldname": "hbl_no",
+   "fieldtype": "Data",
+   "label": "HBL No"
+  },
+  {
+   "fieldname": "column_break_ribf",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mblbl_no",
+   "fieldtype": "Data",
+   "label": "MBL/BL No"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-12 09:26:08.449546",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "BL Exchange",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

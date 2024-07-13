@@ -1,0 +1,72 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-07-12 11:16:04.034363",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "containerseal",
+  "nett_wt",
+  "gross_wt",
+  "description",
+  "column_break_imfn",
+  "type",
+  "no_of_pkg",
+  "cbm"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "containerseal",
+   "fieldtype": "Data",
+   "label": "Container/Seal"
+  },
+  {
+   "fieldname": "nett_wt",
+   "fieldtype": "Data",
+   "label": "Nett Wt."
+  },
+  {
+   "fieldname": "gross_wt",
+   "fieldtype": "Data",
+   "label": "Gross Wt."
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_imfn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type"
+  },
+  {
+   "fieldname": "no_of_pkg",
+   "fieldtype": "Data",
+   "label": "No. of Pkg"
+  },
+  {
+   "fieldname": "cbm",
+   "fieldtype": "Data",
+   "label": "CBM"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-07-12 11:20:02.822388",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "CAN",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

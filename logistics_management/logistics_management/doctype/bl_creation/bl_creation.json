@@ -1,0 +1,221 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:HSM-BL-{#}",
+ "creation": "2024-07-13 11:55:01.348640",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "general_details_section",
+  "supplier",
+  "from",
+  "booking_no",
+  "point_and_country_of_origin_of_goods",
+  "also_notify",
+  "column_break_etuc",
+  "consignee",
+  "to",
+  "bl_no",
+  "notify_party",
+  "forwarding_agent_references",
+  "section_break_qcje",
+  "place_of_receipt",
+  "volume_in_cbm",
+  "port_of_loading",
+  "place_of_loading",
+  "delivery_status",
+  "column_break_urrb",
+  "vesselvoy_no",
+  "precarried_by",
+  "port_of_discharge",
+  "place_of_delivery",
+  "section_break_nhrf",
+  "table_mvvz",
+  "section_break_goiw",
+  "delivery_to",
+  "phone",
+  "column_break_onwz",
+  "received_by",
+  "date_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "general_details_section",
+   "fieldtype": "Section Break",
+   "label": "General Details"
+  },
+  {
+   "fieldname": "column_break_etuc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_qcje",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "port_of_discharge",
+   "fieldtype": "Data",
+   "label": "Port of Discharge"
+  },
+  {
+   "fieldname": "port_of_loading",
+   "fieldtype": "Data",
+   "label": "Port of Loading"
+  },
+  {
+   "fieldname": "column_break_urrb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "volume_in_cbm",
+   "fieldtype": "Data",
+   "label": "Volume in CBM"
+  },
+  {
+   "fieldname": "place_of_loading",
+   "fieldtype": "Data",
+   "label": "Place of Loading"
+  },
+  {
+   "fieldname": "section_break_nhrf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "section_break_goiw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "delivery_to",
+   "fieldtype": "Date",
+   "label": "On Board Date"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Place"
+  },
+  {
+   "fieldname": "column_break_onwz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "received_by",
+   "fieldtype": "Link",
+   "label": "Received By",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "date_time",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "from",
+   "fieldtype": "Data",
+   "label": "From"
+  },
+  {
+   "fieldname": "booking_no",
+   "fieldtype": "Data",
+   "label": "Booking No."
+  },
+  {
+   "fieldname": "point_and_country_of_origin_of_goods",
+   "fieldtype": "Data",
+   "label": "Point and Country of Origin of goods"
+  },
+  {
+   "fieldname": "also_notify",
+   "fieldtype": "Small Text",
+   "label": "ALSO NOTIFY"
+  },
+  {
+   "fieldname": "to",
+   "fieldtype": "Data",
+   "label": "To"
+  },
+  {
+   "fieldname": "bl_no",
+   "fieldtype": "Data",
+   "label": "B/L No."
+  },
+  {
+   "fieldname": "notify_party",
+   "fieldtype": "Data",
+   "label": "Notify Party"
+  },
+  {
+   "fieldname": "forwarding_agent_references",
+   "fieldtype": "Small Text",
+   "label": "Forwarding agent references"
+  },
+  {
+   "fieldname": "place_of_receipt",
+   "fieldtype": "Data",
+   "label": "Place of Receipt"
+  },
+  {
+   "fieldname": "delivery_status",
+   "fieldtype": "Data",
+   "label": "Delivery status"
+  },
+  {
+   "fieldname": "vesselvoy_no",
+   "fieldtype": "Data",
+   "label": "Vessel/Voy No. "
+  },
+  {
+   "fieldname": "precarried_by",
+   "fieldtype": "Data",
+   "label": "Precarried by"
+  },
+  {
+   "fieldname": "place_of_delivery",
+   "fieldtype": "Data",
+   "label": "Place of Delivery"
+  },
+  {
+   "fieldname": "table_mvvz",
+   "fieldtype": "Table",
+   "options": "BL Child"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Company"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-13 21:19:21.317934",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "BL Creation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

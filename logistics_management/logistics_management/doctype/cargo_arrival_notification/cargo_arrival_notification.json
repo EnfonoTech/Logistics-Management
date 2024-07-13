@@ -1,0 +1,126 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:HSM-CAN-{##}",
+ "creation": "2024-07-12 11:09:19.167640",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "consignee",
+  "shipper",
+  "vessel",
+  "voyage",
+  "port_of_load",
+  "port_of_disch",
+  "final_destn",
+  "line",
+  "column_break_qeyh",
+  "date",
+  "notify",
+  "bill_of_lading_no",
+  "arrivaleta_date",
+  "section_break_pzsr",
+  "table_uxbi"
+ ],
+ "fields": [
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Data",
+   "label": "Shipper"
+  },
+  {
+   "fieldname": "vessel",
+   "fieldtype": "Data",
+   "label": "Vessel"
+  },
+  {
+   "fieldname": "voyage",
+   "fieldtype": "Data",
+   "label": "Voyage"
+  },
+  {
+   "fieldname": "port_of_load",
+   "fieldtype": "Data",
+   "label": "Port of Load."
+  },
+  {
+   "fieldname": "port_of_disch",
+   "fieldtype": "Data",
+   "label": "Port of Disch."
+  },
+  {
+   "fieldname": "final_destn",
+   "fieldtype": "Data",
+   "label": "Final Destn."
+  },
+  {
+   "fieldname": "line",
+   "fieldtype": "Data",
+   "label": "Line"
+  },
+  {
+   "fieldname": "column_break_qeyh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "bill_of_lading_no",
+   "fieldtype": "Data",
+   "label": "Bill of Lading No."
+  },
+  {
+   "fieldname": "arrivaleta_date",
+   "fieldtype": "Date",
+   "label": "Arrival/ETA Date"
+  },
+  {
+   "fieldname": "section_break_pzsr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_uxbi",
+   "fieldtype": "Table",
+   "options": "CAN"
+  },
+  {
+   "fieldname": "notify",
+   "fieldtype": "Data",
+   "label": "Notify"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-12 11:42:20.465301",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Cargo Arrival Notification",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,237 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:HSM-DN-{#}",
+ "creation": "2024-07-13 10:07:41.796896",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "general_details_section",
+  "customer",
+  "dnote_no",
+  "haw_no",
+  "do_no",
+  "column_break_etuc",
+  "job_details",
+  "maw_no",
+  "booking_way_bill",
+  "section_break_qcje",
+  "eta",
+  "vesselairline",
+  "port_of_discharge",
+  "weight_in_kgs",
+  "port_of_loading",
+  "description",
+  "column_break_urrb",
+  "etd",
+  "voyageflight",
+  "place_of_discharge",
+  "volume_in_cbm",
+  "place_of_loading",
+  "container_no",
+  "section_break_nhrf",
+  "table_wsoo",
+  "section_break_goiw",
+  "delivery_at",
+  "delivery_to",
+  "phone",
+  "payment_terms",
+  "column_break_onwz",
+  "signature",
+  "received_by",
+  "date_time"
+ ],
+ "fields": [
+  {
+   "fieldname": "general_details_section",
+   "fieldtype": "Section Break",
+   "label": "General Details"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "dnote_no",
+   "fieldtype": "Data",
+   "label": "D/Note No"
+  },
+  {
+   "fieldname": "haw_no",
+   "fieldtype": "Data",
+   "label": "H/AW No"
+  },
+  {
+   "fieldname": "do_no",
+   "fieldtype": "Data",
+   "label": "DO No"
+  },
+  {
+   "fieldname": "column_break_etuc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
+  },
+  {
+   "fieldname": "maw_no",
+   "fieldtype": "Data",
+   "label": "M/AW No"
+  },
+  {
+   "fieldname": "booking_way_bill",
+   "fieldtype": "Data",
+   "label": "Booking Way Bill"
+  },
+  {
+   "fieldname": "section_break_qcje",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "eta",
+   "fieldtype": "Date",
+   "label": "ETA"
+  },
+  {
+   "fieldname": "vesselairline",
+   "fieldtype": "Data",
+   "label": "Vessel/Airline"
+  },
+  {
+   "fieldname": "port_of_discharge",
+   "fieldtype": "Data",
+   "label": "Port of Discharge"
+  },
+  {
+   "fieldname": "weight_in_kgs",
+   "fieldtype": "Data",
+   "label": "Weight in KGS"
+  },
+  {
+   "fieldname": "port_of_loading",
+   "fieldtype": "Data",
+   "label": "Port of Loading"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "column_break_urrb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "etd",
+   "fieldtype": "Date",
+   "label": "ETD"
+  },
+  {
+   "fieldname": "voyageflight",
+   "fieldtype": "Data",
+   "label": "Voyage/Flight"
+  },
+  {
+   "fieldname": "place_of_discharge",
+   "fieldtype": "Data",
+   "label": "Place of Discharge"
+  },
+  {
+   "fieldname": "volume_in_cbm",
+   "fieldtype": "Data",
+   "label": "Volume in CBM"
+  },
+  {
+   "fieldname": "place_of_loading",
+   "fieldtype": "Data",
+   "label": "Place of Loading"
+  },
+  {
+   "fieldname": "container_no",
+   "fieldtype": "Small Text",
+   "label": "Container No"
+  },
+  {
+   "fieldname": "section_break_goiw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "delivery_at",
+   "fieldtype": "Data",
+   "label": "Delivery At"
+  },
+  {
+   "fieldname": "delivery_to",
+   "fieldtype": "Data",
+   "label": "Delivery To"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "column_break_onwz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "signature",
+   "fieldtype": "Data",
+   "label": "Signature"
+  },
+  {
+   "fieldname": "received_by",
+   "fieldtype": "Data",
+   "label": "Received By"
+  },
+  {
+   "fieldname": "date_time",
+   "fieldtype": "Datetime",
+   "label": "Date Time"
+  },
+  {
+   "fieldname": "payment_terms",
+   "fieldtype": "Small Text",
+   "label": "Payment Terms"
+  },
+  {
+   "fieldname": "section_break_nhrf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_wsoo",
+   "fieldtype": "Table",
+   "options": "DN Table"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-07-13 10:44:03.238185",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Consignment Delivery Note",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
