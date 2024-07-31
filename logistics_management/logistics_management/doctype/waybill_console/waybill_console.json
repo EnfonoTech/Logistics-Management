@@ -1,0 +1,118 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:waybill_no",
+ "creation": "2024-07-23 23:00:27.815692",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "waybill_no",
+  "shipper",
+  "sales_person",
+  "delivery_mode",
+  "invoice_status",
+  "job_details",
+  "column_break_qtdl",
+  "customer",
+  "no_of_packages",
+  "invoice_no",
+  "volume",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "waybill_no",
+   "fieldtype": "Data",
+   "label": "WayBill No",
+   "unique": 1
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Data",
+   "label": "Shipper"
+  },
+  {
+   "fieldname": "sales_person",
+   "fieldtype": "Link",
+   "label": "Sales Person",
+   "options": "Sales Person"
+  },
+  {
+   "fieldname": "delivery_mode",
+   "fieldtype": "Data",
+   "label": "Delivery Mode"
+  },
+  {
+   "fieldname": "invoice_status",
+   "fieldtype": "Data",
+   "label": "Invoice Status"
+  },
+  {
+   "fieldname": "column_break_qtdl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "no_of_packages",
+   "fieldtype": "Data",
+   "label": "No. of Packages"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Data",
+   "label": "Invoice No"
+  },
+  {
+   "fieldname": "volume",
+   "fieldtype": "Data",
+   "label": "Volume"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "group": "Invoice Details",
+   "link_doctype": "Sales Invoice",
+   "link_fieldname": "custom_waybill_console"
+  }
+ ],
+ "modified": "2024-07-23 23:19:29.798244",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Waybill Console",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

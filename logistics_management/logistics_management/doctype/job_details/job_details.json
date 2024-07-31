@@ -60,16 +60,6 @@
   "column_break_51c5",
   "approval_date",
   "issuing_authority",
-  "vendor_receipts_section",
-  "receipt_number",
-  "date_received",
-  "vendor_name",
-  "column_break_lwj7",
-  "amount",
-  "payment_method",
-  "tab_2_tab",
-  "section_break_1fli",
-  "co_loaded_shipment_information",
   "delivery_order_information_section",
   "delivery_order_number",
   "shipper_name",
@@ -82,7 +72,17 @@
   "weight",
   "cargo_description",
   "delivery_location",
-  "amended_from"
+  "amended_from",
+  "vendor_receipts_section",
+  "receipt_number",
+  "date_received",
+  "vendor_name",
+  "column_break_lwj7",
+  "amount",
+  "payment_method",
+  "tab_2_tab",
+  "section_break_1fli",
+  "co_loaded_shipment_information"
  ],
  "fields": [
   {
@@ -157,6 +157,7 @@
   {
    "fieldname": "cargo_details",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Cargo Details",
    "options": "Cargo Details"
   },
@@ -171,6 +172,7 @@
   {
    "fieldname": "tab_2_tab",
    "fieldtype": "Tab Break",
+   "hidden": 1,
    "label": "Other Information"
   },
   {
@@ -264,6 +266,7 @@
   {
    "fieldname": "vendor_receipts_section",
    "fieldtype": "Section Break",
+   "hidden": 1,
    "label": "Vendor Receipts"
   },
   {
@@ -432,6 +435,7 @@
   {
    "fieldname": "contact_number",
    "fieldtype": "Phone",
+   "hidden": 1,
    "label": "Contact Number"
   },
   {
@@ -469,6 +473,7 @@
   {
    "fieldname": "project",
    "fieldtype": "Link",
+   "hidden": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Project",
@@ -478,6 +483,7 @@
    "fetch_from": "project.project_name",
    "fieldname": "project_data",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Project Data"
   },
   {
@@ -485,9 +491,9 @@
    "fieldtype": "Section Break"
   },
   {
-   "depends_on": "eval:doc.job_type=='CONSOLE'",
    "fieldname": "console_shipment",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Console Shipment",
    "options": "Console Table"
   },
@@ -526,9 +532,14 @@
    "group": "Invoice Details",
    "link_doctype": "Journal Entry",
    "link_fieldname": "custom_job_number"
+  },
+  {
+   "group": "General",
+   "link_doctype": "Waybill Console",
+   "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-06-26 10:34:37.438860",
+ "modified": "2024-07-23 23:07:38.464693",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",

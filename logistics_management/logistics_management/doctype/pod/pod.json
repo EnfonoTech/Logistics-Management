@@ -108,7 +108,7 @@
    "label": "Net Weight"
   },
   {
-   "fetch_from": "job_details.weight",
+   "fetch_from": "job_details.gross_weight",
    "fieldname": "gross_weight",
    "fieldtype": "Data",
    "label": "Gross Weight"
@@ -226,7 +226,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-05-11 23:18:15.919315",
+ "modified": "2024-07-25 23:05:26.387051",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "POD",
