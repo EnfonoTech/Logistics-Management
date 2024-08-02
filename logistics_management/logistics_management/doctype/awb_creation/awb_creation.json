@@ -10,6 +10,7 @@
   "shippers_account_no",
   "shipper",
   "notify",
+  "company",
   "column_break_bwhw",
   "hawb_no",
   "consignee_ac_no",
@@ -131,11 +132,20 @@
    "fieldname": "handling_information",
    "fieldtype": "Small Text",
    "label": "Handling Information"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-13 21:19:52.971801",
+ "modified": "2024-08-02 14:35:42.665594",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "AWB Creation",

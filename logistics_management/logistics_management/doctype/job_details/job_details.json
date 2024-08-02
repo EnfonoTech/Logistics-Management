@@ -13,6 +13,7 @@
   "mbl_number",
   "container_no",
   "vehicle_no",
+  "company",
   "column_break_mbo6",
   "mode_of_transport",
   "shipment_mode",
@@ -503,6 +504,14 @@
    "in_standard_filter": 1,
    "label": "Shipment Mode",
    "options": "\nIMPORT\nEXPORT\nRE-EXPORT\nLOCAL"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -539,7 +548,7 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-07-23 23:07:38.464693",
+ "modified": "2024-08-02 14:16:48.929925",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",

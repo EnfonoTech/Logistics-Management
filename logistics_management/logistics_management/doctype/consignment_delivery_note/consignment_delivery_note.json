@@ -15,6 +15,7 @@
   "job_details",
   "maw_no",
   "booking_way_bill",
+  "company",
   "section_break_qcje",
   "eta",
   "vesselairline",
@@ -207,11 +208,20 @@
    "fieldname": "table_wsoo",
    "fieldtype": "Table",
    "options": "DN Table"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-13 10:44:03.238185",
+ "modified": "2024-08-02 14:34:19.840436",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Consignment Delivery Note",

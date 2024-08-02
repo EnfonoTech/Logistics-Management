@@ -15,6 +15,7 @@
   "delivery_location",
   "net_weight",
   "sales_person",
+  "company",
   "column_break_xewu",
   "date",
   "mode_of_transport",
@@ -49,6 +50,7 @@
    "fieldname": "job_details",
    "fieldtype": "Link",
    "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Job Details",
    "options": "Job Details",
    "reqd": 1
@@ -222,11 +224,19 @@
    "fieldname": "sales_person",
    "fieldtype": "Data",
    "label": "Sales Person"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-25 23:05:26.387051",
+ "modified": "2024-08-02 14:17:25.359435",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "POD",

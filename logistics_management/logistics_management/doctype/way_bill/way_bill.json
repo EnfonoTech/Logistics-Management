@@ -18,6 +18,7 @@
   "destination",
   "truck_plate_no",
   "driver_iqama_no",
+  "company",
   "section_break_nqtd",
   "shipper",
   "column_break_cgrm",
@@ -144,11 +145,19 @@
    "fieldname": "seal_of_the_receiver_company",
    "fieldtype": "Data",
    "label": "SEAL OF THE RECEIVER COMPANY"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-06-10 07:45:15.328696",
+ "modified": "2024-08-02 14:25:34.002696",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Way Bill",
