@@ -30,6 +30,7 @@
   "precarried_by",
   "port_of_discharge",
   "place_of_delivery",
+  "company",
   "section_break_nhrf",
   "table_mvvz",
   "section_break_goiw",
@@ -191,11 +192,20 @@
    "fieldtype": "Link",
    "label": "Consignee",
    "options": "Company"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-07-13 21:19:21.317934",
+ "modified": "2024-08-02 16:33:21.910428",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Creation",
