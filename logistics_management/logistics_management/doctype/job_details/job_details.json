@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "format:JD-{####}",
  "creation": "2024-03-28 08:06:00.823727",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -147,6 +147,7 @@
   {
    "fieldname": "bl_number",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "BL Number"
   },
   {
@@ -548,11 +549,11 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-05 07:44:50.513121",
+ "modified": "2024-08-05 07:52:00.200347",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
