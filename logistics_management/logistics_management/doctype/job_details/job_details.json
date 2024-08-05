@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "general_section",
+  "naming_series",
   "job_type",
   "mawbl_number",
   "mbl_number",
@@ -518,6 +519,13 @@
    "fieldname": "remarks",
    "fieldtype": "Small Text",
    "label": "Remarks"
+  },
+  {
+   "default": "HSMN",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "\nHSM\nHSMN\nHSMS"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -554,7 +562,7 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-05 16:45:13.856737",
+ "modified": "2024-08-05 16:47:05.453552",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
