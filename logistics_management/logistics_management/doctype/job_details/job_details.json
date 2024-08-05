@@ -1,13 +1,12 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
+ "autoname": "format:JD-{####}",
  "creation": "2024-03-28 08:06:00.823727",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "general_section",
-  "naming_series",
   "job_type",
   "mawbl_number",
   "mbl_number",
@@ -458,13 +457,6 @@
    "label": "Job End Time"
   },
   {
-   "default": "HSMN",
-   "fieldname": "naming_series",
-   "fieldtype": "Select",
-   "label": "Naming Series",
-   "options": "\nHSM\nHSMS\nHSMN"
-  },
-  {
    "fieldname": "amended_from",
    "fieldtype": "Link",
    "label": "Amended From",
@@ -562,11 +554,11 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-05 12:54:33.230875",
+ "modified": "2024-08-05 16:45:13.856737",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
