@@ -522,6 +522,7 @@
   },
   {
    "default": "HSMN",
+   "depends_on": "eval:doc.company!='HARBOUR SHIPPING AND MARINE SERVICES WLL-NVOCC DIVISSION'",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
@@ -562,7 +563,7 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-05 16:47:05.453552",
+ "modified": "2024-08-05 16:58:43.709925",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
