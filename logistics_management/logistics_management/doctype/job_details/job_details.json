@@ -459,7 +459,7 @@
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
-   "options": "\nHSM\nHSMS"
+   "options": "\nHSM\nHSMS\nHSMN"
   },
   {
    "fieldname": "amended_from",
@@ -548,7 +548,7 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-02 14:16:48.929925",
+ "modified": "2024-08-05 07:28:53.353557",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
