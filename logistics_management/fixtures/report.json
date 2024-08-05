@@ -4482,6 +4482,36 @@
   ]
  },
  {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-08-02 15:49:28.793511",
+  "module": "Logistics Management",
+  "name": "Report-Sales Person",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Report-Sales Person",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Report-Sales Person",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
   "add_total_row": 1,
   "columns": [],
   "disabled": 0,
@@ -6470,6 +6500,36 @@
   "filters": [],
   "is_standard": "Yes",
   "javascript": null,
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-08-02 15:46:27.181528",
+  "module": "Logistics Management",
+  "name": "Job Details Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Job Details Report",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Job Details Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
   "json": "{\"add_total_row\": 0, \"sort_by\": \"Serial No.name\", \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Serial No\"], [\"item_code\", \"Serial No\"], [\"warehouse\", \"Serial No\"], [\"item_name\", \"Serial No\"], [\"description\", \"Serial No\"], [\"item_group\", \"Serial No\"], [\"brand\", \"Serial No\"], [\"purchase_document_type\", \"Serial No\"], [\"purchase_document_no\", \"Serial No\"], [\"purchase_date\", \"Serial No\"], [\"customer\", \"Serial No\"], [\"customer_name\", \"Serial No\"], [\"purchase_rate\", \"Serial No\"], [\"delivery_document_type\", \"Serial No\"], [\"delivery_document_no\", \"Serial No\"], [\"delivery_date\", \"Serial No\"], [\"supplier\", \"Serial No\"], [\"supplier_name\", \"Serial No\"]]}",
   "letter_head": null,
   "modified": "2017-02-24 19:54:21.392265",
@@ -7710,6 +7770,36 @@
   "docstatus": 0,
   "doctype": "Report",
   "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-06-19 20:10:47.884292",
+  "module": "Logistics Management",
+  "name": "Reports-Sales Person",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Reports-Sales Person",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Reports-Sales Person",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
   "is_standard": "No",
   "javascript": null,
   "json": "{\"columns\":[{\"label\":\"Posting Date\",\"fieldname\":\"posting_date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"posting_date\",\"name\":\"Posting Date\",\"editable\":false},{\"label\":\"Account\",\"fieldname\":\"account\",\"fieldtype\":\"Link\",\"options\":\"Account\",\"width\":180,\"id\":\"account\",\"name\":\"Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Debit (SAR)\",\"fieldname\":\"debit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"debit\",\"name\":\"Debit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Credit (SAR)\",\"fieldname\":\"credit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"credit\",\"name\":\"Credit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Balance (SAR)\",\"fieldname\":\"balance\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"balance\",\"name\":\"Balance (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Type\",\"fieldname\":\"voucher_type\",\"width\":120,\"id\":\"voucher_type\",\"name\":\"Voucher Type\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"cheque_no\",\"fieldtype\":\"Data\",\"label\":\"Reference Number\",\"insert_after_index\":6,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Journal Entry\",\"width\":100,\"id\":\"cheque_no\",\"name\":\"Reference Number\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"custom_refno\",\"fieldtype\":\"Data\",\"label\":\"Ref.No\",\"insert_after_index\":7,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Payment Entry\",\"width\":100,\"id\":\"custom_refno\",\"name\":\"Ref.No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Subtype\",\"fieldname\":\"voucher_subtype\",\"fieldtype\":\"Data\",\"width\":180,\"id\":\"voucher_subtype\",\"name\":\"Voucher Subtype\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher No\",\"fieldname\":\"voucher_no\",\"fieldtype\":\"Dynamic Link\",\"options\":\"voucher_type\",\"width\":180,\"id\":\"voucher_no\",\"name\":\"Voucher No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Account\",\"fieldname\":\"against\",\"width\":120,\"id\":\"against\",\"name\":\"Against Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party Type\",\"fieldname\":\"party_type\",\"width\":100,\"id\":\"party_type\",\"name\":\"Party Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party\",\"fieldname\":\"party\",\"width\":100,\"id\":\"party\",\"name\":\"Party\",\"editable\":false,\"compareValue\":null},{\"label\":\"Project\",\"options\":\"Project\",\"fieldname\":\"project\",\"width\":100,\"id\":\"project\",\"name\":\"Project\",\"editable\":false,\"compareValue\":null},{\"label\":\"Cost Center\",\"options\":\"Cost Center\",\"fieldname\":\"cost_center\",\"width\":100,\"id\":\"cost_center\",\"name\":\"Cost Center\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher Type\",\"fieldname\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher_type\",\"name\":\"Against Voucher Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher\",\"fieldname\":\"against_voucher\",\"fieldtype\":\"Dynamic Link\",\"options\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher\",\"name\":\"Against Voucher\",\"editable\":false,\"compareValue\":null},{\"label\":\"Supplier Invoice No\",\"fieldname\":\"bill_no\",\"fieldtype\":\"Data\",\"width\":100,\"id\":\"bill_no\",\"name\":\"Supplier Invoice No\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"company\":\"enfono\",\"from_date\":\"2024-05-01\",\"to_date\":\"2024-07-11\",\"account\":[\"Cash - E\"],\"party\":[],\"group_by\":\"Group by Voucher (Consolidated)\",\"cost_center\":[],\"project\":[],\"include_dimensions\":1,\"include_default_book_entries\":1}}",
@@ -7742,36 +7832,6 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Auditor"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": "HSM",
-  "modified": "2024-06-19 20:10:47.884292",
-  "module": "Logistics Management",
-  "name": "Reports-Sales Person",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Job Details",
-  "reference_report": null,
-  "report_name": "Reports-Sales Person",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "parent": "Reports-Sales Person",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "System Manager"
    }
   ]
  },

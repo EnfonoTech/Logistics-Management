@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:JD-{####}",
+ "autoname": "naming_series:",
  "creation": "2024-03-28 08:06:00.823727",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -456,6 +456,7 @@
    "label": "Job End Time"
   },
   {
+   "default": "HSMN",
    "fieldname": "naming_series",
    "fieldtype": "Select",
    "label": "Naming Series",
@@ -548,11 +549,11 @@
    "link_fieldname": "job_details"
   }
  ],
- "modified": "2024-08-05 10:27:06.709306",
+ "modified": "2024-08-05 10:57:05.761388",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",
- "naming_rule": "Expression",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
