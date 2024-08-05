@@ -102,18 +102,18 @@ function add_custom_buttons(frm) {
         });
     }, __('View'));
 
-    frm.add_custom_button(__('Generate Project'), function() {
-        frappe.call({
-            method: 'logistics_management.logistics_management.doctype.job_details.job_details.generate_project',
-            args: {
-                docname: frm.doc.name
-            },
-            callback: function(response) {
-                if (response.message) {
-                    frm.reload_doc();
-                    // frappe.msgprint('Waybill generated successfully.');
-                }
-            }
-        });
-    });
+    // frm.add_custom_button(__('Generate Project'), function() {
+    //     frappe.call({
+    //         method: 'logistics_management.logistics_management.doctype.job_details.job_details.generate_project',
+    //         args: {
+    //             docname: frm.doc.name
+    //         },
+    //         callback: function(response) {
+    //             if (response.message) {
+    //                 frm.reload_doc();
+    //                 // frappe.msgprint('Waybill generated successfully.');
+    //             }
+    //         }
+    //     });
+    // });
 }
