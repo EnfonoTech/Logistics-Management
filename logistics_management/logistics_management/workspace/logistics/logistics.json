@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"pH01Y1Cyvr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"OKCBlHqw8z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Direct Shipping\",\"col\":3}},{\"id\":\"8iBBUnw8PP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details\",\"col\":3}},{\"id\":\"cET7zsnfst\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"POD\",\"col\":3}},{\"id\":\"yoLny7THH-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"soeU5ZuNL5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"fKb9geUNw4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Purchase Invoice\",\"col\":3}},{\"id\":\"KGsdDVs5Uf\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Journal Entry\",\"col\":3}},{\"id\":\"QyY1vJZuSK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"nPrXktfEE9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"WdUtt0A3YD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Track Shipping Order\",\"col\":3}},{\"id\":\"lWeXXWe-Rd\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse Rental\",\"col\":3}},{\"id\":\"bB-w1GJvYg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Way Bill\",\"col\":3}},{\"id\":\"sarLkpmSOV\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"hZxOmpTiOV\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Freight Location\",\"col\":3}},{\"id\":\"qePT1OUYd4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Containers\",\"col\":3}},{\"id\":\"KTqxU7Il69\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Pricing  List\",\"col\":3}},{\"id\":\"RSkLHCk4JV\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"s-51L_nA1z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Consignment Delivery Note\",\"col\":3}},{\"id\":\"dcB6Kf7_db\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Exchange\",\"col\":3}},{\"id\":\"sIlZRBBq0A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AWB Creation\",\"col\":3}},{\"id\":\"XPBT0QeRmR\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"QbbBfLDNB1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cargo Arrival Notification\",\"col\":3}},{\"id\":\"o2ol0bb_KX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Creation\",\"col\":3}},{\"id\":\"GnGX_uPUdi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"iEXE6qojk5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports</b></span>\",\"col\":12}},{\"id\":\"TX1JFFL6Le\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details Metrics\",\"col\":3}},{\"id\":\"xxYvAMG8Zn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Report-Sales Person\",\"col\":3}},{\"id\":\"h33xSN04OO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cash Ledger Report\",\"col\":3}},{\"id\":\"PzOKmQZYQb\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"HADl_frXlN\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"pH01Y1Cyvr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"QyY1vJZuSK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"8iBBUnw8PP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details\",\"col\":3}},{\"id\":\"o2ol0bb_KX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Creation\",\"col\":3}},{\"id\":\"sIlZRBBq0A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AWB Creation\",\"col\":3}},{\"id\":\"yoLny7THH-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"QbbBfLDNB1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cargo Arrival Notification\",\"col\":3}},{\"id\":\"s-51L_nA1z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Consignment Delivery Note\",\"col\":3}},{\"id\":\"dcB6Kf7_db\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Exchange\",\"col\":3}},{\"id\":\"nPrXktfEE9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cET7zsnfst\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"POD\",\"col\":3}},{\"id\":\"bB-w1GJvYg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Way Bill\",\"col\":3}},{\"id\":\"WdUtt0A3YD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse Rental\",\"col\":3}},{\"id\":\"GnGX_uPUdi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"iEXE6qojk5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports</b></span>\",\"col\":12}},{\"id\":\"TX1JFFL6Le\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details Metrics\",\"col\":3}},{\"id\":\"xxYvAMG8Zn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Report-Sales Person\",\"col\":3}},{\"id\":\"h33xSN04OO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cash Ledger Report\",\"col\":3}},{\"id\":\"PzOKmQZYQb\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"HADl_frXlN\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Reports\",\"col\":4}}]",
  "creation": "2024-03-12 07:31:55.092037",
  "custom_blocks": [],
  "docstatus": 0,
@@ -63,7 +63,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-08-02 15:59:25.506579",
+ "modified": "2024-08-05 13:02:34.309237",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Logistics",
@@ -84,34 +84,10 @@
    "type": "DocType"
   },
   {
-   "color": "Yellow",
-   "doc_view": "List",
-   "label": "Direct Shipping",
-   "link_to": "Direct Shipping",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
    "color": "Pink",
    "doc_view": "List",
    "label": "Quotation",
    "link_to": "Quotation",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Pricing  List",
-   "link_to": "Pricing  List",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Warehouse Rental",
-   "link_to": "Warehouse Rental",
    "stats_filter": "[]",
    "type": "DocType"
   },
@@ -130,18 +106,18 @@
    "type": "Report"
   },
   {
-   "color": "Grey",
+   "color": "Green",
    "doc_view": "List",
-   "label": "Job Details",
-   "link_to": "Job Details",
+   "label": "Warehouse Rental",
+   "link_to": "Warehouse Rental",
    "stats_filter": "[]",
    "type": "DocType"
   },
   {
-   "color": "Green",
+   "color": "Grey",
    "doc_view": "List",
-   "label": "Sales Invoice",
-   "link_to": "Sales Invoice",
+   "label": "Job Details",
+   "link_to": "Job Details",
    "stats_filter": "[]",
    "type": "DocType"
   },
@@ -165,46 +141,6 @@
    "doc_view": "List",
    "label": "POD",
    "link_to": "POD",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Yellow",
-   "doc_view": "List",
-   "label": "Purchase Invoice",
-   "link_to": "Purchase Invoice",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Red",
-   "doc_view": "List",
-   "label": "Freight Location",
-   "link_to": "Freight Location",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Green",
-   "doc_view": "List",
-   "label": "Track Shipping Order",
-   "link_to": "Track Shipping Order",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Blue",
-   "doc_view": "List",
-   "label": "Journal Entry",
-   "link_to": "Journal Entry",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Blue",
-   "doc_view": "List",
-   "label": "Containers",
-   "link_to": "Containers",
    "stats_filter": "[]",
    "type": "DocType"
   },
