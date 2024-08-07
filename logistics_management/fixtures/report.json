@@ -3956,6 +3956,36 @@
   "docstatus": 0,
   "doctype": "Report",
   "filters": [],
+  "is_standard": "No",
+  "javascript": "frappe.query_reports[\"Job Details Report\"] = {\n    \"filters\": [\n        {\n            \"fieldname\": \"job_details\",\n            \"label\": __(\"Job Details\"),\n            \"fieldtype\": \"Link\",\n            \"options\": \"Job Details\",\n            \"reqd\": 0,\n            \"default\": \"\",\n            \"width\": \"80\",\n            // \"get_data\": function(txt) {\n            //     return frappe.db.get_link_options('Job Details', txt);\n            // }\n        }\n    ],\n\n    \"onload\": function(report) {\n        report.page.add_inner_button(__('Refresh Data'), function() {\n            report.refresh();\n        });\n    },\n\n    \"formatter\": function(value, row, column, data, default_formatter) {\n        value = default_formatter(value, row, column, data);\n        if (column.fieldname == \"profit_and_loss\") {\n            if (data.profit_and_loss < 0) {\n                value = `<span style=\"color:red\">${value}</span>`;\n            } else {\n                value = `<span style=\"color:green\">${value}</span>`;\n            }\n        }\n        if (column.fieldname == \"sales_outstanding_amount\") {\n            if (flt(value) === 0) {\n                value = `<span style=\"color:black\">${value}</span>`;\n            } else {\n                value = `<span style=\"color:green\">${value}</span>`;\n            }\n        }\n        if (column.fieldname == \"purchase_outstanding_amount\") {\n            if (flt(value) === 0) {\n                value = `<span style=\"color:black\">${value}</span>`;\n            } else {\n                value = `<span style=\"color:orange\">${value}</span>`;\n            }\n        }\n        return value;\n    }\n};\n",
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-08-06 10:51:58.227382",
+  "module": "Logistics Management",
+  "name": "JD Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "JD Report",
+  "report_script": "def execute(filters=None):\n    columns, data = [], []\n\n    # Define columns\n    columns = [\n        {\"label\": \"Job Details\", \"fieldname\": \"job_details\", \"fieldtype\": \"Link\", \"options\": \"Job Details\", \"width\": 125},\n        {\"label\": \"Invoice Type\", \"fieldname\": \"invoice_type\", \"fieldtype\": \"Data\", \"width\": 135},\n        {\"label\": \"Invoice ID\", \"fieldname\": \"invoice_id\", \"fieldtype\": \"Dynamic Link\", \"options\": \"invoice_type\", \"width\": 195},\n        {\"label\": \"Item\", \"fieldname\": \"item\", \"fieldtype\": \"Data\", \"width\": 175},\n        {\"label\": \"Quantity\", \"fieldname\": \"quantity\", \"fieldtype\": \"Float\", \"width\": 100},\n        {\"label\": \"Rate\", \"fieldname\": \"rate\", \"fieldtype\": \"Currency\", \"width\": 100},\n        {\"label\": \"Amount\", \"fieldname\": \"amount\", \"fieldtype\": \"Currency\", \"width\": 150},\n        {\"label\": \"Credit\", \"fieldname\": \"credit\", \"fieldtype\": \"Currency\", \"width\": 150},\n        {\"label\": \"Debit\", \"fieldname\": \"debit\", \"fieldtype\": \"Currency\", \"width\": 150},\n        {\"label\": \"Profit & Loss\", \"fieldname\": \"profit_and_loss\", \"fieldtype\": \"Currency\", \"width\": 150},\n    ]\n\n    # Check for user permissions\n    user_permissions = frappe.permissions.get_user_permissions(frappe.session.user)\n    user_company = user_permissions.get('Company', [None])[0]\n\n    # Apply company filter to Job Details if user has a company restriction\n    job_details_filter = filters.get('job_details') if filters else None\n    job_details_conditions = {}\n\n    if user_company:\n        job_details_conditions['company'] = user_company.doc\n\n    if job_details_filter:\n        job_details_conditions['name'] = ['in', job_details_filter]\n\n    job_details_list = frappe.get_all('Job Details', filters=job_details_conditions, fields=['name'])\n\n    overall_credit_total = 0\n    overall_debit_total = 0\n    overall_sales_outstanding_total = 0\n    overall_purchase_outstanding_total = 0\n    overall_profit_and_loss = 0\n\n    for job in job_details_list:\n        total_credit = 0\n        total_debit = 0\n        total_sales_outstanding = 0\n        total_purchase_outstanding = 0\n\n        # Fetch and process Sales Invoices\n        sales_invoices = frappe.get_all('Sales Invoice', filters={'custom_job_number': job.name, 'docstatus': 1}, fields=['name', 'base_grand_total', 'outstanding_amount'])\n        for inv in sales_invoices:\n            items = frappe.get_all('Sales Invoice Item', filters={'parent': inv.name}, fields=['item_code', 'qty', 'rate', 'amount'])\n            for item in items:\n                data.append({\n                    'job_details': job.name,\n                    'invoice_type': 'Sales Invoice',\n                    'invoice_id': inv.name,\n                    'item': item.item_code,\n                    'quantity': item.qty,\n                    'rate': item.rate,\n                    'amount': item.amount,\n                    'credit': flt(item.amount),\n                    'debit': 0,\n                    'sales_outstanding_amount': flt(inv.outstanding_amount),\n                    'purchase_outstanding_amount': 0,\n                    'profit_and_loss': ''\n                })\n            total_credit += flt(inv.base_grand_total)\n            total_sales_outstanding += flt(inv.outstanding_amount)\n\n        # Fetch and process Purchase Invoices\n        purchase_invoices = frappe.get_all('Purchase Invoice', filters={'custom_job_number': job.name, 'docstatus': 1}, fields=['name', 'base_grand_total', 'outstanding_amount'])\n        for inv in purchase_invoices:\n            items = frappe.get_all('Purchase Invoice Item', filters={'parent': inv.name}, fields=['item_code', 'qty', 'rate', 'amount'])\n            for item in items:\n                data.append({\n                    'job_details': job.name,\n                    'invoice_type': 'Purchase Invoice',\n                    'invoice_id': inv.name,\n                    'item': item.item_code,\n                    'quantity': item.qty,\n                    'rate': item.rate,\n                    'amount': item.amount,\n                    'credit': 0,\n                    'debit': flt(item.amount),\n                    'sales_outstanding_amount': 0,\n                    'purchase_outstanding_amount': flt(inv.outstanding_amount),\n                    'profit_and_loss': ''\n                })\n            total_debit += flt(inv.base_grand_total)\n            total_purchase_outstanding += flt(inv.outstanding_amount)\n\n        # Fetch and process Journal Entries (only debit items)\n        journal_entries = frappe.get_all('Journal Entry', filters={'custom_job_number': job.name, 'docstatus': 1}, fields=['name'])\n        for entry in journal_entries:\n            entries = frappe.get_all('Journal Entry Account', filters={'parent': entry.name, 'debit': ['>', 0]}, fields=['account', 'debit'])\n            for je in entries:\n                data.append({\n                    'job_details': job.name,\n                    'invoice_type': 'Journal Entry',\n                    'invoice_id': entry.name,\n                    'item': je.account,\n                    'quantity': '',\n                    'rate': '',\n                    'amount': je.debit,\n                    'credit': 0,\n                    'debit': flt(je.debit),\n                    'sales_outstanding_amount': '',\n                    'purchase_outstanding_amount': '',\n                    'profit_and_loss': ''\n                })\n                total_debit += flt(je.debit)\n\n        # Calculate profit and loss\n        profit_and_loss = total_credit - total_debit\n        overall_profit_and_loss += profit_and_loss\n\n        # Append totals for each job\n        data.append({\n            'job_details': job.name,\n            'invoice_type': '<b>Totals</b>',\n            'invoice_id': '',\n            'item': '',\n            'quantity': '',\n            'rate': '',\n            'amount': '',\n            'credit': total_credit,\n            'debit': total_debit,\n            'sales_outstanding_amount': total_sales_outstanding,\n            'purchase_outstanding_amount': total_purchase_outstanding,\n            'profit_and_loss': profit_and_loss\n        })\n\n        overall_credit_total += total_credit\n        overall_debit_total += total_debit\n        overall_sales_outstanding_total += total_sales_outstanding\n        overall_purchase_outstanding_total += total_purchase_outstanding\n\n    # Append overall totals\n    data.append({\n        'job_details': '',\n        'invoice_type': '<b>Overall Totals</b>',\n        'invoice_id': '',\n        'item': '',\n        'quantity': '',\n        'rate': '',\n        'amount': '',\n        'credit': overall_credit_total,\n        'debit': overall_debit_total,\n        'sales_outstanding_amount': overall_sales_outstanding_total,\n        'purchase_outstanding_amount': overall_purchase_outstanding_total,\n        'profit_and_loss': overall_profit_and_loss\n    })\n\n    return columns, data\n",
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "JD Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
   "is_standard": "Yes",
   "javascript": null,
   "json": null,
@@ -4482,36 +4512,6 @@
   ]
  },
  {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
-  "json": null,
-  "letter_head": "HSM",
-  "modified": "2024-08-02 15:49:28.793511",
-  "module": "Logistics Management",
-  "name": "Report-Sales Person",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Job Details",
-  "reference_report": null,
-  "report_name": "Report-Sales Person",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "parent": "Report-Sales Person",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "System Manager"
-   }
-  ]
- },
- {
   "add_total_row": 1,
   "columns": [],
   "disabled": 0,
@@ -4988,48 +4988,6 @@
   "filters": [],
   "is_standard": "Yes",
   "javascript": null,
-  "json": "{\"add_total_row\": 0, \"sort_by\": \"Serial No.modified\", \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [[\"Serial No\", \"delivery_document_type\", \"in\", [\"Delivery Note\", \"Sales Invoice\"]], [\"Serial No\", \"warehouse\", \"=\", \"\"]], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Serial No\"], [\"item_code\", \"Serial No\"], [\"amc_expiry_date\", \"Serial No\"], [\"maintenance_status\", \"Serial No\"], [\"delivery_document_no\", \"Serial No\"], [\"customer\", \"Serial No\"], [\"customer_name\", \"Serial No\"], [\"item_name\", \"Serial No\"], [\"description\", \"Serial No\"], [\"item_group\", \"Serial No\"], [\"brand\", \"Serial No\"]]}",
-  "letter_head": null,
-  "modified": "2017-02-24 20:02:00.706889",
-  "module": "Stock",
-  "name": "Serial No Service Contract Expiry",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Serial No",
-  "reference_report": null,
-  "report_name": "Serial No Service Contract Expiry",
-  "report_script": null,
-  "report_type": "Report Builder",
-  "roles": [
-   {
-    "parent": "Serial No Service Contract Expiry",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Item Manager"
-   },
-   {
-    "parent": "Serial No Service Contract Expiry",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Stock Manager"
-   },
-   {
-    "parent": "Serial No Service Contract Expiry",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Stock User"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
   "json": "{\"add_total_row\": 0, \"sort_by\": \"Serial No.modified\", \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [[\"Serial No\", \"delivery_document_type\", \"in\", [\"Delivery Note\", \"Sales Invoice\"]], [\"Serial No\", \"warehouse\", \"=\", \"\"]], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Serial No\"], [\"item_code\", \"Serial No\"], [\"warranty_expiry_date\", \"Serial No\"], [\"warranty_period\", \"Serial No\"], [\"maintenance_status\", \"Serial No\"], [\"purchase_document_no\", \"Serial No\"], [\"purchase_date\", \"Serial No\"], [\"supplier\", \"Serial No\"], [\"supplier_name\", \"Serial No\"], [\"delivery_document_no\", \"Serial No\"], [\"delivery_date\", \"Serial No\"], [\"customer\", \"Serial No\"], [\"customer_name\", \"Serial No\"], [\"item_name\", \"Serial No\"], [\"description\", \"Serial No\"], [\"item_group\", \"Serial No\"], [\"brand\", \"Serial No\"]]}",
   "letter_head": null,
   "modified": "2017-02-24 20:01:53.097456",
@@ -5057,6 +5015,48 @@
    },
    {
     "parent": "Serial No Warranty Expiry",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": "{\"add_total_row\": 0, \"sort_by\": \"Serial No.modified\", \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [[\"Serial No\", \"delivery_document_type\", \"in\", [\"Delivery Note\", \"Sales Invoice\"]], [\"Serial No\", \"warehouse\", \"=\", \"\"]], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Serial No\"], [\"item_code\", \"Serial No\"], [\"amc_expiry_date\", \"Serial No\"], [\"maintenance_status\", \"Serial No\"], [\"delivery_document_no\", \"Serial No\"], [\"customer\", \"Serial No\"], [\"customer_name\", \"Serial No\"], [\"item_name\", \"Serial No\"], [\"description\", \"Serial No\"], [\"item_group\", \"Serial No\"], [\"brand\", \"Serial No\"]]}",
+  "letter_head": null,
+  "modified": "2017-02-24 20:02:00.706889",
+  "module": "Stock",
+  "name": "Serial No Service Contract Expiry",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Serial No",
+  "reference_report": null,
+  "report_name": "Serial No Service Contract Expiry",
+  "report_script": null,
+  "report_type": "Report Builder",
+  "roles": [
+   {
+    "parent": "Serial No Service Contract Expiry",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Serial No Service Contract Expiry",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Serial No Service Contract Expiry",
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Stock User"
@@ -6500,36 +6500,6 @@
   "filters": [],
   "is_standard": "Yes",
   "javascript": null,
-  "json": null,
-  "letter_head": "HSM",
-  "modified": "2024-08-02 15:46:27.181528",
-  "module": "Logistics Management",
-  "name": "Job Details Report",
-  "prepared_report": 0,
-  "query": null,
-  "ref_doctype": "Job Details",
-  "reference_report": null,
-  "report_name": "Job Details Report",
-  "report_script": null,
-  "report_type": "Script Report",
-  "roles": [
-   {
-    "parent": "Job Details Report",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "System Manager"
-   }
-  ]
- },
- {
-  "add_total_row": 0,
-  "columns": [],
-  "disabled": 0,
-  "docstatus": 0,
-  "doctype": "Report",
-  "filters": [],
-  "is_standard": "Yes",
-  "javascript": null,
   "json": "{\"add_total_row\": 0, \"sort_by\": \"Serial No.name\", \"sort_order\": \"desc\", \"sort_by_next\": null, \"filters\": [], \"sort_order_next\": \"desc\", \"columns\": [[\"name\", \"Serial No\"], [\"item_code\", \"Serial No\"], [\"warehouse\", \"Serial No\"], [\"item_name\", \"Serial No\"], [\"description\", \"Serial No\"], [\"item_group\", \"Serial No\"], [\"brand\", \"Serial No\"], [\"purchase_document_type\", \"Serial No\"], [\"purchase_document_no\", \"Serial No\"], [\"purchase_date\", \"Serial No\"], [\"customer\", \"Serial No\"], [\"customer_name\", \"Serial No\"], [\"purchase_rate\", \"Serial No\"], [\"delivery_document_type\", \"Serial No\"], [\"delivery_document_no\", \"Serial No\"], [\"delivery_date\", \"Serial No\"], [\"supplier\", \"Serial No\"], [\"supplier_name\", \"Serial No\"]]}",
   "letter_head": null,
   "modified": "2017-02-24 19:54:21.392265",
@@ -7800,38 +7770,56 @@
   "docstatus": 0,
   "doctype": "Report",
   "filters": [],
-  "is_standard": "No",
+  "is_standard": "Yes",
   "javascript": null,
-  "json": "{\"columns\":[{\"label\":\"Posting Date\",\"fieldname\":\"posting_date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"posting_date\",\"name\":\"Posting Date\",\"editable\":false},{\"label\":\"Account\",\"fieldname\":\"account\",\"fieldtype\":\"Link\",\"options\":\"Account\",\"width\":180,\"id\":\"account\",\"name\":\"Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Debit (SAR)\",\"fieldname\":\"debit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"debit\",\"name\":\"Debit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Credit (SAR)\",\"fieldname\":\"credit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"credit\",\"name\":\"Credit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Balance (SAR)\",\"fieldname\":\"balance\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"balance\",\"name\":\"Balance (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Type\",\"fieldname\":\"voucher_type\",\"width\":120,\"id\":\"voucher_type\",\"name\":\"Voucher Type\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"cheque_no\",\"fieldtype\":\"Data\",\"label\":\"Reference Number\",\"insert_after_index\":6,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Journal Entry\",\"width\":100,\"id\":\"cheque_no\",\"name\":\"Reference Number\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"custom_refno\",\"fieldtype\":\"Data\",\"label\":\"Ref.No\",\"insert_after_index\":7,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Payment Entry\",\"width\":100,\"id\":\"custom_refno\",\"name\":\"Ref.No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Subtype\",\"fieldname\":\"voucher_subtype\",\"fieldtype\":\"Data\",\"width\":180,\"id\":\"voucher_subtype\",\"name\":\"Voucher Subtype\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher No\",\"fieldname\":\"voucher_no\",\"fieldtype\":\"Dynamic Link\",\"options\":\"voucher_type\",\"width\":180,\"id\":\"voucher_no\",\"name\":\"Voucher No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Account\",\"fieldname\":\"against\",\"width\":120,\"id\":\"against\",\"name\":\"Against Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party Type\",\"fieldname\":\"party_type\",\"width\":100,\"id\":\"party_type\",\"name\":\"Party Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party\",\"fieldname\":\"party\",\"width\":100,\"id\":\"party\",\"name\":\"Party\",\"editable\":false,\"compareValue\":null},{\"label\":\"Project\",\"options\":\"Project\",\"fieldname\":\"project\",\"width\":100,\"id\":\"project\",\"name\":\"Project\",\"editable\":false,\"compareValue\":null},{\"label\":\"Cost Center\",\"options\":\"Cost Center\",\"fieldname\":\"cost_center\",\"width\":100,\"id\":\"cost_center\",\"name\":\"Cost Center\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher Type\",\"fieldname\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher_type\",\"name\":\"Against Voucher Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher\",\"fieldname\":\"against_voucher\",\"fieldtype\":\"Dynamic Link\",\"options\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher\",\"name\":\"Against Voucher\",\"editable\":false,\"compareValue\":null},{\"label\":\"Supplier Invoice No\",\"fieldname\":\"bill_no\",\"fieldtype\":\"Data\",\"width\":100,\"id\":\"bill_no\",\"name\":\"Supplier Invoice No\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"company\":\"enfono\",\"from_date\":\"2024-05-01\",\"to_date\":\"2024-07-11\",\"account\":[\"Cash - E\"],\"party\":[],\"group_by\":\"Group by Voucher (Consolidated)\",\"cost_center\":[],\"project\":[],\"include_dimensions\":1,\"include_default_book_entries\":1}}",
+  "json": null,
   "letter_head": "HSM",
-  "modified": "2024-07-11 07:16:46.278569",
-  "module": "Accounts",
-  "name": "Cash Ledger",
+  "modified": "2024-08-02 15:49:28.793511",
+  "module": "Logistics Management",
+  "name": "Report-Sales Person",
   "prepared_report": 0,
   "query": null,
-  "ref_doctype": "GL Entry",
-  "reference_report": "General Ledger",
-  "report_name": "Cash Ledger",
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Report-Sales Person",
   "report_script": null,
-  "report_type": "Custom Report",
+  "report_type": "Script Report",
   "roles": [
    {
-    "parent": "Cash Ledger",
+    "parent": "Report-Sales Person",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts User"
-   },
+    "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": "HSM",
+  "modified": "2024-08-02 15:46:27.181528",
+  "module": "Logistics Management",
+  "name": "Job Details Report",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Job Details",
+  "reference_report": null,
+  "report_name": "Job Details Report",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
    {
-    "parent": "Cash Ledger",
+    "parent": "Job Details Report",
     "parentfield": "roles",
     "parenttype": "Report",
-    "role": "Accounts Manager"
-   },
-   {
-    "parent": "Cash Ledger",
-    "parentfield": "roles",
-    "parenttype": "Report",
-    "role": "Auditor"
+    "role": "System Manager"
    }
   ]
  },
@@ -7892,6 +7880,48 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "System Manager"
+   }
+  ]
+ },
+ {
+  "add_total_row": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"label\":\"Posting Date\",\"fieldname\":\"posting_date\",\"fieldtype\":\"Date\",\"width\":100,\"id\":\"posting_date\",\"name\":\"Posting Date\",\"editable\":false},{\"label\":\"Account\",\"fieldname\":\"account\",\"fieldtype\":\"Link\",\"options\":\"Account\",\"width\":180,\"id\":\"account\",\"name\":\"Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Debit (SAR)\",\"fieldname\":\"debit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"debit\",\"name\":\"Debit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Credit (SAR)\",\"fieldname\":\"credit\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"credit\",\"name\":\"Credit (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Balance (SAR)\",\"fieldname\":\"balance\",\"fieldtype\":\"Float\",\"width\":130,\"id\":\"balance\",\"name\":\"Balance (SAR)\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Type\",\"fieldname\":\"voucher_type\",\"width\":120,\"id\":\"voucher_type\",\"name\":\"Voucher Type\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"cheque_no\",\"fieldtype\":\"Data\",\"label\":\"Reference Number\",\"insert_after_index\":6,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Journal Entry\",\"width\":100,\"id\":\"cheque_no\",\"name\":\"Reference Number\",\"editable\":false,\"compareValue\":null},{\"fieldname\":\"custom_refno\",\"fieldtype\":\"Data\",\"label\":\"Ref.No\",\"insert_after_index\":7,\"link_field\":{\"fieldname\":\"voucher_no\",\"names\":{}},\"doctype\":\"Payment Entry\",\"width\":100,\"id\":\"custom_refno\",\"name\":\"Ref.No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher Subtype\",\"fieldname\":\"voucher_subtype\",\"fieldtype\":\"Data\",\"width\":180,\"id\":\"voucher_subtype\",\"name\":\"Voucher Subtype\",\"editable\":false,\"compareValue\":null},{\"label\":\"Voucher No\",\"fieldname\":\"voucher_no\",\"fieldtype\":\"Dynamic Link\",\"options\":\"voucher_type\",\"width\":180,\"id\":\"voucher_no\",\"name\":\"Voucher No\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Account\",\"fieldname\":\"against\",\"width\":120,\"id\":\"against\",\"name\":\"Against Account\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party Type\",\"fieldname\":\"party_type\",\"width\":100,\"id\":\"party_type\",\"name\":\"Party Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Party\",\"fieldname\":\"party\",\"width\":100,\"id\":\"party\",\"name\":\"Party\",\"editable\":false,\"compareValue\":null},{\"label\":\"Project\",\"options\":\"Project\",\"fieldname\":\"project\",\"width\":100,\"id\":\"project\",\"name\":\"Project\",\"editable\":false,\"compareValue\":null},{\"label\":\"Cost Center\",\"options\":\"Cost Center\",\"fieldname\":\"cost_center\",\"width\":100,\"id\":\"cost_center\",\"name\":\"Cost Center\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher Type\",\"fieldname\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher_type\",\"name\":\"Against Voucher Type\",\"editable\":false,\"compareValue\":null},{\"label\":\"Against Voucher\",\"fieldname\":\"against_voucher\",\"fieldtype\":\"Dynamic Link\",\"options\":\"against_voucher_type\",\"width\":100,\"id\":\"against_voucher\",\"name\":\"Against Voucher\",\"editable\":false,\"compareValue\":null},{\"label\":\"Supplier Invoice No\",\"fieldname\":\"bill_no\",\"fieldtype\":\"Data\",\"width\":100,\"id\":\"bill_no\",\"name\":\"Supplier Invoice No\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"company\":\"enfono\",\"from_date\":\"2024-05-01\",\"to_date\":\"2024-07-11\",\"account\":[\"Cash - E\"],\"party\":[],\"group_by\":\"Group by Voucher (Consolidated)\",\"cost_center\":[],\"project\":[],\"include_dimensions\":1,\"include_default_book_entries\":1}}",
+  "letter_head": "HSM",
+  "modified": "2024-07-11 07:16:46.278569",
+  "module": "Accounts",
+  "name": "Cash Ledger",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "GL Entry",
+  "reference_report": "General Ledger",
+  "report_name": "Cash Ledger",
+  "report_script": null,
+  "report_type": "Custom Report",
+  "roles": [
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Cash Ledger",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Auditor"
    }
   ]
  },

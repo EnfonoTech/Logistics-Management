@@ -1,0 +1,128 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:CRO-{##}",
+ "creation": "2024-08-07 13:41:33.232282",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "ref",
+  "shipper",
+  "loading_vessel",
+  "voy",
+  "cutoff",
+  "column_break_agws",
+  "validity",
+  "yard",
+  "ts",
+  "fpod",
+  "eta",
+  "company",
+  "section_break_ryjw",
+  "table_cigb"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "ref",
+   "fieldtype": "Data",
+   "label": "Ref"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Data",
+   "label": "SHIPPER"
+  },
+  {
+   "fieldname": "loading_vessel",
+   "fieldtype": "Data",
+   "label": "LOADING VESSEL"
+  },
+  {
+   "fieldname": "voy",
+   "fieldtype": "Data",
+   "label": "VOY"
+  },
+  {
+   "fieldname": "cutoff",
+   "fieldtype": "Date",
+   "label": "CUTOFF"
+  },
+  {
+   "fieldname": "column_break_agws",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "validity",
+   "fieldtype": "Date",
+   "label": "Validity"
+  },
+  {
+   "fieldname": "yard",
+   "fieldtype": "Data",
+   "label": "Yard"
+  },
+  {
+   "fieldname": "ts",
+   "fieldtype": "Data",
+   "label": "T/S"
+  },
+  {
+   "fieldname": "fpod",
+   "fieldtype": "Data",
+   "label": "FPOD"
+  },
+  {
+   "fieldname": "eta",
+   "fieldtype": "Date",
+   "label": "ETA"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_ryjw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_cigb",
+   "fieldtype": "Table",
+   "options": "CRO Table"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-07 13:46:39.675765",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Container Release Order",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

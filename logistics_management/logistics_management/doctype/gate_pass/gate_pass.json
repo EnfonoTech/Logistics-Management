@@ -1,0 +1,157 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:GP-{##}",
+ "creation": "2024-08-07 09:32:01.367087",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "valid_till",
+  "customer",
+  "column_break_vgeq",
+  "sr_no",
+  "renewal_date",
+  "company",
+  "section_break_htow",
+  "vessel",
+  "voyage",
+  "arrived",
+  "line",
+  "total_no_of_containers",
+  "column_break_rfzk",
+  "bl_number",
+  "do_number",
+  "do_date",
+  "gate_pass",
+  "section_break_obwd",
+  "table_epin"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "valid_till",
+   "fieldtype": "Date",
+   "label": "Valid Till"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_vgeq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sr_no",
+   "fieldtype": "Data",
+   "label": "SR No"
+  },
+  {
+   "fieldname": "renewal_date",
+   "fieldtype": "Date",
+   "label": "Renewal Date"
+  },
+  {
+   "fieldname": "section_break_htow",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "vessel",
+   "fieldtype": "Data",
+   "label": "Vessel"
+  },
+  {
+   "fieldname": "voyage",
+   "fieldtype": "Data",
+   "label": "Voyage"
+  },
+  {
+   "fieldname": "arrived",
+   "fieldtype": "Date",
+   "label": "Arrived"
+  },
+  {
+   "fieldname": "line",
+   "fieldtype": "Data",
+   "label": "Line"
+  },
+  {
+   "fieldname": "column_break_rfzk",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bl_number",
+   "fieldtype": "Data",
+   "label": "BL Number"
+  },
+  {
+   "fieldname": "do_number",
+   "fieldtype": "Data",
+   "label": "Do Number"
+  },
+  {
+   "fieldname": "do_date",
+   "fieldtype": "Date",
+   "label": "Do Date"
+  },
+  {
+   "fieldname": "gate_pass",
+   "fieldtype": "Data",
+   "label": "Gate Pass"
+  },
+  {
+   "fieldname": "section_break_obwd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_epin",
+   "fieldtype": "Table",
+   "options": "GP Table"
+  },
+  {
+   "fieldname": "total_no_of_containers",
+   "fieldtype": "Data",
+   "label": "Total No of Containers"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-07 13:28:49.391872",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Gate Pass",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

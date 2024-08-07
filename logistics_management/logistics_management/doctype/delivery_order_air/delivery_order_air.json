@@ -1,0 +1,154 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:DO-AIR-{#}",
+ "creation": "2024-08-07 07:35:32.959051",
+ "default_view": "List",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "ref",
+  "customer",
+  "mawb",
+  "origin",
+  "destination",
+  "column_break_rphp",
+  "date",
+  "hawb",
+  "carrier",
+  "flight_no",
+  "company",
+  "consignment_details_section",
+  "qty_manifested",
+  "gross_weight",
+  "description_of_goods",
+  "column_break_tpxi",
+  "qty_landed",
+  "chargable_weight",
+  "delivery_order_charges"
+ ],
+ "fields": [
+  {
+   "fieldname": "ref",
+   "fieldtype": "Data",
+   "label": "Ref"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "mawb",
+   "fieldtype": "Data",
+   "label": "MAWB"
+  },
+  {
+   "fieldname": "origin",
+   "fieldtype": "Data",
+   "label": "ORIGIN"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "DESTINATION"
+  },
+  {
+   "fieldname": "column_break_rphp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "hawb",
+   "fieldtype": "Data",
+   "label": "HAWB"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Data",
+   "label": "CARRIER"
+  },
+  {
+   "fieldname": "flight_no",
+   "fieldtype": "Data",
+   "label": "FLIGHT NO"
+  },
+  {
+   "fieldname": "consignment_details_section",
+   "fieldtype": "Section Break",
+   "label": "CONSIGNMENT DETAILS"
+  },
+  {
+   "fieldname": "qty_manifested",
+   "fieldtype": "Data",
+   "label": "QTY MANIFESTED"
+  },
+  {
+   "fieldname": "gross_weight",
+   "fieldtype": "Data",
+   "label": "GROSS WEIGHT"
+  },
+  {
+   "fieldname": "description_of_goods",
+   "fieldtype": "Data",
+   "label": "DESCRIPTION OF GOODS"
+  },
+  {
+   "fieldname": "column_break_tpxi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "qty_landed",
+   "fieldtype": "Data",
+   "label": "QTY LANDED"
+  },
+  {
+   "fieldname": "chargable_weight",
+   "fieldtype": "Data",
+   "label": "CHARGABLE WEIGHT"
+  },
+  {
+   "fieldname": "delivery_order_charges",
+   "fieldtype": "Data",
+   "label": "DELIVERY ORDER CHARGES"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-07 13:29:34.476556",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Delivery Order-AIR",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

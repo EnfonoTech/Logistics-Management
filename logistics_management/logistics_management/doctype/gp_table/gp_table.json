@@ -1,0 +1,53 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-07 09:37:33.765457",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "container",
+  "for_port_department_use",
+  "column_break_sjit",
+  "type",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "container",
+   "fieldtype": "Data",
+   "label": "Container"
+  },
+  {
+   "fieldname": "for_port_department_use",
+   "fieldtype": "Data",
+   "label": "For Port Department Use"
+  },
+  {
+   "fieldname": "column_break_sjit",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "type",
+   "fieldtype": "Data",
+   "label": "Type"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-07 09:38:55.541045",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "GP Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
