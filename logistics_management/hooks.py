@@ -239,6 +239,10 @@ report_override_js = {
 	"Job Card Summary": "reports/js/custom_job_card_summary.js",
 }
 
+report_override = {
+	"Profit and Loss Statement": "logistics_management.reports.gross.execute"
+}
+
 report_override_html = {
 	"Accounts Receivable": "reports/overrides/html/custom_accounts_receivable.html"
 }

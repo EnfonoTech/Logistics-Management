@@ -1,0 +1,65 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-09 15:14:44.591425",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "freightcharges",
+  "unit",
+  "prepaid",
+  "column_break_bpdp",
+  "rate",
+  "currency",
+  "collect"
+ ],
+ "fields": [
+  {
+   "fieldname": "freightcharges",
+   "fieldtype": "Data",
+   "label": "Freight/Charges"
+  },
+  {
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "label": "Unit"
+  },
+  {
+   "fieldname": "prepaid",
+   "fieldtype": "Data",
+   "label": "Prepaid"
+  },
+  {
+   "fieldname": "column_break_bpdp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Data",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Data",
+   "label": "Currency"
+  },
+  {
+   "fieldname": "collect",
+   "fieldtype": "Data",
+   "label": "Collect"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-09 15:15:59.940551",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "BOL-Table 2",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -8,8 +8,9 @@
  "engine": "InnoDB",
  "field_order": [
   "general_details_section",
-  "supplier",
+  "job_details",
   "from",
+  "supplier",
   "booking_no",
   "point_and_country_of_origin_of_goods",
   "also_notify",
@@ -201,11 +202,17 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-02 16:33:21.910428",
+ "modified": "2024-08-09 14:30:51.158871",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Creation",

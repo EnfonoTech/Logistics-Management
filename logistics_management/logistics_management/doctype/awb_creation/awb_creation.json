@@ -6,16 +6,17 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "job_details",
   "mawb_no",
   "shippers_account_no",
   "shipper",
   "notify",
-  "company",
   "column_break_bwhw",
   "hawb_no",
   "consignee_ac_no",
   "consignee",
   "currency",
+  "company",
   "section_break_evwi",
   "origin_station",
   "declared_value_for_carriage",
@@ -141,11 +142,17 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-02 14:35:42.665594",
+ "modified": "2024-08-09 14:31:31.270715",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "AWB Creation",

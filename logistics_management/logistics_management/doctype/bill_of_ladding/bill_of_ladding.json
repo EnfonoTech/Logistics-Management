@@ -1,0 +1,217 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:BOL-{###}",
+ "creation": "2024-08-09 15:00:32.011593",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "shipper",
+  "job_details",
+  "column_break_hvcw",
+  "consignee",
+  "company",
+  "section_break_vlds",
+  "scac",
+  "booking_no",
+  "onward_inland_routing",
+  "vessel",
+  "place_of_receipt",
+  "port_of_discharge",
+  "carriers_receipt",
+  "numbersequence_of_original_bsl",
+  "declared_value",
+  "column_break_tsrs",
+  "bl_no",
+  "export_references",
+  "notify_party",
+  "svc_contract",
+  "voyage_no",
+  "port_of_loading",
+  "place_of_delivery",
+  "place_of_issue_of_bl",
+  "date_of_issue_of_bl",
+  "shipped_on_board_date",
+  "section_break_reqh",
+  "table_kuad",
+  "section_break_yzat",
+  "table_beai"
+ ],
+ "fields": [
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
+  },
+  {
+   "fieldname": "column_break_hvcw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "section_break_vlds",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "scac",
+   "fieldtype": "Data",
+   "label": "SCAC"
+  },
+  {
+   "fieldname": "booking_no",
+   "fieldtype": "Data",
+   "label": "Booking No"
+  },
+  {
+   "fieldname": "onward_inland_routing",
+   "fieldtype": "Data",
+   "label": "Onward inland routing"
+  },
+  {
+   "fieldname": "vessel",
+   "fieldtype": "Data",
+   "label": "Vessel"
+  },
+  {
+   "fieldname": "place_of_receipt",
+   "fieldtype": "Data",
+   "label": "Place of Receipt"
+  },
+  {
+   "fieldname": "port_of_discharge",
+   "fieldtype": "Data",
+   "label": "Port of Discharge"
+  },
+  {
+   "fieldname": "carriers_receipt",
+   "fieldtype": "Data",
+   "label": "Carrier's Receipt"
+  },
+  {
+   "fieldname": "numbersequence_of_original_bsl",
+   "fieldtype": "Data",
+   "label": "Number/Sequence of Original B(s)/L"
+  },
+  {
+   "fieldname": "declared_value",
+   "fieldtype": "Data",
+   "label": "Declared Value"
+  },
+  {
+   "fieldname": "column_break_tsrs",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bl_no",
+   "fieldtype": "Data",
+   "label": "B/L No"
+  },
+  {
+   "fieldname": "export_references",
+   "fieldtype": "Data",
+   "label": "Export references"
+  },
+  {
+   "fieldname": "svc_contract",
+   "fieldtype": "Data",
+   "label": "Svc Contract"
+  },
+  {
+   "fieldname": "voyage_no",
+   "fieldtype": "Data",
+   "label": "Voyage No"
+  },
+  {
+   "fieldname": "port_of_loading",
+   "fieldtype": "Data",
+   "label": "Port of Loading"
+  },
+  {
+   "fieldname": "place_of_delivery",
+   "fieldtype": "Data",
+   "label": "Place of Delivery"
+  },
+  {
+   "fieldname": "place_of_issue_of_bl",
+   "fieldtype": "Data",
+   "label": "Place of Issue of B/L"
+  },
+  {
+   "fieldname": "date_of_issue_of_bl",
+   "fieldtype": "Date",
+   "label": "Date of Issue of B/L"
+  },
+  {
+   "fieldname": "shipped_on_board_date",
+   "fieldtype": "Date",
+   "label": "Shipped on Board Date"
+  },
+  {
+   "fieldname": "section_break_reqh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_kuad",
+   "fieldtype": "Table",
+   "options": "BOL-Table 1"
+  },
+  {
+   "fieldname": "section_break_yzat",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_beai",
+   "fieldtype": "Table",
+   "options": "BOL-Table 2"
+  },
+  {
+   "fieldname": "notify_party",
+   "fieldtype": "Link",
+   "label": "Notify Party",
+   "options": "Customer"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-09 16:39:38.204079",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Bill of Ladding",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

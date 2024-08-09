@@ -6,11 +6,12 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "job_details",
+  "customer",
+  "reference_no",
+  "column_break_mfxj",
   "date_wtrk",
   "supplier",
-  "column_break_mfxj",
-  "reference_no",
-  "customer",
   "section_break_xvto",
   "container_no",
   "hbl_no",
@@ -77,11 +78,17 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-02 14:35:09.141787",
+ "modified": "2024-08-09 14:35:46.307809",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Exchange",
