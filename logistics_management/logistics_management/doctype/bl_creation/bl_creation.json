@@ -144,8 +144,9 @@
   },
   {
    "fieldname": "notify_party",
-   "fieldtype": "Data",
-   "label": "Notify Party"
+   "fieldtype": "Link",
+   "label": "Notify Party",
+   "options": "Customer"
   },
   {
    "fieldname": "forwarding_agent_references",
@@ -192,7 +193,7 @@
    "fieldname": "consignee",
    "fieldtype": "Link",
    "label": "Consignee",
-   "options": "Company"
+   "options": "Customer"
   },
   {
    "fieldname": "company",
@@ -212,7 +213,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-09 14:30:51.158871",
+ "modified": "2024-08-12 12:15:09.865367",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Creation",

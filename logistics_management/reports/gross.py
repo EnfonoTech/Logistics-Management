@@ -1,14 +1,12 @@
 import frappe
 from frappe import _
 from frappe.utils import flt
-
 from erpnext.accounts.report.financial_statements import (
     get_columns,
     get_data,
     get_filtered_list_for_consolidated_report,
     get_period_list,
 )
-
 
 def execute(filters=None):
     period_list = get_period_list(
@@ -46,10 +44,10 @@ def execute(filters=None):
     gross_profit = get_gross_profit(income, expense, period_list, filters.company, filters.presentation_currency)
     net_profit_loss = get_net_profit_loss(income, expense, period_list, filters.company, filters.presentation_currency)
 
+    expense = insert_gross_profit_under_stock_expenses(expense, gross_profit)
+
     data = []
     data.extend(income or [])
-    if gross_profit:
-        data.append(gross_profit)
     data.extend(expense or [])
     if net_profit_loss:
         data.append(net_profit_loss)
@@ -67,13 +65,21 @@ def execute(filters=None):
 
     return columns, data, None, chart, report_summary, primitive_summary
 
+def insert_gross_profit_under_stock_expenses(expense, gross_profit):
+    new_expense = []
+    for exp in expense:
+        new_expense.append(exp)
+        if exp.get('account_name') == 'Stock Expenses':
+            if gross_profit:
+                gross_profit["indent"] = exp.get("indent", 0) + 1
+                new_expense.append(gross_profit)
+    return new_expense
 
 def get_gross_profit(income, expense, period_list, company, currency=None, consolidated=False):
     total_income = 0
     direct_expense = 0
     gross_profit = {
-        "account_name": "'" + _("Gross Profit") + "'",
-        "account": "'" + _("Gross Profit") + "'",
+        "account_name": _("Gross Profit"),
         "warn_if_negative": True,
         "currency": currency or frappe.get_cached_value("Company", company, "default_currency"),
     }
@@ -82,13 +88,14 @@ def get_gross_profit(income, expense, period_list, company, currency=None, conso
 
     for period in period_list:
         key = period if consolidated else period.key
+
         if income:
-            total_income = flt(income[-2][key], 3)
+            total_income = flt(income[-2].get(key, 0), 3)
 
         if expense:
             for exp in expense:
-                if "Direct Expenses" in exp.get('account_name'):  
-                    direct_expense = flt(exp[key], 3)
+                if exp and "Direct Expenses" in exp.get('account_name', ''):  
+                    direct_expense = flt(exp.get(key, 0), 3)  
                     break
 
         gross_profit[key] = total_income - direct_expense
@@ -100,6 +107,9 @@ def get_gross_profit(income, expense, period_list, company, currency=None, conso
 
     if has_value:
         return gross_profit
+
+
+
 
 
 
