@@ -242,8 +242,11 @@ report_override_js = {
 # report_override = {
 # 	"Profit and Loss Statement": "logistics_management.reports.gross.execute"
 # }
+# report_override = {
+# 	"Profit and Loss Statement": "logistics_management.reports.profit.execute"
+# }
 report_override = {
-	"Profit and Loss Statement": "logistics_management.reports.profit.execute"
+	"Profit and Loss Statement": "logistics_management.reports.loss.execute"
 }
 
 
