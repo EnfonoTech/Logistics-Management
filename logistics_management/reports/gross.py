@@ -69,7 +69,7 @@ def insert_gross_profit_under_stock_expenses(expense, gross_profit):
     new_expense = []
     for exp in expense:
         new_expense.append(exp)
-        if exp.get('account_name') == 'Stock Expenses':
+        if exp.get('account_name') == 'Cost of Goods Sold':
             if gross_profit:
                 gross_profit["indent"] = exp.get("indent", 0) + 1
                 new_expense.append(gross_profit)
