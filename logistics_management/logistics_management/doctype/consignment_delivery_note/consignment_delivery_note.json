@@ -99,21 +99,25 @@
    "label": "ETA"
   },
   {
+   "fetch_from": "job_details.vessel_name",
    "fieldname": "vesselairline",
    "fieldtype": "Data",
    "label": "Vessel/Airline"
   },
   {
+   "fetch_from": "job_details.pickup_location",
    "fieldname": "port_of_discharge",
    "fieldtype": "Data",
    "label": "Port of Discharge"
   },
   {
+   "fetch_from": "job_details.weight",
    "fieldname": "weight_in_kgs",
    "fieldtype": "Data",
    "label": "Weight in KGS"
   },
   {
+   "fetch_from": "job_details.pol",
    "fieldname": "port_of_loading",
    "fieldtype": "Data",
    "label": "Port of Loading"
@@ -133,26 +137,31 @@
    "label": "ETD"
   },
   {
+   "fetch_from": "job_details.flight_no",
    "fieldname": "voyageflight",
    "fieldtype": "Data",
    "label": "Voyage/Flight"
   },
   {
+   "fetch_from": "job_details.delivery_location",
    "fieldname": "place_of_discharge",
    "fieldtype": "Data",
    "label": "Place of Discharge"
   },
   {
+   "fetch_from": "job_details.volume",
    "fieldname": "volume_in_cbm",
    "fieldtype": "Data",
    "label": "Volume in CBM"
   },
   {
+   "fetch_from": "job_details.pod",
    "fieldname": "place_of_loading",
    "fieldtype": "Data",
    "label": "Place of Loading"
   },
   {
+   "fetch_from": "job_details.container_no",
    "fieldname": "container_no",
    "fieldtype": "Small Text",
    "label": "Container No"
@@ -221,7 +230,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-02 14:34:19.840436",
+ "modified": "2024-08-16 14:41:08.106429",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Consignment Delivery Note",

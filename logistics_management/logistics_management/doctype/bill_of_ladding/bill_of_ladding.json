@@ -55,6 +55,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "consignee",
    "fieldtype": "Link",
    "label": "Consignee",
@@ -86,6 +87,7 @@
    "label": "Onward inland routing"
   },
   {
+   "fetch_from": "job_details.vessel_name",
    "fieldname": "vessel",
    "fieldtype": "Data",
    "label": "Vessel"
@@ -96,6 +98,7 @@
    "label": "Place of Receipt"
   },
   {
+   "fetch_from": "job_details.pod",
    "fieldname": "port_of_discharge",
    "fieldtype": "Data",
    "label": "Port of Discharge"
@@ -120,6 +123,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "job_details.bl_number",
    "fieldname": "bl_no",
    "fieldtype": "Data",
    "label": "B/L No"
@@ -135,16 +139,19 @@
    "label": "Svc Contract"
   },
   {
+   "fetch_from": "job_details.flight_no",
    "fieldname": "voyage_no",
    "fieldtype": "Data",
    "label": "Voyage No"
   },
   {
+   "fetch_from": "job_details.pol",
    "fieldname": "port_of_loading",
    "fieldtype": "Data",
    "label": "Port of Loading"
   },
   {
+   "fetch_from": "job_details.delivery_location",
    "fieldname": "place_of_delivery",
    "fieldtype": "Data",
    "label": "Place of Delivery"
@@ -183,6 +190,7 @@
    "options": "BOL-Table 2"
   },
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "notify_party",
    "fieldtype": "Link",
    "label": "Notify Party",
@@ -191,7 +199,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-09 16:39:38.204079",
+ "modified": "2024-08-16 14:42:43.704755",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Bill of Ladding",

@@ -14,6 +14,7 @@
   "container_no",
   "vehicle_no",
   "company",
+  "console_number",
   "column_break_mbo6",
   "mode_of_transport",
   "shipment_mode",
@@ -22,38 +23,56 @@
   "invoice_no",
   "project",
   "project_data",
+  "quotation",
   "section_break_cvyz",
   "console_shipment",
   "section_break_qgln",
   "job_id",
   "pol",
+  "place_of_receipt",
+  "port_of_loading",
   "sales_person",
   "column_break_uzva",
   "date",
   "pod",
+  "place_of_delivery",
+  "port_of_departure",
   "contact_number",
   "section_break_eoyb",
+  "vessel",
+  "freight",
   "eta_date",
   "gross_weight",
   "bayan_number",
   "flight_no",
+  "carrier",
   "column_break_m0dx",
+  "voyage",
   "net_weight",
+  "etd",
+  "chargeable_weight",
   "vessel_name",
   "number_of_packages",
+  "bill_of_lading_status",
   "section_break_iipu",
   "cargo_details",
+  "section_break_ipkd",
+  "dimension",
   "delivery_order_information_section",
+  "shipper",
   "shipper_name",
   "quantity",
   "volume",
+  "equipment",
   "pickup_location",
   "delivery_order_number",
   "column_break_hpnp",
+  "consignee",
   "consignee_name",
   "weight",
   "cargo_description",
   "delivery_location",
+  "qty",
   "date_generated",
   "amended_from",
   "government_approval_information_section",
@@ -251,6 +270,7 @@
   {
    "fieldname": "weight",
    "fieldtype": "Float",
+   "hidden": 1,
    "label": "Weight"
   },
   {
@@ -527,6 +547,119 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "\nHSM\nHSMN\nHSMS"
+  },
+  {
+   "fieldname": "quotation",
+   "fieldtype": "Link",
+   "label": "Quotation",
+   "options": "Quotation"
+  },
+  {
+   "depends_on": "eval:doc.job_type=='CONSOLE'",
+   "fieldname": "console_number",
+   "fieldtype": "Data",
+   "label": "Console Number"
+  },
+  {
+   "depends_on": "eval:doc.company!='HARBOUR SHIPPING AND MARINE SERVICES'",
+   "fieldname": "port_of_loading",
+   "fieldtype": "Link",
+   "label": "Port of Loading",
+   "options": "Port of Loading"
+  },
+  {
+   "depends_on": "eval:doc.company!='HARBOUR SHIPPING AND MARINE SERVICES'",
+   "fieldname": "port_of_departure",
+   "fieldtype": "Link",
+   "label": "Port of Departure",
+   "options": "Port of Departure"
+  },
+  {
+   "fieldname": "place_of_receipt",
+   "fieldtype": "Data",
+   "label": "Place of Receipt"
+  },
+  {
+   "fieldname": "place_of_delivery",
+   "fieldtype": "Data",
+   "label": "Place of Delivery"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport=='SEA'",
+   "fieldname": "vessel",
+   "fieldtype": "Link",
+   "label": "Vessel",
+   "options": "Vessel",
+   "read_only_depends_on": "eval:doc.company!='HARBOUR SHIPPING AND MARINE SERVICES'"
+  },
+  {
+   "fieldname": "voyage",
+   "fieldtype": "Data",
+   "label": "Voyage"
+  },
+  {
+   "fieldname": "freight",
+   "fieldtype": "Select",
+   "label": "Freight",
+   "options": "\nPrepaid\nCollect"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Link",
+   "label": "Carrier",
+   "options": "Carrier"
+  },
+  {
+   "fieldname": "chargeable_weight",
+   "fieldtype": "Data",
+   "label": "Chargeable Weight"
+  },
+  {
+   "fieldname": "etd",
+   "fieldtype": "Date",
+   "label": "ETD"
+  },
+  {
+   "fieldname": "section_break_ipkd",
+   "fieldtype": "Section Break"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport=='AIR'",
+   "fieldname": "dimension",
+   "fieldtype": "Table",
+   "label": "Dimension",
+   "options": "Dimension",
+   "read_only_depends_on": "eval:doc.company!='HARBOUR SHIPPING AND MARINE SERVICES'"
+  },
+  {
+   "depends_on": "eval:doc.mode_of_transport=='SEA'",
+   "fieldname": "bill_of_lading_status",
+   "fieldtype": "Select",
+   "label": "Bill of Lading status",
+   "options": "\nOriginal\nSurrender\nExpress\nSea waybill"
+  },
+  {
+   "fieldname": "equipment",
+   "fieldtype": "Link",
+   "label": "Container Type",
+   "options": "Equipment"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Data",
+   "label": "Qty"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -561,9 +694,14 @@
    "group": "General",
    "link_doctype": "Waybill Console",
    "link_fieldname": "job_details"
+  },
+  {
+   "group": "General",
+   "link_doctype": "Quotation",
+   "link_fieldname": "custom_quotation"
   }
  ],
- "modified": "2024-08-05 16:58:43.709925",
+ "modified": "2024-08-19 22:23:24.492092",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Job Details",

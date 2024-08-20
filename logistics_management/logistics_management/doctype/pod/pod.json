@@ -25,6 +25,7 @@
   "contact_number",
   "date_generated",
   "gross_weight",
+  "waybill_console",
   "section_break_wobf",
   "description_of_goods",
   "number_of_packages",
@@ -232,11 +233,18 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fetch_from": ".",
+   "fieldname": "waybill_console",
+   "fieldtype": "Link",
+   "label": "Waybill Console",
+   "options": "Waybill Console"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-02 14:17:25.359435",
+ "modified": "2024-08-19 18:21:35.948365",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "POD",

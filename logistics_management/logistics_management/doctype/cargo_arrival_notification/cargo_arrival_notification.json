@@ -25,10 +25,11 @@
  ],
  "fields": [
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "consignee",
    "fieldtype": "Link",
    "label": "Consignee",
-   "options": "Supplier"
+   "options": "Customer"
   },
   {
    "fieldname": "shipper",
@@ -36,6 +37,7 @@
    "label": "Shipper"
   },
   {
+   "fetch_from": "job_details.vessel_name",
    "fieldname": "vessel",
    "fieldtype": "Data",
    "label": "Vessel"
@@ -46,16 +48,19 @@
    "label": "Voyage"
   },
   {
+   "fetch_from": "job_details.pol",
    "fieldname": "port_of_load",
    "fieldtype": "Data",
    "label": "Port of Load."
   },
   {
+   "fetch_from": "job_details.pod",
    "fieldname": "port_of_disch",
    "fieldtype": "Data",
    "label": "Port of Disch."
   },
   {
+   "fetch_from": "job_details.delivery_location",
    "fieldname": "final_destn",
    "fieldtype": "Data",
    "label": "Final Destn."
@@ -94,6 +99,7 @@
    "options": "CAN"
   },
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "notify",
    "fieldtype": "Data",
    "label": "Notify"
@@ -107,7 +113,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-09 14:32:13.326287",
+ "modified": "2024-08-16 14:36:24.779128",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Cargo Arrival Notification",

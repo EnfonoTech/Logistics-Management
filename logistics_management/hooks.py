@@ -260,4 +260,4 @@ report_override_html = {
 # 	"Logging DocType Name": 30  # days to retain logs
 
 
-fixtures= ["Client Script","Print Format","Report"]
+fixtures= ["Client Script","Print Format","Report","Property Setter"]

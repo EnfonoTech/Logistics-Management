@@ -1,0 +1,53 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-19 22:08:19.109297",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "height",
+  "wight",
+  "column_break_vwlh",
+  "length",
+  "cbm_volume"
+ ],
+ "fields": [
+  {
+   "fieldname": "height",
+   "fieldtype": "Data",
+   "label": "Height"
+  },
+  {
+   "fieldname": "wight",
+   "fieldtype": "Data",
+   "label": "Width"
+  },
+  {
+   "fieldname": "column_break_vwlh",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Data",
+   "label": "Length"
+  },
+  {
+   "fieldname": "cbm_volume",
+   "fieldtype": "Data",
+   "label": "CBM (Volume) "
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-19 22:10:42.371181",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Dimension",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

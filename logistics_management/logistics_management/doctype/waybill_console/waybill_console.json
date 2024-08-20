@@ -90,9 +90,14 @@
    "group": "Invoice Details",
    "link_doctype": "Sales Invoice",
    "link_fieldname": "custom_waybill_console"
+  },
+  {
+   "group": "General",
+   "link_doctype": "POD",
+   "link_fieldname": "waybill_console"
   }
  ],
- "modified": "2024-07-23 23:19:29.798244",
+ "modified": "2024-08-19 18:21:57.801884",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Waybill Console",

@@ -56,13 +56,17 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": ".pod",
    "fieldname": "port_of_discharge",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Port of Discharge"
   },
   {
+   "fetch_from": ".pol",
    "fieldname": "port_of_loading",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Port of Loading"
   },
   {
@@ -70,11 +74,13 @@
    "fieldtype": "Column Break"
   },
   {
+   "fetch_from": "job_details.volume",
    "fieldname": "volume_in_cbm",
    "fieldtype": "Data",
    "label": "Volume in CBM"
   },
   {
+   "fetch_from": "job_details.pickup_location",
    "fieldname": "place_of_loading",
    "fieldtype": "Data",
    "label": "Place of Loading"
@@ -113,6 +119,7 @@
    "label": "Date"
   },
   {
+   "fetch_from": "job_details.pol",
    "fieldname": "from",
    "fieldtype": "Data",
    "label": "From"
@@ -133,16 +140,19 @@
    "label": "ALSO NOTIFY"
   },
   {
+   "fetch_from": "job_details.pod",
    "fieldname": "to",
    "fieldtype": "Data",
    "label": "To"
   },
   {
+   "fetch_from": "job_details.bl_number",
    "fieldname": "bl_no",
    "fieldtype": "Data",
    "label": "B/L No."
   },
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "notify_party",
    "fieldtype": "Link",
    "label": "Notify Party",
@@ -154,6 +164,7 @@
    "label": "Forwarding agent references"
   },
   {
+   "fetch_from": "job_details.",
    "fieldname": "place_of_receipt",
    "fieldtype": "Data",
    "label": "Place of Receipt"
@@ -164,6 +175,7 @@
    "label": "Delivery status"
   },
   {
+   "fetch_from": "job_details.vessel_name",
    "fieldname": "vesselvoy_no",
    "fieldtype": "Data",
    "label": "Vessel/Voy No. "
@@ -174,6 +186,7 @@
    "label": "Precarried by"
   },
   {
+   "fetch_from": "job_details.delivery_location",
    "fieldname": "place_of_delivery",
    "fieldtype": "Data",
    "label": "Place of Delivery"
@@ -184,12 +197,14 @@
    "options": "BL Child"
   },
   {
+   "fetch_from": ".",
    "fieldname": "supplier",
    "fieldtype": "Link",
    "label": "Supplier",
    "options": "Supplier"
   },
   {
+   "fetch_from": "job_details.job_id",
    "fieldname": "consignee",
    "fieldtype": "Link",
    "label": "Consignee",
@@ -213,7 +228,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-12 12:15:09.865367",
+ "modified": "2024-08-19 15:04:08.956528",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Creation",
