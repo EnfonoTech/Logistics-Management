@@ -37,6 +37,13 @@
         th {
             background-color: #fbfbfb;
         }
+        .bold-row td {
+            font-weight: bold;
+        }
+        .address {
+            margin-top: 10px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -45,8 +52,11 @@
         {% if (filters.party) { %}
             Customer: {%= __(filters.party) %}
         {% } %}
+        
     </h4>
     
+   
+
     <h6 class="text-center">
         {% if (filters.tax_id) { %}
             {%= __("Tax Id: ") %} {%= filters.tax_id %}
@@ -138,7 +148,7 @@
                         {%= format_currency(flt(balance_row["future_amount"]), data[data.length-1]["currency"]) %}
                     </td>
                 </tr>
-                <tr class="cvs-footer">
+                <tr class="bold-row">
                     <th class="text-left">{%= __("Cheques Required") %}</th>
                     <th></th>
                     <th></th>
@@ -225,28 +235,30 @@
                                 </td>
                             {% } %}
                         {% } else { %}
-                            <td><b>{%= __("Total") %}</b></td>
-                            <td></td>
-                            {% if(report.report_name === "Accounts Receivable" && filters.show_sales_person) { %}
+                            <tr class="bold-row">
+                                <td><b>{%= __("Total") %}</b></td>
                                 <td></td>
-                            {% } %}
-                            <td class="text-right">
-                                {%= format_currency(data[i]["invoiced"], data[i]["currency"]) %}
-                            </td>
-                            {% if(!filters.show_future_payments) { %}
+                                {% if(report.report_name === "Accounts Receivable" && filters.show_sales_person) { %}
+                                    <td></td>
+                                {% } %}
                                 <td class="text-right">
-                                    {%= format_currency(data[i]["paid"], data[i]["currency"]) %}
+                                    {%= format_currency(data[i]["invoiced"], data[i]["currency"]) %}
                                 </td>
-                            {% } %}
-                            <td class="text-right">
-                                {%= format_currency(data[i]["outstanding"], data[i]["currency"]) %}
-                            </td>
-                            {% if(filters.show_future_payments) { %}
-                                <td></td>
-                                <td></td>
-                                <td class="text-right"></td>
-                                <td class="text-right"></td>
-                            {% } %}
+                                {% if(!filters.show_future_payments) { %}
+                                    <td class="text-right">
+                                        {%= format_currency(data[i]["paid"], data[i]["currency"]) %}
+                                    </td>
+                                {% } %}
+                                <td class="text-right">
+                                    {%= format_currency(data[i]["outstanding"], data[i]["currency"]) %}
+                                </td>
+                                {% if(filters.show_future_payments) { %}
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right"></td>
+                                    <td class="text-right"></td>
+                                {% } %}
+                            </tr>
                         {% } %}
                     {% } %}
                 </tr>
@@ -255,5 +267,3 @@
     </table>
 </body>
 </html>
-
-<!-- jkl -->
