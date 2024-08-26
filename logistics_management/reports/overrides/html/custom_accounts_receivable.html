@@ -50,10 +50,13 @@
     <h2 class="text-center">{%= __(report.report_name) %}</h2>
     <h4 class="text-center">
         {% if (filters.party) { %}
-            Customer: {%= __(filters.party) %}
+            Customer: {%= __(filters.party) %}<br>
+            Address: {% if (data[0].address_display) { %}
+                {%= data[0].address_display %}
+            {% } %}
         {% } %}
-        
     </h4>
+    
     
    
 
@@ -171,6 +174,8 @@
                 {% if(report.report_name === "Accounts Receivable" || report.report_name === "Accounts Payable") { %}
                     <th style="width: 10%">{%= __("Date") %}</th>
                     <th style="width: 14%">{%= __("Reference") %}</th>
+                    <th style="width: 4%">{%= __("Age (Days)") %}</th>
+
                     {% if(report.report_name === "Accounts Receivable" && filters.show_sales_person) { %}
                         <th style="width: 10%">{%= __("Sales Person") %}</th>
                     {% } %}
@@ -206,8 +211,11 @@
                                     {%= data[i]["voucher_type"] %}
                                     <br>
                                 {% } %}
-                                {%= data[i]["voucher_no"] %}
+                                {%= data[i]["voucher_no"] %}<br>
+
                             </td>
+                            <td style="text-align: right">{%= data[i]["age"] %}</td>
+
                             {% if(report.report_name === "Accounts Receivable" && filters.show_sales_person) { %}
                                 <td>{%= data[i]["sales_person"] %}</td>
                             {% } %}
@@ -241,6 +249,8 @@
                                 {% if(report.report_name === "Accounts Receivable" && filters.show_sales_person) { %}
                                     <td></td>
                                 {% } %}
+                                <td><b></b></td>
+
                                 <td class="text-right">
                                     {%= format_currency(data[i]["invoiced"], data[i]["currency"]) %}
                                 </td>
