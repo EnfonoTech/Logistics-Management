@@ -51,7 +51,7 @@
     <h4 class="text-center">
         {% if (filters.party) { %}
             Customer: {%= __(filters.party) %}<br>
-            Address: {% if (data[0].address_display) { %}
+            {% if (data[0].address_display) { %}
                 {%= data[0].address_display %}
             {% } %}
         {% } %}
