@@ -3,12 +3,15 @@
 
 frappe.ui.form.on("Warehouse Details", {
     refresh(frm) {
+        frm.fields_dict['section_break_eizt'].wrapper.css('background-color', 'antiquewhite');
+        frm.fields_dict['section_break_onyq'].wrapper.css('background-color', 'antiquewhite');
+        frm.fields_dict['summary_section'].wrapper.css('background-color', 'cadetblue');
+
         calculate_totals_in(frm);
         calculate_totals_out(frm);
         calculate_inventory_difference(frm);
     }
 });
-
 frappe.ui.form.on('WH Calculation', {
     type: function(frm, cdt, cdn) {
         calculate_volume_and_weight_in(frm, cdt, cdn);
