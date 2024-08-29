@@ -17,6 +17,12 @@
   "table_xewa",
   "section_break_onyq",
   "table_ywnt",
+  "section_break_dmgq",
+  "rent_start_date",
+  "rent_per_cbm",
+  "column_break_ecob",
+  "rent_end_date",
+  "rent_calculated",
   "summary_section",
   "number_of_packages",
   "volumecbm",
@@ -155,11 +161,40 @@
    "fieldname": "total_volumecbm",
    "fieldtype": "Data",
    "label": "Total Volume(CBM)"
+  },
+  {
+   "fieldname": "section_break_dmgq",
+   "fieldtype": "Section Break",
+   "label": "Rent Details"
+  },
+  {
+   "fieldname": "rent_start_date",
+   "fieldtype": "Data",
+   "label": "Rent Start Date"
+  },
+  {
+   "fieldname": "rent_per_cbm",
+   "fieldtype": "Data",
+   "label": "Rent per CBM"
+  },
+  {
+   "fieldname": "column_break_ecob",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "rent_end_date",
+   "fieldtype": "Date",
+   "label": "Rent End Date"
+  },
+  {
+   "fieldname": "rent_calculated",
+   "fieldtype": "Data",
+   "label": "Rent Calculated"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-29 12:34:50.739455",
+ "modified": "2024-08-29 14:54:53.786088",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Warehouse Details",
