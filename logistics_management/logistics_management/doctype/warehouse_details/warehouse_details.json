@@ -1,0 +1,185 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:WR-{job_details}-{###}",
+ "creation": "2024-08-29 07:36:53.476994",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "customer",
+  "warehouse_id",
+  "column_break_rxrx",
+  "date",
+  "job_details",
+  "sales_person",
+  "section_break_eizt",
+  "table_xewa",
+  "section_break_onyq",
+  "table_ywnt",
+  "summary_section",
+  "number_of_packages",
+  "volumecbm",
+  "volumetric_weightkg",
+  "column_break_jnst",
+  "number_of_packages_out",
+  "volumecbmout",
+  "volumetric_weightkgout",
+  "section_break_uypg",
+  "total_number_of_packages",
+  "total_volumetric_weightkg",
+  "column_break_jorn",
+  "total_volumecbm"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_rxrx",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
+  },
+  {
+   "fieldname": "section_break_eizt",
+   "fieldtype": "Section Break",
+   "label": "IN DATA"
+  },
+  {
+   "fieldname": "table_xewa",
+   "fieldtype": "Table",
+   "options": "WH Calculation"
+  },
+  {
+   "fieldname": "summary_section",
+   "fieldtype": "Section Break",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "number_of_packages",
+   "fieldtype": "Data",
+   "label": "Number of Packages-IN"
+  },
+  {
+   "fieldname": "volumetric_weightkg",
+   "fieldtype": "Data",
+   "label": "Volumetric Weight(KG)-IN"
+  },
+  {
+   "fieldname": "column_break_jnst",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "volumecbm",
+   "fieldtype": "Data",
+   "label": "Volume(CBM)-IN"
+  },
+  {
+   "fieldname": "warehouse_id",
+   "fieldtype": "Data",
+   "label": "Warehouse ID"
+  },
+  {
+   "fetch_from": "job_details.sales_person",
+   "fieldname": "sales_person",
+   "fieldtype": "Link",
+   "label": "Sales Person",
+   "options": "Sales Person"
+  },
+  {
+   "fieldname": "section_break_onyq",
+   "fieldtype": "Section Break",
+   "label": "OUT DATA"
+  },
+  {
+   "fieldname": "table_ywnt",
+   "fieldtype": "Table",
+   "options": "WH Calculation Out"
+  },
+  {
+   "fieldname": "number_of_packages_out",
+   "fieldtype": "Data",
+   "label": "Number of Packages-OUT"
+  },
+  {
+   "fieldname": "volumecbmout",
+   "fieldtype": "Data",
+   "label": "Volume(CBM)-OUT"
+  },
+  {
+   "fieldname": "volumetric_weightkgout",
+   "fieldtype": "Data",
+   "label": "Volumetric Weight(KG)-OUT"
+  },
+  {
+   "fieldname": "section_break_uypg",
+   "fieldtype": "Section Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "total_number_of_packages",
+   "fieldtype": "Data",
+   "label": "Total Number of Packages"
+  },
+  {
+   "bold": 1,
+   "fieldname": "total_volumetric_weightkg",
+   "fieldtype": "Data",
+   "label": "Total Volumetric Weight(KG)"
+  },
+  {
+   "fieldname": "column_break_jorn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "bold": 1,
+   "fieldname": "total_volumecbm",
+   "fieldtype": "Data",
+   "label": "Total Volume(CBM)"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2024-08-29 12:34:50.739455",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Warehouse Details",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

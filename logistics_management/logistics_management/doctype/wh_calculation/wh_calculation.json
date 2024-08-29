@@ -1,0 +1,83 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-08-29 07:39:59.991336",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "type",
+  "length",
+  "height",
+  "volumetric_weightkg",
+  "column_break_altz",
+  "pieces",
+  "width",
+  "volumecbm",
+  "in_date"
+ ],
+ "fields": [
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "type",
+   "fieldtype": "Select",
+   "label": "Type",
+   "options": "\nPallet\nCarton\nDrum"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "length",
+   "fieldtype": "Data",
+   "label": "Length"
+  },
+  {
+   "fieldname": "height",
+   "fieldtype": "Data",
+   "label": "Height",
+   "translatable": 1
+  },
+  {
+   "fieldname": "volumetric_weightkg",
+   "fieldtype": "Data",
+   "label": "Volumetric Weight(KG)"
+  },
+  {
+   "fieldname": "column_break_altz",
+   "fieldtype": "Column Break"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "pieces",
+   "fieldtype": "Data",
+   "label": "Pieces"
+  },
+  {
+   "allow_in_quick_entry": 1,
+   "fieldname": "width",
+   "fieldtype": "Data",
+   "label": "Width"
+  },
+  {
+   "fieldname": "volumecbm",
+   "fieldtype": "Data",
+   "label": "Volume(CBM)"
+  },
+  {
+   "fieldname": "in_date",
+   "fieldtype": "Date",
+   "label": "In Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-29 12:47:25.562393",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "WH Calculation",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
