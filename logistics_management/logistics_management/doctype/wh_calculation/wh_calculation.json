@@ -33,8 +33,7 @@
   {
    "fieldname": "height",
    "fieldtype": "Data",
-   "label": "Height",
-   "translatable": 1
+   "label": "Height"
   },
   {
    "fieldname": "volumetric_weightkg",
@@ -71,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-08-29 12:47:25.562393",
+ "modified": "2024-08-29 14:34:11.265062",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "WH Calculation",
