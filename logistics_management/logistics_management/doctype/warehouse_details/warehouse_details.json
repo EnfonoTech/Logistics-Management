@@ -23,6 +23,8 @@
   "column_break_ecob",
   "rent_end_date",
   "rent_calculated",
+  "section_break_rxpm",
+  "table_yvty",
   "summary_section",
   "number_of_packages",
   "volumecbm",
@@ -169,7 +171,7 @@
   },
   {
    "fieldname": "rent_start_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Rent Start Date"
   },
   {
@@ -190,11 +192,20 @@
    "fieldname": "rent_calculated",
    "fieldtype": "Data",
    "label": "Rent Calculated"
+  },
+  {
+   "fieldname": "section_break_rxpm",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_yvty",
+   "fieldtype": "Table",
+   "options": "Rent Table"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-29 17:33:40.636551",
+ "modified": "2024-08-30 08:45:31.878603",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Warehouse Details",

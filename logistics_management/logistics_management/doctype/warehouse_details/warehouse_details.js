@@ -10,8 +10,19 @@ frappe.ui.form.on("Warehouse Details", {
         calculate_totals_in(frm);
         calculate_totals_out(frm);
         calculate_inventory_difference(frm);
+
+        frm.add_custom_button(__('Generate Rent'), function() {
+            if (!frm.rent_generation_confirmed) {
+                frappe.msgprint(__('Click the Generate Rent button again to confirm.'));
+                frm.rent_generation_confirmed = true; 
+            } else {
+                generate_rent(frm);
+                frm.rent_generation_confirmed = false; 
+            }
+        });
     }
 });
+
 frappe.ui.form.on('WH Calculation', {
     type: function(frm, cdt, cdn) {
         calculate_volume_and_weight_in(frm, cdt, cdn);
@@ -158,3 +169,141 @@ function calculate_inventory_difference(frm) {
 
     frm.refresh_fields(['total_number_of_packages', 'total_volumecbm', 'total_volumetric_weightkg']); 
 }
+
+function generate_rent(frm) {
+    var start_date = frm.doc.rent_start_date;
+    var end_date = frm.doc.rent_end_date;
+    var rent_per_cbm = parseFloat(frm.doc.rent_per_cbm) || 0;
+
+    if (!start_date || !end_date || !rent_per_cbm) {
+        frappe.msgprint(__('Please provide Rent Start Date, Rent End Date, and Rent per CBM'));
+        return;
+    }
+
+    var start = new Date(start_date);
+    var end = new Date(end_date);
+    var timeDiff = end - start;
+    var daysDiff = timeDiff / (1000 * 3600 * 24);
+
+    if (daysDiff < 0) {
+        frappe.msgprint(__('Rent End Date must be after Rent Start Date'));
+        return;
+    }
+
+    var last_end_date = get_last_end_date(frm);
+
+    if (last_end_date && start <= new Date(last_end_date)) {
+        frappe.msgprint(__('Rent Start Date must be after the last entry\'s end date.'));
+        return;
+    }
+
+    if (is_date_range_conflicting(frm, start_date, end_date)) {
+        frappe.msgprint(__('Cannot generate rent because the date range overlaps with existing out dates.'));
+        return;
+    }
+
+    var cbm_data = calculate_total_cbm_by_type(frm, start_date, end_date);
+
+    var has_data = Object.keys(cbm_data).some(function(type) {
+        return cbm_data[type] > 0;
+    });
+
+    if (!has_data) {
+        frappe.msgprint(__('No data found during the selected period.'));
+        return; 
+    }
+
+    var new_rows = [];
+
+    Object.keys(cbm_data).forEach(function(type) {
+        var total_cbm = cbm_data[type];
+        var rent = daysDiff * rent_per_cbm * total_cbm;
+
+        var new_row = {
+            start_date: start_date,
+            end_date: end_date,
+            type: type,
+            rent_per_cbm: rent_per_cbm,
+            cbm: total_cbm,
+            rent: rent
+        };
+
+        new_rows.push(new_row);
+    });
+
+    if (new_rows.length > 0) {
+        new_rows.forEach(function(row) {
+            var new_row = frm.add_child('table_yvty');
+            Object.assign(new_row, row);
+        });
+
+        frm.refresh_field('table_yvty');
+        frappe.msgprint(__('Rent rows generated successfully.'));
+    }
+}
+
+function get_last_end_date(frm) {
+    var last_end_date = null;
+
+    $.each(frm.doc.table_yvty || [], function(i, row) {
+        var current_end_date = new Date(row.end_date);
+        if (!last_end_date || current_end_date > new Date(last_end_date)) {
+            last_end_date = row.end_date;
+        }
+    });
+
+    return last_end_date;
+}
+
+function is_date_range_conflicting(frm, start_date, end_date) {
+    var conflict_found = false;
+    var rent_start = new Date(start_date);
+    var rent_end = new Date(end_date);
+
+    $.each(frm.doc.table_ywnt || [], function(i, row) {
+        var out_date = new Date(row.out_date);
+
+        if (out_date > rent_start && out_date < rent_end) {
+            conflict_found = true;
+            return false; 
+        }
+    });
+
+    return conflict_found;
+}
+
+
+
+
+
+function calculate_total_cbm_by_type(frm, start_date, end_date) {
+    var cbm_data = {};
+
+    // Calculate CBM from IN table based on the rent_start_date
+    // $.each(frm.doc.table_xewa || [], function(i, row) {
+    //     var row_date = new Date(row.in_date);
+    //     var type = row.type;
+
+    //     if (row_date >= new Date(start_date) && row_date <= new Date(end_date)) {
+    //         if (!cbm_data[type]) {
+    //             cbm_data[type] = 0;
+    //         }
+    //         cbm_data[type] += parseFloat(row.volumecbm) || 0;
+    //     }
+    // });
+
+    $.each(frm.doc.table_ywnt || [], function(i, row) {
+        var row_date = new Date(row.out_date);
+        var type = row.type;
+
+        if (row_date >= new Date(start_date) && row_date <= new Date(end_date)) {
+            if (!cbm_data[type]) {
+                cbm_data[type] = 0;
+            }
+            cbm_data[type] += parseFloat(row.volumecbm) || 0;
+        }
+    });
+
+    return cbm_data; 
+}
+
