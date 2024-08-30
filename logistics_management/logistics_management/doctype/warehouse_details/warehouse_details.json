@@ -191,6 +191,7 @@
   {
    "fieldname": "rent_calculated",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Rent Calculated"
   },
   {
@@ -205,7 +206,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-30 08:45:31.878603",
+ "modified": "2024-08-30 15:30:41.443827",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Warehouse Details",
