@@ -53,6 +53,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "fetch_from": "job_details.container_no",
    "fieldname": "container_no",
    "fieldtype": "Data",
    "label": "Container No"
@@ -91,7 +92,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-08-16 14:39:08.668595",
+ "modified": "2024-08-30 16:21:28.269571",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "BL Exchange",

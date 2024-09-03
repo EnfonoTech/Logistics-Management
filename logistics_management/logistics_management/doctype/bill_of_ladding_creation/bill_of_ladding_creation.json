@@ -1,21 +1,20 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:HSM-BL-{#}",
- "creation": "2024-07-13 11:55:01.348640",
+ "autoname": "format:BL-{##}",
+ "creation": "2024-09-02 11:56:12.467155",
  "default_view": "List",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "general_details_section",
-  "job_data",
+  "job_details",
   "from",
   "supplier",
   "booking_no",
   "point_and_country_of_origin_of_goods",
   "also_notify",
   "column_break_etuc",
-  "consignee",
   "to",
   "bl_no",
   "notify_party",
@@ -48,19 +47,82 @@
    "label": "General Details"
   },
   {
+   "fieldname": "job_details",
+   "fieldtype": "Link",
+   "label": "Job Details",
+   "options": "Job Details"
+  },
+  {
+   "fetch_from": ".pol",
+   "fieldname": "from",
+   "fieldtype": "Data",
+   "label": "From"
+  },
+  {
+   "fetch_from": ".",
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "booking_no",
+   "fieldtype": "Data",
+   "label": "Booking No."
+  },
+  {
+   "fieldname": "point_and_country_of_origin_of_goods",
+   "fieldtype": "Data",
+   "label": "Point and Country of Origin of goods"
+  },
+  {
+   "fieldname": "also_notify",
+   "fieldtype": "Small Text",
+   "label": "ALSO NOTIFY"
+  },
+  {
    "fieldname": "column_break_etuc",
    "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": ".pod",
+   "fieldname": "to",
+   "fieldtype": "Data",
+   "label": "To"
+  },
+  {
+   "fetch_from": ".bl_number",
+   "fieldname": "bl_no",
+   "fieldtype": "Data",
+   "label": "B/L No."
+  },
+  {
+   "fetch_from": ".consignee",
+   "fieldname": "notify_party",
+   "fieldtype": "Link",
+   "label": "Notify Party",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "forwarding_agent_references",
+   "fieldtype": "Small Text",
+   "label": "Forwarding agent references"
   },
   {
    "fieldname": "section_break_qcje",
    "fieldtype": "Section Break"
   },
   {
-   "fetch_from": ".pod",
-   "fieldname": "port_of_discharge",
+   "fetch_from": "job_details.",
+   "fieldname": "place_of_receipt",
    "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Port of Discharge"
+   "label": "Place of Receipt"
+  },
+  {
+   "fetch_from": "job_details.volume",
+   "fieldname": "volume_in_cbm",
+   "fieldtype": "Data",
+   "label": "Volume in CBM"
   },
   {
    "fetch_from": ".pol",
@@ -70,24 +132,61 @@
    "label": "Port of Loading"
   },
   {
-   "fieldname": "column_break_urrb",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "job_details.volume",
-   "fieldname": "volume_in_cbm",
-   "fieldtype": "Data",
-   "label": "Volume in CBM"
-  },
-  {
    "fetch_from": "job_details.pickup_location",
    "fieldname": "place_of_loading",
    "fieldtype": "Data",
    "label": "Place of Loading"
   },
   {
+   "fieldname": "delivery_status",
+   "fieldtype": "Data",
+   "label": "Delivery status"
+  },
+  {
+   "fieldname": "column_break_urrb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "job_details.vessel_name",
+   "fieldname": "vesselvoy_no",
+   "fieldtype": "Data",
+   "label": "Vessel/Voy No. "
+  },
+  {
+   "fieldname": "precarried_by",
+   "fieldtype": "Data",
+   "label": "Precarried by"
+  },
+  {
+   "fetch_from": ".pod",
+   "fieldname": "port_of_discharge",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Port of Discharge"
+  },
+  {
+   "fetch_from": "job_details.delivery_location",
+   "fieldname": "place_of_delivery",
+   "fieldtype": "Data",
+   "label": "Place of Delivery"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
    "fieldname": "section_break_nhrf",
    "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "table_mvvz",
+   "fieldtype": "Table",
+   "options": "BL Child"
   },
   {
    "fieldname": "section_break_goiw",
@@ -117,122 +216,14 @@
    "fieldname": "date_time",
    "fieldtype": "Date",
    "label": "Date"
-  },
-  {
-   "fetch_from": "job_data.pol",
-   "fieldname": "from",
-   "fieldtype": "Data",
-   "label": "From"
-  },
-  {
-   "fetch_from": "job_data.bl_number",
-   "fieldname": "booking_no",
-   "fieldtype": "Data",
-   "label": "Booking No."
-  },
-  {
-   "fieldname": "point_and_country_of_origin_of_goods",
-   "fieldtype": "Data",
-   "label": "Point and Country of Origin of goods"
-  },
-  {
-   "fieldname": "also_notify",
-   "fieldtype": "Small Text",
-   "label": "ALSO NOTIFY"
-  },
-  {
-   "fetch_from": "job_data.pod",
-   "fieldname": "to",
-   "fieldtype": "Data",
-   "label": "To"
-  },
-  {
-   "fetch_from": "job_data.bl_number",
-   "fieldname": "bl_no",
-   "fieldtype": "Data",
-   "label": "B/L No."
-  },
-  {
-   "fetch_from": "job_data.job_id",
-   "fieldname": "notify_party",
-   "fieldtype": "Link",
-   "label": "Notify Party",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "forwarding_agent_references",
-   "fieldtype": "Small Text",
-   "label": "Forwarding agent references"
-  },
-  {
-   "fetch_from": "job_details.",
-   "fieldname": "place_of_receipt",
-   "fieldtype": "Data",
-   "label": "Place of Receipt"
-  },
-  {
-   "fieldname": "delivery_status",
-   "fieldtype": "Data",
-   "label": "Delivery status"
-  },
-  {
-   "fetch_from": "job_details.vessel_name",
-   "fieldname": "vesselvoy_no",
-   "fieldtype": "Data",
-   "label": "Vessel/Voy No. "
-  },
-  {
-   "fieldname": "precarried_by",
-   "fieldtype": "Data",
-   "label": "Precarried by"
-  },
-  {
-   "fetch_from": "job_details.delivery_location",
-   "fieldname": "place_of_delivery",
-   "fieldtype": "Data",
-   "label": "Place of Delivery"
-  },
-  {
-   "fieldname": "table_mvvz",
-   "fieldtype": "Table",
-   "options": "BL Child"
-  },
-  {
-   "fetch_from": ".",
-   "fieldname": "supplier",
-   "fieldtype": "Link",
-   "label": "Supplier",
-   "options": "Supplier"
-  },
-  {
-   "fetch_from": "job_data.consignee",
-   "fieldname": "consignee",
-   "fieldtype": "Link",
-   "label": "Consignee",
-   "options": "Customer"
-  },
-  {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "in_standard_filter": 1,
-   "label": "Company",
-   "options": "Company",
-   "reqd": 1
-  },
-  {
-   "fieldname": "job_data",
-   "fieldtype": "Link",
-   "label": "Job Data",
-   "options": "Job Details"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-09-02 12:02:02.679587",
+ "modified": "2024-09-02 11:57:20.620586",
  "modified_by": "Administrator",
  "module": "Logistics Management",
- "name": "BL Creation",
+ "name": "Bill of Ladding Creation",
  "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
