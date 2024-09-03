@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"pH01Y1Cyvr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"QyY1vJZuSK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"8iBBUnw8PP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details\",\"col\":3}},{\"id\":\"o2ol0bb_KX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Creation\",\"col\":3}},{\"id\":\"sIlZRBBq0A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AWB Creation\",\"col\":3}},{\"id\":\"y0KzOi32Us\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"QbbBfLDNB1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cargo Arrival Notification\",\"col\":3}},{\"id\":\"MmENjEDW01\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Delivery Order-AIR\",\"col\":3}},{\"id\":\"2W0dJ-fGfM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Delivery Order-Sea\",\"col\":3}},{\"id\":\"CRPIevF2-q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Pass\",\"col\":3}},{\"id\":\"yoLny7THH-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"dcB6Kf7_db\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Exchange\",\"col\":3}},{\"id\":\"Z2RFbTV3vv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"CRO\",\"col\":3}},{\"id\":\"s-51L_nA1z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Consignment Delivery Note\",\"col\":3}},{\"id\":\"qCmt0fDr-U\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bill of Ladding\",\"col\":3}},{\"id\":\"nPrXktfEE9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cET7zsnfst\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"POD\",\"col\":3}},{\"id\":\"bB-w1GJvYg\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Way Bill\",\"col\":3}},{\"id\":\"WdUtt0A3YD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse Details\",\"col\":3}},{\"id\":\"GnGX_uPUdi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"iEXE6qojk5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports</b></span>\",\"col\":12}},{\"id\":\"TX1JFFL6Le\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details Metrics\",\"col\":3}},{\"id\":\"xxYvAMG8Zn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Report-Sales Person\",\"col\":3}},{\"id\":\"0tCc1QlvG4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Person Accounts Receivable\",\"col\":3}},{\"id\":\"h33xSN04OO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cash Ledger Report\",\"col\":3}},{\"id\":\"PzOKmQZYQb\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"HADl_frXlN\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Reports\",\"col\":4}}]",
+ "content": "[{\"id\":\"pH01Y1Cyvr\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Logistics</span>\",\"col\":12}},{\"id\":\"QyY1vJZuSK\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"8iBBUnw8PP\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details\",\"col\":3}},{\"id\":\"o2ol0bb_KX\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Creation\",\"col\":3}},{\"id\":\"sIlZRBBq0A\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"AWB Creation\",\"col\":3}},{\"id\":\"y0KzOi32Us\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"QbbBfLDNB1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cargo Arrival Notification\",\"col\":3}},{\"id\":\"MmENjEDW01\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Delivery Order-AIR\",\"col\":3}},{\"id\":\"2W0dJ-fGfM\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Delivery Order-Sea\",\"col\":3}},{\"id\":\"CRPIevF2-q\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Gate Pass\",\"col\":3}},{\"id\":\"yoLny7THH-\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"dcB6Kf7_db\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"BL Exchange\",\"col\":3}},{\"id\":\"Z2RFbTV3vv\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"CRO\",\"col\":3}},{\"id\":\"s-51L_nA1z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Consignment Delivery Note\",\"col\":3}},{\"id\":\"qCmt0fDr-U\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Bill of Ladding\",\"col\":3}},{\"id\":\"nPrXktfEE9\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"cET7zsnfst\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"POD\",\"col\":3}},{\"id\":\"WdUtt0A3YD\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Warehouse Details\",\"col\":3}},{\"id\":\"GnGX_uPUdi\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"iEXE6qojk5\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Reports</b></span>\",\"col\":12}},{\"id\":\"TX1JFFL6Le\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Job Details Metrics\",\"col\":3}},{\"id\":\"xxYvAMG8Zn\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Report-Sales Person\",\"col\":3}},{\"id\":\"h33xSN04OO\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cash Ledger Report\",\"col\":3}},{\"id\":\"PzOKmQZYQb\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"HADl_frXlN\",\"type\":\"card\",\"data\":{\"card_name\":\"Financial Reports\",\"col\":4}}]",
  "creation": "2024-03-12 07:31:55.092037",
  "custom_blocks": [],
  "docstatus": 0,
@@ -63,7 +63,7 @@
    "type": "Link"
   }
  ],
- "modified": "2024-09-03 16:41:07.754941",
+ "modified": "2024-09-03 16:57:28.529297",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Logistics",
@@ -116,13 +116,6 @@
   {
    "color": "Grey",
    "doc_view": "List",
-   "label": "Sales Person Accounts Receivable",
-   "link_to": "Salesperson Accounts Receivable",
-   "type": "Report"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
    "label": "Job Details",
    "link_to": "Job Details",
    "stats_filter": "[]",
@@ -133,14 +126,6 @@
    "doc_view": "List",
    "label": "Warehouse Details",
    "link_to": "Warehouse Details",
-   "stats_filter": "[]",
-   "type": "DocType"
-  },
-  {
-   "color": "Grey",
-   "doc_view": "List",
-   "label": "Way Bill",
-   "link_to": "Way Bill",
    "stats_filter": "[]",
    "type": "DocType"
   },
