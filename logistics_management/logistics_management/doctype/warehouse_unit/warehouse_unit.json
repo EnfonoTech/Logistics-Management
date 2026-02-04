@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:warehouse_name",
+ "creation": "2026-01-31 17:05:18.620853",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "warehouse_name",
+  "total_area_capacity",
+  "total_available_capacity"
+ ],
+ "fields": [
+  {
+   "fieldname": "warehouse_name",
+   "fieldtype": "Data",
+   "label": "Warehouse Name",
+   "options": "Warehouse",
+   "unique": 1
+  },
+  {
+   "fieldname": "total_area_capacity",
+   "fieldtype": "Float",
+   "label": "Total Area Capacity"
+  },
+  {
+   "fieldname": "total_available_capacity",
+   "fieldtype": "Float",
+   "label": "Total Available Capacity"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-31 19:10:55.708132",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Warehouse Unit",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

@@ -1,0 +1,635 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:JD-{####}",
+ "creation": "2026-02-02 17:44:20.026974",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "job_type",
+  "mawbl_number",
+  "mbl_number",
+  "container_no",
+  "vehicle_no",
+  "company",
+  "console_number",
+  "column_break_lphc",
+  "mode_of_transport",
+  "shipment_mode",
+  "hawbl_number",
+  "hbl_number",
+  "invoice_no",
+  "project",
+  "project_data",
+  "quotation",
+  "section_break_pnvn",
+  "warehouse_job_receipt_note",
+  "section_break_ocxx",
+  "console_shipment",
+  "section_break_ohsn",
+  "customer",
+  "pol",
+  "place_of_receipt",
+  "port_of_loading",
+  "sales_person",
+  "column_break_bhps",
+  "date",
+  "pod",
+  "place_of_delivery",
+  "port_of_departure",
+  "contact_number",
+  "section_break_mkav",
+  "vessel",
+  "freight",
+  "eta_date",
+  "gross_weight",
+  "data_bmvw",
+  "carrier",
+  "column_break_prek",
+  "voyage",
+  "net_weight",
+  "etd",
+  "chargeable_weight",
+  "vessel_name",
+  "number_of_packages",
+  "bill_of_lading_status",
+  "section_break_jakn",
+  "cargo_details",
+  "section_break_bdyc",
+  "dimension",
+  "delivery_order_information_section",
+  "shipper",
+  "shipper_name",
+  "quantity",
+  "volume",
+  "container_type",
+  "pickup_location",
+  "delivery_order_number",
+  "column_break_cpkl",
+  "consignee",
+  "consignee_name",
+  "weight",
+  "cargo_description",
+  "delivery_location",
+  "qty",
+  "date_generated",
+  "government_approval_information_section",
+  "approval_id",
+  "approval_type",
+  "column_break_cepu",
+  "approval_date",
+  "issuing_authority",
+  "section_break_vxte",
+  "job_status",
+  "costing_status",
+  "invoice_status",
+  "purchase_status",
+  "job_end_date",
+  "job_end_time",
+  "column_break_evuv",
+  "created_user",
+  "created_date",
+  "modified_user",
+  "modified_date",
+  "bl_number",
+  "remarks",
+  "vendor_receipts_section",
+  "receipt_number",
+  "date_received",
+  "vendor_name",
+  "column_break_olrt",
+  "amount",
+  "payment_method",
+  "tab_2_tab",
+  "co_loaded_shipment_information"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "\nHSM\nHSMN\nHSMS"
+  },
+  {
+   "fieldname": "job_type",
+   "fieldtype": "Select",
+   "label": "Job Type",
+   "options": "\nGENERAL\nCONSOLE\nLCL\nWAREHOUSING"
+  },
+  {
+   "fieldname": "mawbl_number",
+   "fieldtype": "Data",
+   "label": "MAWBL Number"
+  },
+  {
+   "fieldname": "mbl_number",
+   "fieldtype": "Data",
+   "label": "MBL Number"
+  },
+  {
+   "fieldname": "container_no",
+   "fieldtype": "Data",
+   "label": "Container No"
+  },
+  {
+   "fieldname": "vehicle_no",
+   "fieldtype": "Data",
+   "label": "Vehicle No"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "console_number",
+   "fieldtype": "Data",
+   "label": "Console Number"
+  },
+  {
+   "fieldname": "column_break_lphc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mode_of_transport",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Mode of Transport",
+   "options": "\nAIR\nSEA\nLAND"
+  },
+  {
+   "fieldname": "shipment_mode",
+   "fieldtype": "Select",
+   "label": "Shipment Mode",
+   "options": "\nIMPORT\nEXPORT\nRE-EXPORT\nLOCAL"
+  },
+  {
+   "fieldname": "hawbl_number",
+   "fieldtype": "Data",
+   "label": "HAWBL Number"
+  },
+  {
+   "fieldname": "hbl_number",
+   "fieldtype": "Data",
+   "label": "HBL Number "
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Data",
+   "label": "Invoice No"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project",
+   "options": "Project"
+  },
+  {
+   "fieldname": "project_data",
+   "fieldtype": "Data",
+   "label": "Project Data"
+  },
+  {
+   "fieldname": "quotation",
+   "fieldtype": "Link",
+   "label": "Quotation",
+   "options": "Quotation"
+  },
+  {
+   "fieldname": "section_break_ocxx",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "console_shipment",
+   "fieldtype": "Table",
+   "label": "Console Shipment",
+   "options": "Console Table"
+  },
+  {
+   "fieldname": "section_break_ohsn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "pol",
+   "fieldtype": "Data",
+   "label": "POL"
+  },
+  {
+   "fieldname": "place_of_receipt",
+   "fieldtype": "Data",
+   "label": "Place of Receipt"
+  },
+  {
+   "fieldname": "port_of_loading",
+   "fieldtype": "Data",
+   "label": "Port of Loading"
+  },
+  {
+   "fieldname": "sales_person",
+   "fieldtype": "Link",
+   "label": "Sales Person",
+   "options": "Sales Person"
+  },
+  {
+   "fieldname": "column_break_bhps",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "pod",
+   "fieldtype": "Data",
+   "label": "POD"
+  },
+  {
+   "fieldname": "place_of_delivery",
+   "fieldtype": "Data",
+   "label": "Place of Delivery"
+  },
+  {
+   "fieldname": "port_of_departure",
+   "fieldtype": "Data",
+   "label": "Port of Departure"
+  },
+  {
+   "fieldname": "contact_number",
+   "fieldtype": "Phone",
+   "label": "Contact Number"
+  },
+  {
+   "fieldname": "section_break_mkav",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "vessel",
+   "fieldtype": "Link",
+   "label": "Vessel",
+   "options": "Vessel"
+  },
+  {
+   "fieldname": "freight",
+   "fieldtype": "Select",
+   "label": "Freight",
+   "options": "\nPrepaid\nCollect"
+  },
+  {
+   "fieldname": "eta_date",
+   "fieldtype": "Date",
+   "label": "ETA (DATE) "
+  },
+  {
+   "fieldname": "gross_weight",
+   "fieldtype": "Data",
+   "label": "Gross Weight"
+  },
+  {
+   "fieldname": "data_bmvw",
+   "fieldtype": "Data",
+   "label": "Flight No"
+  },
+  {
+   "fieldname": "carrier",
+   "fieldtype": "Data",
+   "label": "Carrier"
+  },
+  {
+   "fieldname": "column_break_prek",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "voyage",
+   "fieldtype": "Data",
+   "label": "Voyage"
+  },
+  {
+   "fieldname": "net_weight",
+   "fieldtype": "Data",
+   "label": "Net Weight"
+  },
+  {
+   "fieldname": "etd",
+   "fieldtype": "Data",
+   "label": "ETD"
+  },
+  {
+   "fieldname": "chargeable_weight",
+   "fieldtype": "Data",
+   "label": "Chargeable Weight"
+  },
+  {
+   "fieldname": "vessel_name",
+   "fieldtype": "Data",
+   "label": "Vessel Name"
+  },
+  {
+   "fieldname": "number_of_packages",
+   "fieldtype": "Data",
+   "label": "Number of Packages"
+  },
+  {
+   "fieldname": "bill_of_lading_status",
+   "fieldtype": "Select",
+   "label": "Bill of Lading status",
+   "options": "\nOriginal\nSurrender\nExpress\nSea waybill"
+  },
+  {
+   "fieldname": "section_break_jakn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "cargo_details",
+   "fieldtype": "Table",
+   "label": "Cargo Details",
+   "options": "Cargo Details"
+  },
+  {
+   "fieldname": "section_break_bdyc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "dimension",
+   "fieldtype": "Table",
+   "label": "Dimension",
+   "options": "Dimension"
+  },
+  {
+   "fieldname": "delivery_order_information_section",
+   "fieldtype": "Section Break",
+   "label": "Delivery Order Information"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "shipper_name",
+   "fieldtype": "Data",
+   "label": "Shipper Name"
+  },
+  {
+   "fieldname": "quantity",
+   "fieldtype": "Float",
+   "label": "Quantity"
+  },
+  {
+   "fieldname": "volume",
+   "fieldtype": "Float",
+   "label": "Volume"
+  },
+  {
+   "fieldname": "container_type",
+   "fieldtype": "Link",
+   "label": "Container Type",
+   "options": "Equipment"
+  },
+  {
+   "fieldname": "pickup_location",
+   "fieldtype": "Data",
+   "label": "Pickup Location"
+  },
+  {
+   "fieldname": "delivery_order_number",
+   "fieldtype": "Data",
+   "label": "Delivery Order Number"
+  },
+  {
+   "fieldname": "column_break_cpkl",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "consignee_name",
+   "fieldtype": "Data",
+   "label": "Consignee Name"
+  },
+  {
+   "fieldname": "weight",
+   "fieldtype": "Data",
+   "label": "Weight"
+  },
+  {
+   "fieldname": "cargo_description",
+   "fieldtype": "Data",
+   "label": "Cargo Description"
+  },
+  {
+   "fieldname": "delivery_location",
+   "fieldtype": "Data",
+   "label": "Delivery Location"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Data",
+   "label": "Qty"
+  },
+  {
+   "fieldname": "date_generated",
+   "fieldtype": "Datetime",
+   "label": "Date Generated"
+  },
+  {
+   "fieldname": "government_approval_information_section",
+   "fieldtype": "Section Break",
+   "label": "Government Approval Information"
+  },
+  {
+   "fieldname": "approval_id",
+   "fieldtype": "Data",
+   "label": "Approval ID"
+  },
+  {
+   "fieldname": "approval_type",
+   "fieldtype": "Data",
+   "label": "Approval Type"
+  },
+  {
+   "fieldname": "column_break_cepu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date"
+  },
+  {
+   "fieldname": "issuing_authority",
+   "fieldtype": "Data",
+   "label": "Issuing Authority"
+  },
+  {
+   "fieldname": "section_break_vxte",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "job_status",
+   "fieldtype": "Select",
+   "label": "Job Status",
+   "options": "Pending\nIn Progress\nCompleted\nOn Hold\nCancelled"
+  },
+  {
+   "fieldname": "costing_status",
+   "fieldtype": "Select",
+   "label": "Costing Status",
+   "options": "Pending\nIn Progress\nCompleted"
+  },
+  {
+   "fieldname": "invoice_status",
+   "fieldtype": "Select",
+   "label": "Invoice Status",
+   "options": "Pending\nIn Progress\nCompleted"
+  },
+  {
+   "fieldname": "purchase_status",
+   "fieldtype": "Select",
+   "label": "Purchase Status",
+   "options": "Pending\nIn Progress\nCompleted"
+  },
+  {
+   "fieldname": "job_end_date",
+   "fieldtype": "Date",
+   "label": "Job End Date"
+  },
+  {
+   "fieldname": "job_end_time",
+   "fieldtype": "Time",
+   "label": "Job End Time"
+  },
+  {
+   "fieldname": "column_break_evuv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "created_user",
+   "fieldtype": "Link",
+   "label": "Created User",
+   "options": "User"
+  },
+  {
+   "fieldname": "created_date",
+   "fieldtype": "Date",
+   "label": "Created Date"
+  },
+  {
+   "fieldname": "modified_user",
+   "fieldtype": "Link",
+   "label": "Modified User",
+   "options": "User"
+  },
+  {
+   "fieldname": "modified_date",
+   "fieldtype": "Date",
+   "label": "Modified Date"
+  },
+  {
+   "fieldname": "bl_number",
+   "fieldtype": "Data",
+   "label": "BL Number"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "vendor_receipts_section",
+   "fieldtype": "Section Break",
+   "label": "Vendor Receipts"
+  },
+  {
+   "fieldname": "receipt_number",
+   "fieldtype": "Data",
+   "label": "Receipt Number"
+  },
+  {
+   "fieldname": "date_received",
+   "fieldtype": "Data",
+   "label": "Date Received"
+  },
+  {
+   "fieldname": "vendor_name",
+   "fieldtype": "Data",
+   "label": "Vendor Name"
+  },
+  {
+   "fieldname": "column_break_olrt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Float",
+   "label": "Amount"
+  },
+  {
+   "fieldname": "payment_method",
+   "fieldtype": "Data",
+   "label": "Payment Method"
+  },
+  {
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Other Information"
+  },
+  {
+   "fieldname": "co_loaded_shipment_information",
+   "fieldtype": "Table",
+   "label": "Co loaded Shipment Information",
+   "options": "Co-loaded Shipment Information"
+  },
+  {
+   "fieldname": "section_break_pnvn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "warehouse_job_receipt_note",
+   "fieldtype": "Table",
+   "label": "Warehouse Job Receipt Note",
+   "options": "Warehouse Job Receipt Note"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-02-02 23:25:42.916067",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Warehouse Job",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

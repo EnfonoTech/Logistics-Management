@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:waybill_no",
+ "creation": "2026-01-31 14:37:36.928023",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_details_section",
+  "waybill_no",
+  "cons_date",
+  "mark",
+  "warehouse_unit",
+  "column_break_crll",
+  "tracking_no",
+  "payment",
+  "destination",
+  "job_status",
+  "section_break_nkib",
+  "shipper_details_column",
+  "shipper",
+  "contact_person_shipper",
+  "address_shipper",
+  "phone_shipper",
+  "mobile_shipper",
+  "column_break_mcdg",
+  "consignee",
+  "contact_person",
+  "address",
+  "phone",
+  "mobile",
+  "amended_from",
+  "section_break_ulxr",
+  "package_details",
+  "total_cbm"
+ ],
+ "fields": [
+  {
+   "fieldname": "cons_date",
+   "fieldtype": "Date",
+   "label": "Cons Date"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Destination"
+  },
+  {
+   "fieldname": "tracking_no",
+   "fieldtype": "Data",
+   "label": "Tracking No"
+  },
+  {
+   "fieldname": "mark",
+   "fieldtype": "Data",
+   "label": "Mark"
+  },
+  {
+   "fieldname": "payment",
+   "fieldtype": "Link",
+   "label": "Payment",
+   "options": "Mode of Payment"
+  },
+  {
+   "fieldname": "basic_details_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Details"
+  },
+  {
+   "fieldname": "section_break_nkib",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "shipper_details_column",
+   "fieldtype": "Column Break",
+   "label": "Shipper Details"
+  },
+  {
+   "fieldname": "shipper",
+   "fieldtype": "Link",
+   "label": "Shipper",
+   "options": "Supplier"
+  },
+  {
+   "fieldname": "column_break_mcdg",
+   "fieldtype": "Column Break",
+   "label": "Consignee Details"
+  },
+  {
+   "fieldname": "contact_person_shipper",
+   "fieldtype": "Data",
+   "label": "Contact Person"
+  },
+  {
+   "fieldname": "address_shipper",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "phone_shipper",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "mobile_shipper",
+   "fieldtype": "Data",
+   "label": "Mobile"
+  },
+  {
+   "fieldname": "consignee",
+   "fieldtype": "Link",
+   "label": "Consignee",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "contact_person",
+   "fieldtype": "Data",
+   "label": "Contact Person"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Small Text",
+   "label": "Address"
+  },
+  {
+   "fieldname": "phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "label": "Mobile"
+  },
+  {
+   "fieldname": "column_break_crll",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Receipt Note",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "section_break_ulxr",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "package_details",
+   "fieldtype": "Table",
+   "label": "Package Details",
+   "options": "Package Details"
+  },
+  {
+   "fieldname": "total_cbm",
+   "fieldtype": "Float",
+   "label": "Total CBM"
+  },
+  {
+   "fieldname": "waybill_no",
+   "fieldtype": "Data",
+   "label": "Waybill No",
+   "unique": 1
+  },
+  {
+   "fieldname": "warehouse_unit",
+   "fieldtype": "Link",
+   "label": "Warehouse",
+   "options": "Warehouse Unit"
+  },
+  {
+   "fieldname": "job_status",
+   "fieldtype": "Select",
+   "label": "Job Status",
+   "options": "\nCreated\nNot Created"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-02-03 12:49:33.893718",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Receipt Note",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

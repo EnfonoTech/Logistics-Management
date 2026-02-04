@@ -1,0 +1,65 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-02-02 21:33:26.554253",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "receipt_note",
+  "customer",
+  "warehouse",
+  "total_cbm",
+  "waybill_no"
+ ],
+ "fields": [
+  {
+   "fieldname": "receipt_note",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Receipt Note",
+   "options": "Receipt Note"
+  },
+  {
+   "fieldname": "warehouse",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Warehouse",
+   "options": "Warehouse Unit"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "total_cbm",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total CBM"
+  },
+  {
+   "fieldname": "waybill_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Waybill No"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-02-03 08:54:45.685434",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Warehouse Job Receipt Note",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

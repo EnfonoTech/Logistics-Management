@@ -35,7 +35,9 @@ fixtures = [{
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-# doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+doctype_list_js = {
+	"Receipt Note": "public/js/receipt_note_list.js"
+	}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -138,12 +140,14 @@ override_doctype_class = {
 # 	}
 # }
 doc_events = {
-    'Direct Shipping': {
-        'validate': [
-            'logistics_management.logistics_management.doctype.direct_shipping.direct_shipping.validate'
-        ],
-  }
+    "Receipt Note": {
+        "on_submit": "logistics_management.logistics_management.doctype.receipt_note.receipt_note.on_submit"
+    },
+    "Direct Shipping": {
+        "validate": "logistics_management.logistics_management.doctype.direct_shipping.direct_shipping.validate"
+    }	
 }
+
 # Scheduled Tasks
 # ---------------
 
