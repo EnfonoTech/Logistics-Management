@@ -102,7 +102,8 @@
   "amount",
   "payment_method",
   "tab_2_tab",
-  "co_loaded_shipment_information"
+  "co_loaded_shipment_information",
+  "amended_from"
  ],
  "fields": [
   {
@@ -602,12 +603,23 @@
    "fieldtype": "Table",
    "label": "Warehouse Job Receipt Note",
    "options": "Warehouse Job Receipt Note"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Warehouse Job",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2026-02-02 23:25:42.916067",
+ "modified": "2026-02-05 17:48:41.535762",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Warehouse Job",

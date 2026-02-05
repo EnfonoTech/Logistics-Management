@@ -44,8 +44,7 @@ def create_warehouse_job_from_receipts(receipt_notes):
         frappe.db.set_value("Receipt Note", rn.name, "job_status", "Created")
 
     wj.insert(ignore_permissions=True)
-    wj.submit()
-
+    
     current_capacity = frappe.db.get_value("Warehouse Unit", warehouse_unit, "total_available_capacity") or 0
     frappe.db.set_value("Warehouse Unit", warehouse_unit, "total_available_capacity", current_capacity + total_cbm)
 

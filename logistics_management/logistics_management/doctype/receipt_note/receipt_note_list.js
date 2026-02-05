@@ -2,9 +2,11 @@ frappe.listview_settings['Receipt Note'] = {
     add_fields: ["consignee"],
 
     onload: function(listview) {
-
+   
         const create_btn = listview.page.add_inner_button(__('Create Warehouse Job'), function() {
             const selected = listview.get_checked_items();
+            if (!selected.length) return;
+
             const receipt_notes = selected.map(d => d.name);
 
             frappe.call({
@@ -20,26 +22,18 @@ frappe.listview_settings['Receipt Note'] = {
         });
 
         create_btn.hide();
-
+       
         listview.page.wrapper.on('change', '.list-row-checkbox', function() {
-
             const selected = listview.get_checked_items();
-
-            if (selected.length >= 2) {
-                const consignee = selected[0].consignee;
-
-                const same_consignee = selected.every(d => d.consignee === consignee);
-
-                if (same_consignee && consignee) {
-                    create_btn.show();
-                    return;
-                }
+            if (selected.length === 0) {
+                create_btn.hide();
+                return;
             }
-
-            create_btn.hide();
+           
+            const consignee = selected[0].consignee;
+            const same = selected.every(d => d.consignee === consignee);
+            same ? create_btn.show() : create_btn.hide();
         });
+
     }
 };
-
-
-

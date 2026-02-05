@@ -1,13 +1,13 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:waybill_no",
+ "autoname": "naming_series:",
  "creation": "2026-01-31 14:37:36.928023",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "basic_details_section",
-  "waybill_no",
+  "naming_series",
   "cons_date",
   "mark",
   "warehouse_unit",
@@ -109,8 +109,10 @@
   {
    "fieldname": "consignee",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Consignee",
-   "options": "Customer"
+   "options": "Customer",
+   "reqd": 1
   },
   {
    "fieldname": "contact_person",
@@ -162,33 +164,36 @@
    "label": "Total CBM"
   },
   {
-   "fieldname": "waybill_no",
-   "fieldtype": "Data",
-   "label": "Waybill No",
-   "unique": 1
-  },
-  {
    "fieldname": "warehouse_unit",
    "fieldtype": "Link",
    "label": "Warehouse",
    "options": "Warehouse Unit"
   },
   {
+   "default": "Not Created",
    "fieldname": "job_status",
    "fieldtype": "Select",
    "label": "Job Status",
-   "options": "\nCreated\nNot Created"
+   "options": "\nCreated\nNot Created",
+   "read_only": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Way Bill",
+   "options": "\nRN-.####.-.YY"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-02-03 12:49:33.893718",
+ "modified": "2026-02-05 17:43:20.413344",
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Receipt Note",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
