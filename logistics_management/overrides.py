@@ -1,19 +1,19 @@
 import os
 
 import frappe
-from frappe.core.doctype.report.report import (Report,
-                                               get_report_module_dotted_path)
-from frappe.desk.query_report import get_report_doc
+from frappe.core.doctype.report.report import Report, get_report_module_dotted_path
+from frappe.desk.query_report import get_script as frappe_get_script
 from frappe.model.utils import render_include
 from frappe.modules import get_module_path, scrub
 from frappe.utils import get_html_format
 
-"""Change the App Name if your are adding this in your custom app"""
-# frappe.get_app_path("frappe_report_override")
+APP_NAME = "logistics_management"
+
 
 class CustomReport(Report):
+	"""Lets `report_override` in hooks.py point a standard report at our own execute()."""
+
 	def execute_module(self, filters):
-		# report in python module
 		report_override = frappe.get_hooks("report_override", {})
 		if report_override.get(self.name):
 			method_name = report_override.get(self.name)[0]
@@ -25,45 +25,43 @@ class CustomReport(Report):
 
 @frappe.whitelist()
 def get_script(report_name):
-	report = get_report_doc(report_name)
-	module = report.module or frappe.db.get_value("DocType", report.ref_doctype, "module")
+	"""Frappe's own get_script, plus the two path redirects this app needs.
 
-	is_custom_module = frappe.get_cached_value("Module Def", module, "custom")
+	This used to be a full copy of the upstream function. Frappe moved on and the copy
+	did not: it silently stopped returning `filters` and `custom_report_name`, which the
+	desk uses to resolve a Custom Report's settings. Delegating and then patching only
+	what we actually override means it cannot drift again.
+	"""
+	result = frappe_get_script(report_name)
 
-	# custom modules are virtual modules those exists in DB but not in disk.
-	module_path = "" if is_custom_module else get_module_path(module)
-	report_folder = module_path and os.path.join(module_path, "report", scrub(report.name))
-
-	report_override_js = frappe.get_hooks("report_override_js", {})
-	if report_override_js.get(report_name):
-		script_path = os.path.join(frappe.get_app_path("logistics_management"), report_override_js.get(report_name)[0])
-	else:
-		script_path = report_folder and os.path.join(report_folder, scrub(report.name) + ".js")
-
-	report_override_html = frappe.get_hooks("report_override_html", {})
-	if report_override_html.get(report_name):
-		print_path = os.path.join(frappe.get_app_path("logistics_management"), report_override_html.get(report_name)[0])
-	else:
-		print_path = report_folder and os.path.join(report_folder, scrub(report.name) + ".html")
-
-	script = None
-	if os.path.exists(script_path):
+	script_path = _override_path("report_override_js", report_name)
+	if script_path and os.path.exists(script_path):
 		with open(script_path) as f:
 			script = f.read()
-			script += f"\n\n//# sourceURL={scrub(report.name)}.js"
+		script += f"\n\n//# sourceURL={scrub(report_name)}.js"
+		result["script"] = render_include(script)
 
-	html_format = get_html_format(print_path)
-	# frappe.throw(str(html_format))
+	print_path = _override_path("report_override_html", report_name)
+	if print_path:
+		html_format = get_html_format(print_path)
+		if html_format:
+			result["html_format"] = html_format
 
-	if not script and report.javascript:
-		script = report.javascript
-		script += f"\n\n//# sourceURL={scrub(report.name)}__custom"
+	return result
 
-	if not script:
-		script = "frappe.query_reports['%s']={}" % report_name
 
-	return {
-		"script": render_include(script),
-		"html_format": html_format,
-		"execution_time": frappe.cache().hget("report_execution_time", report_name) or 0,
-	}
+def _override_path(hook_name, report_name):
+	"""Absolute path for a report_override_js / report_override_html hook entry."""
+	entries = frappe.get_hooks(hook_name, {})
+	relative = entries.get(report_name)
+	if not relative:
+		return None
+	return os.path.join(frappe.get_app_path(APP_NAME), relative[0])
+
+
+def get_report_folder(report):
+	"""Kept for callers that expect the old helper. Unused by get_script above."""
+	module = report.module or frappe.db.get_value("DocType", report.ref_doctype, "module")
+	if frappe.get_cached_value("Module Def", module, "custom"):
+		return ""
+	return os.path.join(get_module_path(module), "report", scrub(report.name))
