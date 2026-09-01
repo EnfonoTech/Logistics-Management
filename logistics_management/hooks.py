@@ -8,13 +8,6 @@ app_license = "mit"
 
 # Includes in <head>
 # ------------------
-fixtures = [{
-				"doctype": "Workflow"
-			},
-			{
-				"doctype": "Workflow State"
-			}
-	]
 # include js, css files in header of desk.html
 # app_include_css = "/assets/logistics_management/css/logistics_management.css"
 # app_include_js = "/assets/logistics_management/js/logistics_management.js"
@@ -35,9 +28,10 @@ fixtures = [{
 
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
-doctype_list_js = {
-	"Receipt Note": "public/js/receipt_note_list.js"
-	}
+# Receipt Note's list view script is auto-loaded by Frappe from the doctype folder
+# (logistics_management/doctype/receipt_note/receipt_note_list.js). The hook entry that
+# used to sit here pointed at public/js/receipt_note_list.js, which has never existed.
+# doctype_list_js = {}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
 
@@ -139,14 +133,10 @@ override_doctype_class = {
 # 		"on_trash": "method"
 # 	}
 # }
-doc_events = {
-    "Receipt Note": {
-        "on_submit": "logistics_management.logistics_management.doctype.receipt_note.receipt_note.on_submit"
-    },
-    "Direct Shipping": {
-        "validate": "logistics_management.logistics_management.doctype.direct_shipping.direct_shipping.validate"
-    }	
-}
+# doc_events is for extending ANOTHER app's DocType. Receipt Note and Direct Shipping
+# are ours, so their lifecycle hooks now live as methods on their own controller
+# classes. Registering them here as well would fire them twice.
+# doc_events = {}
 
 # Scheduled Tasks
 # ---------------
@@ -264,4 +254,15 @@ report_override_html = {
 # 	"Logging DocType Name": 30  # days to retain logs
 
 
-fixtures= ["Client Script","Print Format","Report","Property Setter"]
+# Single fixtures assignment. There used to be a second one near the top of this file
+# declaring Workflow / Workflow State; Python kept only the last binding, so those two
+# were silently never exported and the active Direct Shipping Workflow existed only in
+# the site database. Keep this list as the one and only `fixtures` in the module.
+fixtures = [
+	"Client Script",
+	"Print Format",
+	"Report",
+	"Property Setter",
+	"Workflow",
+	"Workflow State",
+]

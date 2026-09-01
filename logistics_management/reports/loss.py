@@ -1,12 +1,17 @@
 import frappe
 from frappe import _
-from frappe.utils import flt
+from frappe.utils import cstr, flt
 from erpnext.accounts.report.financial_statements import (
     get_columns,
     get_data,
     get_filtered_list_for_consolidated_report,
     get_period_list,
 )
+
+# Account names this report keys off. Hardcoded English strings break the moment a
+# chart of accounts is renamed or translated, so keep them in one place.
+COGS_ACCOUNT = "Cost of Goods Sold"
+DIRECT_EXPENSES_ACCOUNT = "Direct Expenses"
 
 def execute(filters=None):
     period_list = get_period_list(
@@ -44,7 +49,7 @@ def execute(filters=None):
     gross_profit = get_gross_profit(income, expense, period_list, filters.company, filters.presentation_currency)
     net_profit_loss = get_net_profit_loss(income, expense, period_list, filters.company, filters.presentation_currency)
 
-    expense = insert_gross_profit_under_stock_expenses(expense, gross_profit)
+    expense = insert_gross_profit_under_stock_expenses(expense or [], gross_profit)
 
     data = []
     data.extend(income or [])
@@ -66,112 +71,49 @@ def execute(filters=None):
     return columns, data, None, chart, report_summary, primitive_summary
 
 def insert_gross_profit_under_stock_expenses(expense, gross_profit):
-    new_expense = []
-    for exp in expense:
-        new_expense.append(exp)
-        if exp.get('account_name') == 'Cost of Goods Sold':
-            if gross_profit:
-                gross_profit["indent"] = exp.get("indent", 0) + 1
-                new_expense.append(gross_profit)
-    return new_expense
+	new_expense = []
+	for exp in expense or []:
+		new_expense.append(exp)
+		if exp.get("account_name") == COGS_ACCOUNT and gross_profit:
+			gross_profit["indent"] = exp.get("indent", 0) + 1
+			new_expense.append(gross_profit)
+	return new_expense
 
 def get_gross_profit(income, expense, period_list, company, currency=None, consolidated=False):
-    total_income = 0
-    direct_expense = 0
-    gross_profit = {
-        "account_name": _("Gross Profit"),
-        "warn_if_negative": True,
-        "currency": currency or frappe.get_cached_value("Company", company, "default_currency"),
-    }
+	total = 0
+	gross_profit = {
+		"account_name": _("Gross Profit"),
+		"warn_if_negative": True,
+		"currency": currency or frappe.get_cached_value("Company", company, "default_currency"),
+	}
 
-    has_value = False
+	has_value = False
 
-    for period in period_list:
-        key = period if consolidated else period.key
+	for period in period_list:
+		key = period if consolidated else period.key
 
-        if income:
-            total_income = flt(income[-2].get(key, 0), 3)
+		# Reset per period. Initialising these outside the loop let a period with no
+		# matching row silently inherit the previous period's figure.
+		total_income = flt(income[-2].get(key, 0), 3) if income else 0
+		direct_expense = 0
 
-        if expense:
-            for exp in expense:
-                if exp and "Direct Expenses" in exp.get('account_name', ''):  
-                    direct_expense = flt(exp.get(key, 0), 3)  
-                    break
+		for exp in expense or []:
+			if exp and DIRECT_EXPENSES_ACCOUNT in cstr(exp.get("account_name")):
+				direct_expense = flt(exp.get(key, 0), 3)
+				break
 
-        gross_profit[key] = total_income - direct_expense
+		gross_profit[key] = total_income - direct_expense
 
-        if gross_profit[key]:
-            has_value = True
+		if gross_profit[key]:
+			has_value = True
 
-        gross_profit["total"] = total_income - direct_expense
+		# Accumulate — assigning here overwrote the running total on every period,
+		# so the Total column only ever reported the last period.
+		total += flt(gross_profit[key])
+		gross_profit["total"] = total
 
-    if has_value:
-        return gross_profit
-
-
-
-
-
-
-def get_net_profit_loss(income, expense, period_list, company, currency=None, consolidated=False):
-    total = 0
-    net_profit_loss = {
-        "account_name": "'" + _("Profit for the year") + "'",
-        "account": "'" + _("Profit for the year") + "'",
-        "warn_if_negative": True,
-        "currency": currency or frappe.get_cached_value("Company", company, "default_currency"),
-    }
-
-    has_value = False
-
-    for period in period_list:
-        key = period if consolidated else period.key
-        total_income = flt(income[-2][key], 3) if income else 0
-        total_expense = flt(expense[-2][key], 3) if expense else 0
-
-        net_profit_loss[key] = total_income - total_expense
-
-        if net_profit_loss[key]:
-            has_value = True
-
-        total += flt(net_profit_loss[key])
-        net_profit_loss["total"] = total
-
-    if has_value:
-        return net_profit_loss
-
-
-def get_chart_data(filters, columns, income, expense, net_profit_loss):
-    labels = [d.get("label") for d in columns[2:]]
-
-    income_data, expense_data, net_profit = [], [], []
-
-    for p in columns[2:]:
-        if income:
-            income_data.append(income[-2].get(p.get("fieldname")))
-        if expense:
-            expense_data.append(expense[-2].get(p.get("fieldname")))
-        if net_profit_loss:
-            net_profit.append(net_profit_loss.get(p.get("fieldname")))
-
-    datasets = []
-    if income_data:
-        datasets.append({"name": _("Income"), "values": income_data})
-    if expense_data:
-        datasets.append({"name": _("Expense"), "values": expense_data})
-    if net_profit:
-        datasets.append({"name": _("Net Profit/Loss"), "values": net_profit})
-
-    chart = {"data": {"labels": labels, "datasets": datasets}}
-
-    if not filters.accumulated_values:
-        chart["type"] = "bar"
-    else:
-        chart["type"] = "line"
-
-    chart["fieldtype"] = "Currency"
-
-    return chart
+	if has_value:
+		return gross_profit
 
 
 def get_report_summary(

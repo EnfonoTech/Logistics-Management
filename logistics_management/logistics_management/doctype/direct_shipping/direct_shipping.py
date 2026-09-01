@@ -2,34 +2,45 @@
 # For license information, please see license.txt
 
 import frappe
-from frappe import msgprint, _
+from frappe import _
 from frappe.model.document import Document
+from frappe.utils import flt
+
 
 class DirectShipping(Document):
-	pass
+	def validate(self):
+		self.calculate_line_sale_prices()
 
-def validate(self,cdt):
-	for d in self.get('freight_order_line'):
-		if d.pricing:
-			if d.billing_on == "Volume":
-				d.sale_price = d.volume * d.price
-			else:
-				d.sale_price = d.gross_weight * d.price
-	test_d = frappe.db.get_value("Track Shipping Order",{'name1':self.name},'name')
-	if test_d:
-		test_doc = frappe.get_doc("Track Shipping Order",test_d)
-		test_doc.source_location = self.loading_port
-		test_doc.destination_location = self.discharging_port
-		test_doc.transport_carriage = self.transport
-		test_doc.status = self.workflow_state
-		test_doc.save()
-	else:
-		vals = frappe.get_doc({
+	def on_update(self):
+		# Writing a second document belongs after this one is known-good, not inside
+		# validate() where it ran on every keystroke-triggered save.
+		self.sync_track_shipping_order()
+
+	def calculate_line_sale_prices(self):
+		for d in self.get("freight_order_line") or []:
+			if not d.pricing:
+				continue
+			basis = flt(d.volume) if d.billing_on == "Volume" else flt(d.gross_weight)
+			d.sale_price = basis * flt(d.price)
+
+	def sync_track_shipping_order(self):
+		values = {
+			"source_location": self.loading_port,
+			"destination_location": self.discharging_port,
+			"transport_carriage": self.transport,
+			"status": self.workflow_state,
+		}
+
+		existing = frappe.db.get_value("Track Shipping Order", {"name1": self.name}, "name")
+		if existing:
+			tso = frappe.get_doc("Track Shipping Order", existing)
+			tso.update(values)
+			tso.save(ignore_permissions=True)
+			return
+
+		tso = frappe.get_doc({
 			"doctype": "Track Shipping Order",
-			"name1":self.name,
-			"source_location":self.loading_port,
-			"destination_location":self.discharging_port,
-			"transport_carriage":self.transport,
-			"status":self.workflow_state
-			})
-		vals.save()
+			"name1": self.name,
+			**values,
+		})
+		tso.insert(ignore_permissions=True)
