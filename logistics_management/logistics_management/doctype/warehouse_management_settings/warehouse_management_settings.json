@@ -1,0 +1,240 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-09-10 18:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 0,
+ "engine": "InnoDB",
+ "field_order": [
+  "receiving_section",
+  "dimension_uom",
+  "default_cargo_type",
+  "column_break_recv",
+  "default_receipt_mode",
+  "default_disposition",
+  "tracking_number_series",
+  "capacity_section",
+  "capacity_enforcement",
+  "treat_zero_capacity_as_unlimited",
+  "column_break_cap",
+  "capacity_warning_threshold",
+  "movement_section",
+  "default_shipment_mode",
+  "column_break_mov",
+  "fallback_mode_of_transport",
+  "billing_section",
+  "storage_item",
+  "storage_uom",
+  "column_break_bill",
+  "day_count_method",
+  "minimum_chargeable_days",
+  "accrual_section",
+  "enable_monthly_accrual",
+  "accrual_day_of_month",
+  "column_break_accr",
+  "missing_rate_action"
+ ],
+ "fields": [
+  {
+   "fieldname": "receiving_section",
+   "fieldtype": "Section Break",
+   "label": "Receiving"
+  },
+  {
+   "default": "Centimetre",
+   "description": "The unit staff type package length, width and height in. CBM is derived from this \u2014 change it and every new receipt calculates differently.",
+   "fieldname": "dimension_uom",
+   "fieldtype": "Select",
+   "label": "Package Dimension Unit",
+   "options": "Centimetre\nMillimetre\nMetre\nInch",
+   "reqd": 1
+  },
+  {
+   "description": "Pre-selected on a new Receipt Note. Cargo type drives the storage rate.",
+   "fieldname": "default_cargo_type",
+   "fieldtype": "Link",
+   "label": "Default Cargo Type",
+   "options": "Cargo Type"
+  },
+  {
+   "fieldname": "column_break_recv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Delivery at Warehouse",
+   "fieldname": "default_receipt_mode",
+   "fieldtype": "Select",
+   "label": "Default Receipt Mode",
+   "options": "Delivery at Warehouse\nCollection from Customer"
+  },
+  {
+   "default": "Move to Other Warehouse",
+   "fieldname": "default_disposition",
+   "fieldtype": "Select",
+   "label": "Default Disposition",
+   "options": "Move to Other Warehouse\nStore at Same Warehouse"
+  },
+  {
+   "default": "HSM-TRK-.YYYY.-.#####",
+   "description": "The customer-facing number generated on submit. Frappe naming-series syntax, e.g. HSM-TRK-.YYYY.-.#####",
+   "fieldname": "tracking_number_series",
+   "fieldtype": "Data",
+   "label": "Tracking Number Series",
+   "reqd": 1
+  },
+  {
+   "fieldname": "capacity_section",
+   "fieldtype": "Section Break",
+   "label": "Warehouse Capacity"
+  },
+  {
+   "default": "Block the receipt",
+   "description": "Block is safest. Warn only lets the receipt through and says so.",
+   "fieldname": "capacity_enforcement",
+   "fieldtype": "Select",
+   "label": "When a warehouse would overflow",
+   "options": "Block the receipt\nWarn only\nDo not check",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "description": "A Warehouse Unit whose total capacity is 0 has not had its size entered yet. With this ticked such a warehouse accepts goods instead of refusing everything.",
+   "fieldname": "treat_zero_capacity_as_unlimited",
+   "fieldtype": "Check",
+   "label": "Treat zero capacity as not configured"
+  },
+  {
+   "fieldname": "column_break_cap",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "85",
+   "description": "Shown on the Receipt Note as an amber warning.",
+   "fieldname": "capacity_warning_threshold",
+   "fieldtype": "Percent",
+   "label": "Warn above this utilisation"
+  },
+  {
+   "fieldname": "movement_section",
+   "fieldtype": "Section Break",
+   "label": "Movement"
+  },
+  {
+   "default": "IMPORT",
+   "fieldname": "default_shipment_mode",
+   "fieldtype": "Select",
+   "label": "Default Shipment Mode",
+   "options": "IMPORT\nEXPORT\nRE-EXPORT\nLOCAL"
+  },
+  {
+   "fieldname": "column_break_mov",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "LAND",
+   "description": "Used when the origin warehouse has no default of its own.",
+   "fieldname": "fallback_mode_of_transport",
+   "fieldtype": "Select",
+   "label": "Fallback Mode of Transport",
+   "options": "AIR\nSEA\nLAND"
+  },
+  {
+   "fieldname": "billing_section",
+   "fieldtype": "Section Break",
+   "label": "Storage Billing"
+  },
+  {
+   "description": "The non-stock service item storage is invoiced on. Created automatically if it does not exist.",
+   "fieldname": "storage_item",
+   "fieldtype": "Link",
+   "label": "Storage Service Item",
+   "options": "Item"
+  },
+  {
+   "description": "The billable unit, one cubic metre for one day. Must allow fractions \u2014 a whole-number UOM makes every storage invoice fail.",
+   "fieldname": "storage_uom",
+   "fieldtype": "Link",
+   "label": "Storage UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "column_break_bill",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Both days inclusive",
+   "description": "Decides what the customer pays. Goods in on the 1st and out on the 12th are 12 days inclusive, or 11 charging only the day in.",
+   "fieldname": "day_count_method",
+   "fieldtype": "Select",
+   "label": "How storage days are counted",
+   "options": "Both days inclusive\nCharge the day in, not the day out\nExclude both days",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "description": "A stay shorter than this is billed as this many days. Zero for no minimum.",
+   "fieldname": "minimum_chargeable_days",
+   "fieldtype": "Int",
+   "label": "Minimum Chargeable Days"
+  },
+  {
+   "fieldname": "accrual_section",
+   "fieldtype": "Section Break",
+   "label": "Automatic Accrual"
+  },
+  {
+   "default": "0",
+   "description": "Creates Storage Charges for the previous month. It never creates an invoice \u2014 that stays a human action.",
+   "fieldname": "enable_monthly_accrual",
+   "fieldtype": "Check",
+   "label": "Accrue storage automatically each month"
+  },
+  {
+   "default": "1",
+   "fieldname": "accrual_day_of_month",
+   "fieldtype": "Int",
+   "label": "Run on day of month"
+  },
+  {
+   "fieldname": "column_break_accr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Report and skip",
+   "description": "Report and skip lets the rest of the month accrue and logs the gap. Either way it is never billed at zero.",
+   "fieldname": "missing_rate_action",
+   "fieldtype": "Select",
+   "label": "When a customer has no storage rate",
+   "options": "Report and skip\nStop"
+  }
+ ],
+ "grid_page_length": 50,
+ "icon": "fa fa-cog",
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-09-10 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Logistics Management",
+ "name": "Warehouse Management Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

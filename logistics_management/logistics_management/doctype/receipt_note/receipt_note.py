@@ -7,14 +7,12 @@ from frappe.model.document import Document
 from frappe.model.naming import make_autoname
 from frappe.utils import cint, flt
 
-from logistics_management.wms import capacity
+from logistics_management.wms import capacity, settings
 from logistics_management.wms.movement import (
 	STATUS_DELIVERED,
 	STATUS_IN_MOVEMENT,
 	STATUS_IN_WAREHOUSE,
 )
-
-CBM_PER_CUBIC_CM = 1000000.0
 
 
 class ReceiptNote(Document):
@@ -26,6 +24,7 @@ class ReceiptNote(Document):
 	"""
 
 	def validate(self):
+		self.apply_settings_defaults()
 		self.set_default_company()
 		self.calculate_package_cbm()
 		self.sync_shipper_name()
@@ -64,6 +63,17 @@ class ReceiptNote(Document):
 
 	# ── calculation ────────────────────────────────────────────────────────────────
 
+	def apply_settings_defaults(self):
+		"""Defaults that are policy, not code: cargo type, receipt mode, disposition."""
+		if not self.is_new():
+			return
+		if not self.cargo_type:
+			self.cargo_type = settings.get("default_cargo_type")
+		if not self.receipt_mode:
+			self.receipt_mode = settings.get("default_receipt_mode")
+		if not self.disposition:
+			self.disposition = settings.get("default_disposition")
+
 	def set_default_company(self):
 		"""Fill the company when a caller has not.
 
@@ -83,12 +93,15 @@ class ReceiptNote(Document):
 		"""
 		total_cbm = 0.0
 		total_packages = 0
+		divisor = settings.dimension_divisor()
 
 		for row in self.package_details or []:
 			qty = cint(row.qty) or 1
 			row.qty = qty
+			# The divisor depends on the unit staff type dimensions in, which is a
+			# setting -- it used to assume centimetres in a module constant.
 			unit_cbm = (
-				flt(row.length) * flt(row.width) * flt(row.height) / CBM_PER_CUBIC_CM
+				flt(row.length) * flt(row.width) * flt(row.height) / divisor
 				if flt(row.length) > 0 and flt(row.width) > 0 and flt(row.height) > 0
 				else 0.0
 			)
@@ -142,4 +155,4 @@ class ReceiptNote(Document):
 		"""
 		if self.tracking_no:
 			return
-		self.tracking_no = make_autoname("HSM-TRK-.YYYY.-.#####")
+		self.tracking_no = make_autoname(settings.get("tracking_number_series"))

@@ -289,9 +289,12 @@ doc_events = {
 # Accrual only — it creates Storage Charges, never invoices. Money documents stay a
 # human action: HSM invoice monthly and want to read the figures first. 02:00 on the
 # 1st, so the month it accrues is closed.
+# Runs daily and returns immediately unless Warehouse Management Settings has accrual
+# switched on and today is the chosen day -- so the schedule is configurable without a
+# deploy, and it does nothing at all until a site opts in.
 scheduler_events = {
 	"cron": {
-		"0 2 1 * *": [
+		"0 2 * * *": [
 			"logistics_management.wms.storage_billing.accrue_last_month",
 		],
 	},

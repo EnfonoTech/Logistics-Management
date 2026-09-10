@@ -18,7 +18,7 @@ import frappe
 from frappe import _
 from frappe.utils import cint, cstr, flt, getdate, nowdate
 
-from logistics_management.wms import capacity
+from logistics_management.wms import capacity, settings
 
 MOVEABLE_DISPOSITION = "Move to Other Warehouse"
 
@@ -52,7 +52,7 @@ def create_console_job_from_receipts(
 	job.job_type = "CONSOLE"
 	job.company = company
 	job.mode_of_transport = mode_of_transport
-	job.shipment_mode = shipment_mode or "IMPORT"
+	job.shipment_mode = shipment_mode or settings.get("default_shipment_mode")
 	job.date = movement_date
 	job.etd = movement_date
 	job.place_of_receipt = origin
@@ -248,7 +248,7 @@ def _default_transport(warehouse_unit):
 	"""The origin warehouse's own default -- configuration, not a guess from its name."""
 	return (
 		frappe.db.get_value("Warehouse Unit", warehouse_unit, "default_mode_of_transport")
-		or "LAND"
+		or settings.get("fallback_mode_of_transport")
 	)
 
 

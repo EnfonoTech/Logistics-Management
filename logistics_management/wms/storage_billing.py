@@ -12,25 +12,51 @@ import frappe
 from frappe import _
 from frappe.utils import add_months, cint, flt, get_first_day, get_last_day, getdate, nowdate
 
-from logistics_management.wms.rates import calculate_storage_charge, find_storage_rate
+from logistics_management.wms import settings
+from logistics_management.wms.rates import (
+	calculate_storage_charge,
+	find_storage_rate,
+	get_storage_rate,
+)
 
-STORAGE_ITEM_CODE = "WMS-STORAGE"
-# The billable unit is one cubic metre stored for one day, and it is almost never a
-# whole number. ERPNext's stock UOMs "Nos"/"Unit" carry must_be_whole_number = 1, so
-# an invoice line of 334.8 CBM-days is refused outright with UOMMustBeIntegerError.
-STORAGE_UOM = "CBM-Day"
 STORED_DISPOSITION = "Store at Same Warehouse"
 
 
+def storage_item_code():
+	"""The non-stock service item storage is invoiced on. A setting, not a constant."""
+	return settings.get("storage_item")
+
+
+def storage_uom_name():
+	"""The billable unit: one cubic metre for one day.
+
+	Almost never a whole number, and ERPNext's "Nos"/"Unit" carry must_be_whole_number,
+	which refuses a line of 334.8 outright with UOMMustBeIntegerError.
+	"""
+	return settings.get("storage_uom")
+
+
 def chargeable_days(entry_date, exit_date, period_start, period_end):
-	"""Inclusive day count for the part of a stay that falls inside the period."""
+	"""Chargeable days for the part of a stay that falls inside the period.
+
+	How the two end days are counted is a billing decision, not arithmetic, so it comes
+	from Warehouse Management Settings. It used to be a hardcoded "+ 1".
+	"""
 	entry_date, period_start, period_end = getdate(entry_date), getdate(period_start), getdate(period_end)
 	window_start = max(entry_date, period_start)
 	window_end = min(getdate(exit_date), period_end) if exit_date else period_end
 
 	if window_end < window_start:
 		return 0, None, None
-	return (window_end - window_start).days + 1, window_start, window_end
+
+	days = (window_end - window_start).days + settings.day_count_offset()
+	days = max(0, days)
+
+	minimum = settings.minimum_chargeable_days()
+	if minimum and days:
+		days = max(days, minimum)
+
+	return days, window_start, window_end
 
 
 @frappe.whitelist()
@@ -91,6 +117,9 @@ def generate_storage_charges(period_start=None, period_end=None, company=None, c
 		# without a rate must not abort the whole month's accrual for everyone else.
 		rate = find_storage_rate(r.consignee, r.cargo_type, on_date=window_start)
 		if not rate:
+			if settings.stop_on_missing_rate():
+				# get_ raises with the full explanation of what to create.
+				get_storage_rate(r.consignee, r.cargo_type, on_date=window_start)
 			skipped.append((r.name, _("no usable storage rate for {0} / {1}").format(
 				r.consignee, r.cargo_type)))
 			continue
@@ -169,7 +198,7 @@ def create_storage_invoices(period_start, period_end, company, customer=None):
 			period_start, period_end,
 		))
 
-	_ensure_storage_item()
+	item_code = _ensure_storage_item()
 
 	by_customer = {}
 	for c in charges:
@@ -200,7 +229,7 @@ def create_storage_invoices(period_start, period_end, company, customer=None):
 			exact = cbm_days and abs(cbm_days * flt(c.rate_per_cbm_per_day) - flt(c.amount)) < 0.005
 
 			si.append("items", {
-				"item_code": STORAGE_ITEM_CODE,
+				"item_code": item_code,
 				"uom": _ensure_storage_uom(),
 				"conversion_factor": 1,
 				"qty": cbm_days if exact else 1,
@@ -232,18 +261,20 @@ def _ensure_storage_item():
 	"Income Account None does not belong to Company X", the same failure that broke the
 	3PL invoices.
 	"""
-	if frappe.db.exists("Item", STORAGE_ITEM_CODE):
-		# An item created before CBM-Day existed sits on Nos, which is whole-number only.
-		if frappe.db.get_value("Item", STORAGE_ITEM_CODE, "stock_uom") != STORAGE_UOM:
-			frappe.db.set_value("Item", STORAGE_ITEM_CODE, "stock_uom", _ensure_storage_uom())
-		return STORAGE_ITEM_CODE
+	code = storage_item_code()
+	if frappe.db.exists("Item", code):
+		# An item created before the CBM-Day unit existed sits on Nos, which is
+		# whole-number only and refuses every fractional storage line.
+		if frappe.db.get_value("Item", code, "stock_uom") != storage_uom_name():
+			frappe.db.set_value("Item", code, "stock_uom", _ensure_storage_uom())
+		return code
 
 	item_group = "Services" if frappe.db.exists("Item Group", "Services") else \
 		frappe.db.get_value("Item Group", {"is_group": 0}, "name") or "All Item Groups"
 	uom = _ensure_storage_uom()
 
 	item = frappe.new_doc("Item")
-	item.item_code = STORAGE_ITEM_CODE
+	item.item_code = code
 	item.item_name = "Warehouse Storage"
 	item.description = "Warehouse storage billed per CBM per day"
 	item.item_group = item_group
@@ -258,16 +289,17 @@ def _ensure_storage_item():
 
 def _ensure_storage_uom():
 	"""A UOM that permits fractions, because CBM-days almost never come out whole."""
-	if not frappe.db.exists("UOM", STORAGE_UOM):
+	name = storage_uom_name()
+	if not frappe.db.exists("UOM", name):
 		frappe.get_doc({
 			"doctype": "UOM",
-			"uom_name": STORAGE_UOM,
+			"uom_name": name,
 			"must_be_whole_number": 0,
 		}).insert(ignore_permissions=True)
-	elif frappe.db.get_value("UOM", STORAGE_UOM, "must_be_whole_number"):
+	elif frappe.db.get_value("UOM", name, "must_be_whole_number"):
 		# Someone ticked it by hand; a whole-number UOM cannot carry 334.8 CBM-days.
-		frappe.db.set_value("UOM", STORAGE_UOM, "must_be_whole_number", 0)
-	return STORAGE_UOM
+		frappe.db.set_value("UOM", name, "must_be_whole_number", 0)
+	return name
 
 
 def stamp_charges_on_invoice_submit(doc, method=None):
@@ -296,7 +328,15 @@ def _set_invoiced_flag(doc, invoiced):
 
 
 def accrue_last_month():
-	"""Monthly scheduler entry. Accrues only -- it never creates an invoice."""
+	"""Scheduler entry, run daily and gated on the settings.
+
+	Off by default: a client site should opt in before anything creates documents on a
+	timer. Accrues only -- it never creates an invoice.
+	"""
+	if not cint(settings.get("enable_monthly_accrual")):
+		return
+	if getdate(nowdate()).day != cint(settings.get("accrual_day_of_month")):
+		return
 	try:
 		result = generate_storage_charges()
 		if result.skipped:
