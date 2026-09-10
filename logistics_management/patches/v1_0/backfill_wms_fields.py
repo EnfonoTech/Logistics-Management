@@ -16,7 +16,6 @@ def execute():
 	backfill_package_qty()
 	backfill_receipt_note()
 	recompute_warehouse_derived_capacity()
-	map_delivery_mode()
 
 
 def backfill_package_qty():
@@ -122,38 +121,4 @@ def recompute_warehouse_derived_capacity():
 				"utilisation_pct": (occupied / total * 100.0) if total else 0.0,
 			},
 			update_modified=False,
-		)
-
-
-def map_delivery_mode():
-	"""Waybill Console.delivery_mode was free text and is now a two-option Select.
-
-	Recognisable values are mapped; anything else is logged and left alone so the stored
-	text is not destroyed.
-	"""
-	if not frappe.db.has_column("Waybill Console", "delivery_mode"):
-		return
-
-	rows = frappe.get_all(
-		"Waybill Console",
-		filters={"delivery_mode": ["not in", [None, "", "Delivery", "Collection"]]},
-		fields=["name", "delivery_mode"],
-	)
-
-	unmapped = []
-	for r in rows:
-		text = (r.delivery_mode or "").strip().lower()
-		if text.startswith("deliver"):
-			frappe.db.set_value("Waybill Console", r.name, "delivery_mode", "Delivery",
-			                    update_modified=False)
-		elif text.startswith("collect") or text.startswith("pick"):
-			frappe.db.set_value("Waybill Console", r.name, "delivery_mode", "Collection",
-			                    update_modified=False)
-		else:
-			unmapped.append(f"{r.name}: {r.delivery_mode}")
-
-	if unmapped:
-		frappe.log_error(
-			"Waybill Console delivery_mode values left as-is:\n" + "\n".join(unmapped),
-			"WMS backfill: unmapped delivery mode",
 		)

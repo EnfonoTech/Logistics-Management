@@ -187,10 +187,17 @@ class TestJobDetails(FrappeTestCase):
 		self.assertEqual(receipt.current_warehouse_unit, self.destination)
 
 		movement.record_delivery(
-			result.waybill_consoles[0], delivery_mode="Delivery", collected_by="Driver",
+			result.waybill_consoles[0], delivery_mode="Collection", collected_by="Driver",
 			create_pod=0,
 		)
 		self.assertAlmostEqual(testing.available(self.destination), dest_full, places=6)
+
+		# The new WMS field, not the legacy delivery_mode: on hsm-erp that legacy field
+		# holds transport terms (LAND, DOOR TO DOOR) on 49 of 831 live records, so it
+		# stays free text.
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertEqual(console.wms_delivery_mode, "Collection")
+		self.assertTrue(console.wms_delivered)
 
 		receipt.reload()
 		self.assertEqual(receipt.wms_status, "Delivered")

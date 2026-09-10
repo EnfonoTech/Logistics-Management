@@ -18,6 +18,7 @@
   "wms_status",
   "column_break_wms",
   "wms_delivered",
+  "wms_delivery_mode",
   "wms_delivery_date",
   "wms_collected_by",
   "column_break_qtdl",
@@ -48,10 +49,10 @@
    "options": "Sales Person"
   },
   {
+   "description": "Free text, historically holding transport terms such as LAND or DOOR TO DOOR. New WMS deliveries use Delivery Mode below.",
    "fieldname": "delivery_mode",
-   "fieldtype": "Select",
-   "label": "Delivery Mode",
-   "options": "\nDelivery\nCollection"
+   "fieldtype": "Data",
+   "label": "Delivery Mode (legacy)"
   },
   {
    "fieldname": "invoice_status",
@@ -152,6 +153,13 @@
    "label": "Collected By",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "description": "Delivery to the customer, or collection by the customer.",
+   "fieldname": "wms_delivery_mode",
+   "fieldtype": "Select",
+   "label": "Delivery Mode",
+   "options": "\nDelivery\nCollection"
   }
  ],
  "index_web_pages_for_search": 1,

@@ -146,7 +146,7 @@ def record_delivery(waybill_console, delivery_date=None, delivery_mode=None, col
 			"wms_status": STATUS_DELIVERED,
 			"wms_delivered": 1,
 			"wms_delivery_date": delivery_date,
-			"delivery_mode": delivery_mode or "Delivery",
+			"wms_delivery_mode": delivery_mode or "Delivery",
 			"wms_collected_by": collected_by or "",
 		},
 		update_modified=False,
