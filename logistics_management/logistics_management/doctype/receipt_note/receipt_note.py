@@ -26,6 +26,7 @@ class ReceiptNote(Document):
 	"""
 
 	def validate(self):
+		self.set_default_company()
 		self.calculate_package_cbm()
 		self.sync_shipper_name()
 		self.warn_if_over_capacity()
@@ -62,6 +63,17 @@ class ReceiptNote(Document):
 		)
 
 	# ── calculation ────────────────────────────────────────────────────────────────
+
+	def set_default_company(self):
+		"""Fill the company when a caller has not.
+
+		The field carries no `default` in the JSON on purpose: ":Company" is a child-row
+		idiom and on a parent doctype it makes frappe.new_doc() raise OperationalError
+		1054, so the form never opens. ERPNext fills company from the client script; this
+		covers server-side inserts and imports too.
+		"""
+		if not self.company:
+			self.company = frappe.defaults.get_user_default("Company") or frappe.defaults.get_global_default("company")
 
 	def calculate_package_cbm(self):
 		"""Row CBM is length x width x height / 1e6 x qty, and the total is their sum.

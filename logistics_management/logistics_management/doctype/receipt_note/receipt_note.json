@@ -233,12 +233,12 @@
    "reqd": 1
   },
   {
-   "default": ":Company",
    "fieldname": "company",
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Company",
    "options": "Company",
+   "remember_last_selected_value": 1,
    "reqd": 1
   },
   {

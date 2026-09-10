@@ -6,6 +6,15 @@
 const CBM_PER_CUBIC_CM = 1000000;
 
 frappe.ui.form.on("Receipt Note", {
+    onload(frm) {
+        // The company field carries no `default` in the DocType: ":Company" is a
+        // child-row idiom that breaks frappe.new_doc() on a parent. ERPNext fills it
+        // from the user's default here instead, same as Sales Invoice does.
+        if (frm.is_new() && !frm.doc.company) {
+            frm.set_value("company", frappe.defaults.get_user_default("Company"));
+        }
+    },
+
     refresh(frm) {
         show_warehouse_space(frm);
         show_status_indicator(frm);
