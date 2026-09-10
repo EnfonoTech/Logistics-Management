@@ -37,17 +37,31 @@ def execute():
 			doc.set(fieldname, value)
 			changed = True
 
-	# Point at the storage item and unit this site already has, if they differ from the
-	# shipped defaults -- an earlier release created them under fixed names.
-	for fieldname, doctype in (("storage_item", "Item"), ("storage_uom", "UOM")):
-		value = doc.get(fieldname)
-		if value and not frappe.db.exists(doctype, value):
-			# Named but absent: leave it. _ensure_* creates it on first use.
-			continue
+	# 🔴 storage_item and storage_uom are Link fields, so naming a record that does not
+	# exist yet makes _validate_links() throw and the whole patch fail -- which is exactly
+	# what happened on a site that had never billed storage. ignore_validate does NOT
+	# cover link validation; it is a separate step in _save().
+	#
+	# Create them instead of pointing at nothing. Both are trivial and idempotent: a
+	# non-stock service item and a fractional unit.
+	try:
+		from logistics_management.wms.storage_billing import (
+			_ensure_storage_item,
+			_ensure_storage_uom,
+		)
+
+		doc.storage_uom = _ensure_storage_uom()
+		doc.storage_item = _ensure_storage_item()
+		changed = True
+	except Exception:
+		# Never abort a migrate over this -- the accessors fall back to the same names,
+		# and _ensure_* runs again on the first invoice.
+		frappe.log_error(frappe.get_traceback(), "WMS settings: storage item/UOM not created")
+		doc.storage_item = None
+		doc.storage_uom = None
 
 	if changed:
 		doc.flags.ignore_permissions = True
-		doc.flags.ignore_validate = True   # the form's own checks need the UOM to exist
 		doc.save()
 
 	_add_settings_link()
