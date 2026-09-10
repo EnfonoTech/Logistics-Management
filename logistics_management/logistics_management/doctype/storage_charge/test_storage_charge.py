@@ -117,6 +117,84 @@ class TestStorageCharge(FrappeTestCase):
 		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
 		self.assertTrue(frappe.db.exists("Storage Charge", {"receipt_note": payer.name}))
 
+	# ── invoicing ─────────────────────────────────────────────────────────────────
+
+	def test_invoice_accepts_a_fractional_cbm_day_quantity(self):
+		"""CBM-days are almost never whole, and ERPNext refuses fractions on Nos.
+
+		6.48 CBM stored 31 days is 200.88 CBM-days, which raised
+		UOMMustBeIntegerError until the storage item moved to a CBM-Day UOM.
+		"""
+		receipt = self._stored_receipt(cbm_qty=6, cons_date="2026-08-01")
+		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-12",
+		                    update_modified=False)
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+
+		invoices = storage_billing.create_storage_invoices(
+			"2026-08-01", "2026-08-31", testing.company()
+		)
+		self.assertTrue(invoices)
+
+		si = frappe.get_doc("Sales Invoice", invoices[0])
+		row = si.items[0]
+		# 6 CBM x 12 days x QAR 3.00 = 216.00, billed as 72 CBM-days at 3.00
+		self.assertEqual(row.uom, "CBM-Day")
+		self.assertAlmostEqual(flt(row.qty), 72.0, places=3)
+		self.assertAlmostEqual(flt(row.rate), 3.0, places=2)
+		self.assertAlmostEqual(flt(row.amount), 216.0, places=2)
+		self.assertTrue(row.wms_storage_charge)
+
+	def test_invoice_line_qty_may_be_a_true_fraction(self):
+		"""The regression that actually bit: a non-integer quantity."""
+		receipt = self._stored_receipt(cbm_qty=1, cons_date="2026-08-01")
+		frappe.db.sql(
+			"update `tabReceipt Note` set total_cbm = 6.48 where name = %s", (receipt.name,)
+		)
+		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-31",
+		                    update_modified=False)
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+
+		invoices = storage_billing.create_storage_invoices(
+			"2026-08-01", "2026-08-31", testing.company()
+		)
+		si = frappe.get_doc("Sales Invoice", invoices[0])
+		qty = flt(si.items[0].qty)
+		self.assertAlmostEqual(qty, 6.48 * 31, places=2)
+		self.assertNotEqual(qty, int(qty), "the quantity under test must be fractional")
+
+	def test_charges_are_stamped_on_submit_and_released_on_cancel(self):
+		"""The traceability warehouse_3pl's Billing Transaction never had."""
+		receipt = self._stored_receipt(cbm_qty=4, cons_date="2026-08-01")
+		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-10",
+		                    update_modified=False)
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+		invoices = storage_billing.create_storage_invoices(
+			"2026-08-01", "2026-08-31", testing.company()
+		)
+
+		si = frappe.get_doc("Sales Invoice", invoices[0])
+		si.submit()
+		charges = frappe.get_all("Storage Charge", filters={"sales_invoice": si.name},
+		                         fields=["name", "invoiced"])
+		self.assertTrue(charges)
+		self.assertTrue(all(c.invoiced for c in charges))
+
+		si.cancel()
+		released = frappe.get_all("Storage Charge", filters={"name": ["in", [c.name for c in charges]]},
+		                          fields=["invoiced"])
+		self.assertFalse(any(c.invoiced for c in released))
+
+	def test_invoicing_twice_finds_nothing_to_bill(self):
+		receipt = self._stored_receipt(cbm_qty=4, cons_date="2026-08-01")
+		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-10",
+		                    update_modified=False)
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+		storage_billing.create_storage_invoices("2026-08-01", "2026-08-31", testing.company())
+		self.assertRaises(
+			frappe.ValidationError, storage_billing.create_storage_invoices,
+			"2026-08-01", "2026-08-31", testing.company(),
+		)
+
 	# ── the invoiced guard ────────────────────────────────────────────────────────
 
 	def test_amount_is_always_recomputed_from_the_inputs(self):

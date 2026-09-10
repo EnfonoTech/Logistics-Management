@@ -15,6 +15,10 @@ from frappe.utils import add_months, cint, flt, get_first_day, get_last_day, get
 from logistics_management.wms.rates import calculate_storage_charge, find_storage_rate
 
 STORAGE_ITEM_CODE = "WMS-STORAGE"
+# The billable unit is one cubic metre stored for one day, and it is almost never a
+# whole number. ERPNext's stock UOMs "Nos"/"Unit" carry must_be_whole_number = 1, so
+# an invoice line of 334.8 CBM-days is refused outright with UOMMustBeIntegerError.
+STORAGE_UOM = "CBM-Day"
 STORED_DISPOSITION = "Store at Same Warehouse"
 
 
@@ -190,6 +194,8 @@ def create_storage_invoices(period_start, period_end, company):
 
 			si.append("items", {
 				"item_code": STORAGE_ITEM_CODE,
+				"uom": _ensure_storage_uom(),
+				"conversion_factor": 1,
 				"qty": cbm_days if exact else 1,
 				"rate": flt(c.rate_per_cbm_per_day) if exact else flt(c.amount),
 				"description": description,
@@ -220,11 +226,14 @@ def _ensure_storage_item():
 	3PL invoices.
 	"""
 	if frappe.db.exists("Item", STORAGE_ITEM_CODE):
+		# An item created before CBM-Day existed sits on Nos, which is whole-number only.
+		if frappe.db.get_value("Item", STORAGE_ITEM_CODE, "stock_uom") != STORAGE_UOM:
+			frappe.db.set_value("Item", STORAGE_ITEM_CODE, "stock_uom", _ensure_storage_uom())
 		return STORAGE_ITEM_CODE
 
 	item_group = "Services" if frappe.db.exists("Item Group", "Services") else \
 		frappe.db.get_value("Item Group", {"is_group": 0}, "name") or "All Item Groups"
-	uom = "Nos" if frappe.db.exists("UOM", "Nos") else frappe.db.get_value("UOM", {}, "name")
+	uom = _ensure_storage_uom()
 
 	item = frappe.new_doc("Item")
 	item.item_code = STORAGE_ITEM_CODE
@@ -238,6 +247,20 @@ def _ensure_storage_item():
 	item.include_item_in_manufacturing = 0
 	item.insert(ignore_permissions=True)
 	return item.name
+
+
+def _ensure_storage_uom():
+	"""A UOM that permits fractions, because CBM-days almost never come out whole."""
+	if not frappe.db.exists("UOM", STORAGE_UOM):
+		frappe.get_doc({
+			"doctype": "UOM",
+			"uom_name": STORAGE_UOM,
+			"must_be_whole_number": 0,
+		}).insert(ignore_permissions=True)
+	elif frappe.db.get_value("UOM", STORAGE_UOM, "must_be_whole_number"):
+		# Someone ticked it by hand; a whole-number UOM cannot carry 334.8 CBM-days.
+		frappe.db.set_value("UOM", STORAGE_UOM, "must_be_whole_number", 0)
+	return STORAGE_UOM
 
 
 def stamp_charges_on_invoice_submit(doc, method=None):
