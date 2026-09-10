@@ -16,7 +16,7 @@ import json
 
 import frappe
 from frappe import _
-from frappe.utils import cstr, flt, getdate, nowdate
+from frappe.utils import cint, cstr, flt, getdate, nowdate
 
 from logistics_management.wms import capacity
 
@@ -83,7 +83,7 @@ def create_console_job_from_receipts(
 		total_cbm += flt(r.total_cbm)
 
 	job.volume = total_cbm
-	job.number_of_packages = cstr(sum(flt(packages.get(r.name, {}).get("qty", 0)) for r in receipts))
+	job.number_of_packages = cstr(sum(cint(packages.get(r.name, {}).get("qty", 0)) for r in receipts))
 	job.insert()
 
 	consoles = [_ensure_waybill_console(r, job, packages.get(r.name)) for r in receipts]
@@ -196,8 +196,9 @@ def _package_summary(receipt_names):
 		fields=["parent", "type", "qty"],
 	)
 	for row in rows:
-		entry = summary.setdefault(row.parent, frappe._dict(qty=0.0, type_set=set()))
-		entry.qty += flt(row.qty) or 1.0
+		entry = summary.setdefault(row.parent, frappe._dict(qty=0, type_set=set()))
+		# Whole packages. flt here made a waybill read "7.0 packages".
+		entry.qty += cint(row.qty) or 1
 		if row.type:
 			entry.type_set.add(row.type)
 
@@ -221,7 +222,7 @@ def _ensure_waybill_console(receipt, job, pkg):
 	values = {
 		"customer": receipt.consignee,
 		"shipper": receipt.shipper_name or receipt.shipper or "",
-		"no_of_packages": cstr(pkg.get("qty") or ""),
+		"no_of_packages": cstr(cint(pkg.get("qty")) or ""),
 		"volume": cstr(flt(receipt.total_cbm)),
 		"job_details": job.name,
 		"wms_receipt_note": receipt.name,

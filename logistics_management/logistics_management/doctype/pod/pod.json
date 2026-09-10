@@ -127,13 +127,15 @@
    "fieldtype": "Column Break"
   },
   {
-   "fetch_from": "job_details.shipper_name",
+   "fetch_from": "waybill_console.shipper",
+   "fetch_if_empty": 1,
    "fieldname": "shipper_name",
    "fieldtype": "Data",
    "label": "Shipper Name"
   },
   {
-   "fetch_from": "job_details.job_id",
+   "fetch_from": "waybill_console.customer",
+   "fetch_if_empty": 1,
    "fieldname": "customer_name",
    "fieldtype": "Data",
    "label": "Customer Name"
@@ -163,7 +165,8 @@
    "label": "Contact Number"
   },
   {
-   "fetch_from": "job_details.number_of_packages",
+   "fetch_from": "waybill_console.no_of_packages",
+   "fetch_if_empty": 1,
    "fieldname": "number_of_packages",
    "fieldtype": "Data",
    "label": "Number of Packages"
