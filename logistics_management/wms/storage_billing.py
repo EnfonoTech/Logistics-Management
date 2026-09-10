@@ -135,7 +135,7 @@ def generate_storage_charges(period_start=None, period_end=None, company=None, c
 
 
 @frappe.whitelist()
-def create_storage_invoices(period_start, period_end, company):
+def create_storage_invoices(period_start, period_end, company, customer=None):
 	"""One draft Sales Invoice per customer for the period's uninvoiced storage.
 
 	Left in draft on purpose. The charges are stamped as invoiced by the Sales Invoice's
@@ -145,22 +145,29 @@ def create_storage_invoices(period_start, period_end, company):
 	frappe.has_permission("Sales Invoice", "create", throw=True)
 	period_start, period_end = getdate(period_start), getdate(period_end)
 
+	filters = {
+		"period_start": period_start,
+		"period_end": period_end,
+		"company": company,
+		"invoiced": 0,
+		"sales_invoice": ["in", [None, ""]],
+	}
+	if customer:
+		filters["customer"] = customer
+
 	charges = frappe.get_all(
 		"Storage Charge",
-		filters={
-			"period_start": period_start,
-			"period_end": period_end,
-			"company": company,
-			"invoiced": 0,
-			"sales_invoice": ["in", [None, ""]],
-		},
+		filters=filters,
 		fields=["name", "customer", "receipt_note", "cbm", "days", "rate_per_cbm_per_day",
 		        "minimum_charge", "amount", "cargo_type", "warehouse_unit"],
 		order_by="customer, receipt_note",
 	)
 	if not charges:
-		frappe.throw(_("No uninvoiced storage charges for {0} between {1} and {2}.").format(
-			company, period_start, period_end))
+		frappe.throw(_("No uninvoiced storage charges for {0}{1} between {2} and {3}.").format(
+			company,
+			_(" and customer {0}").format(customer) if customer else "",
+			period_start, period_end,
+		))
 
 	_ensure_storage_item()
 

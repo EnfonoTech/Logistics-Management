@@ -131,11 +131,13 @@ class TestStorageCharge(FrappeTestCase):
 		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
 
 		invoices = storage_billing.create_storage_invoices(
-			"2026-08-01", "2026-08-31", testing.company()
+			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
 		)
-		self.assertTrue(invoices)
+		self.assertEqual(len(invoices), 1)
 
 		si = frappe.get_doc("Sales Invoice", invoices[0])
+		self.assertEqual(si.customer, self.customer)
+		self.assertEqual(len(si.items), 1)
 		row = si.items[0]
 		# 6 CBM x 12 days x QAR 3.00 = 216.00, billed as 72 CBM-days at 3.00
 		self.assertEqual(row.uom, "CBM-Day")
@@ -155,9 +157,10 @@ class TestStorageCharge(FrappeTestCase):
 		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
 
 		invoices = storage_billing.create_storage_invoices(
-			"2026-08-01", "2026-08-31", testing.company()
+			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
 		)
 		si = frappe.get_doc("Sales Invoice", invoices[0])
+		self.assertEqual(si.customer, self.customer)
 		qty = flt(si.items[0].qty)
 		self.assertAlmostEqual(qty, 6.48 * 31, places=2)
 		self.assertNotEqual(qty, int(qty), "the quantity under test must be fractional")
@@ -169,7 +172,7 @@ class TestStorageCharge(FrappeTestCase):
 		                    update_modified=False)
 		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
 		invoices = storage_billing.create_storage_invoices(
-			"2026-08-01", "2026-08-31", testing.company()
+			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
 		)
 
 		si = frappe.get_doc("Sales Invoice", invoices[0])
@@ -189,10 +192,12 @@ class TestStorageCharge(FrappeTestCase):
 		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-10",
 		                    update_modified=False)
 		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
-		storage_billing.create_storage_invoices("2026-08-01", "2026-08-31", testing.company())
+		storage_billing.create_storage_invoices(
+			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
+		)
 		self.assertRaises(
 			frappe.ValidationError, storage_billing.create_storage_invoices,
-			"2026-08-01", "2026-08-31", testing.company(),
+			"2026-08-01", "2026-08-31", testing.company(), self.customer,
 		)
 
 	# ── the invoiced guard ────────────────────────────────────────────────────────
