@@ -271,6 +271,10 @@ fixtures = [
 # Warehouse management (wms/) — see wms/README.md
 # ─────────────────────────────────────────────────────────────────────────────────
 
+# A fresh site marks every existing patch as executed without running it, so the master
+# data seed cannot live in a patch alone -- it would be recorded as done and never fire.
+after_install = "logistics_management.wms.setup.after_install"
+
 # Sales Invoice belongs to ERPNext, so extending it is exactly what doc_events is for.
 # Stamping the charge on submit and releasing it on cancel is what gives storage the
 # traceability warehouse_3pl's Billing Transaction never had: without it the same work
