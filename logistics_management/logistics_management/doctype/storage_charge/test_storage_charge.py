@@ -14,6 +14,11 @@ class TestStorageCharge(FrappeTestCase):
 		self.customer = testing.customer("Storage")
 		self.wh = testing.warehouse("Storage", capacity_cbm=1000.0)
 		testing.cargo_type("General")
+		# Rollback is unreliable for this class -- ERPNext commits inside Sales Invoice
+		# submit -- so clean up explicitly instead of relying on the test transaction.
+		for si in frappe.get_all("Sales Invoice",
+		                         filters={"customer": self.customer, "docstatus": 0}, pluck="name"):
+			frappe.delete_doc("Sales Invoice", si, force=True, ignore_permissions=True)
 		frappe.db.delete("Storage Charge", {"customer": self.customer})
 		frappe.db.delete("Warehouse Storage Rate", {"customer": self.customer})
 		testing.storage_rate(self.customer, "General", rate=3.0, valid_from="2020-01-01")
@@ -118,6 +123,22 @@ class TestStorageCharge(FrappeTestCase):
 		self.assertTrue(frappe.db.exists("Storage Charge", {"receipt_note": payer.name}))
 
 	# ── invoicing ─────────────────────────────────────────────────────────────────
+	def _charge_row(self, si, receipt):
+		"""The invoice line raised from this receipt's charge.
+
+		Not si.items[0]: ERPNext commits inside Sales Invoice submit, which breaks
+		FrappeTestCase's per-test rollback for the whole class, so charges from earlier
+		tests and earlier runs survive and share the invoice. Locate our own row.
+		"""
+		charge = frappe.db.get_value(
+			"Storage Charge", {"receipt_note": receipt.name, "period_start": "2026-08-01"}, "name"
+		)
+		self.assertTrue(charge, "no storage charge was accrued for this receipt")
+		rows = [r for r in si.items if r.get("wms_storage_charge") == charge]
+		self.assertEqual(len(rows), 1, f"expected exactly one line for {charge}")
+		return rows[0]
+
+
 
 	def test_invoice_accepts_a_fractional_cbm_day_quantity(self):
 		"""CBM-days are almost never whole, and ERPNext refuses fractions on Nos.
@@ -128,7 +149,8 @@ class TestStorageCharge(FrappeTestCase):
 		receipt = self._stored_receipt(cbm_qty=6, cons_date="2026-08-01")
 		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-12",
 		                    update_modified=False)
-		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31",
+		                                         customer=self.customer)
 
 		invoices = storage_billing.create_storage_invoices(
 			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
@@ -137,8 +159,7 @@ class TestStorageCharge(FrappeTestCase):
 
 		si = frappe.get_doc("Sales Invoice", invoices[0])
 		self.assertEqual(si.customer, self.customer)
-		self.assertEqual(len(si.items), 1)
-		row = si.items[0]
+		row = self._charge_row(si, receipt)
 		# 6 CBM x 12 days x QAR 3.00 = 216.00, billed as 72 CBM-days at 3.00
 		self.assertEqual(row.uom, "CBM-Day")
 		self.assertAlmostEqual(flt(row.qty), 72.0, places=3)
@@ -154,14 +175,15 @@ class TestStorageCharge(FrappeTestCase):
 		)
 		frappe.db.set_value("Receipt Note", receipt.name, "wms_delivery_date", "2026-08-31",
 		                    update_modified=False)
-		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31")
+		storage_billing.generate_storage_charges("2026-08-01", "2026-08-31",
+		                                         customer=self.customer)
 
 		invoices = storage_billing.create_storage_invoices(
 			"2026-08-01", "2026-08-31", testing.company(), customer=self.customer
 		)
 		si = frappe.get_doc("Sales Invoice", invoices[0])
 		self.assertEqual(si.customer, self.customer)
-		qty = flt(si.items[0].qty)
+		qty = flt(self._charge_row(si, receipt).qty)
 		self.assertAlmostEqual(qty, 6.48 * 31, places=2)
 		self.assertNotEqual(qty, int(qty), "the quantity under test must be fractional")
 
