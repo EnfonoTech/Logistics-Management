@@ -133,12 +133,20 @@ frappe.ui.form.on("Job Details", {
 });
 
 function add_wms_buttons(frm) {
-    const group = __("Warehouse");
-
+    // Top-level buttons, deliberately NOT grouped under a "Warehouse" dropdown.
+    //
+    // 🔴 A grouped custom button on this form is created but never rendered. Probed live:
+    // frm.custom_buttons held both "Confirm Arrival" and the app's own "Job Ledger" while
+    // document.querySelectorAll(".custom-btn-group") returned [] and neither label
+    // appeared anywhere in document.body.innerText — with zero console errors. So the
+    // group's element ends up detached and add_custom_button's "already exists" path just
+    // un-hides that orphan. Cost three beats across four capture dry runs.
+    //
+    // Two actions do not need a dropdown anyway: one click instead of two.
     if (!frm.doc.wms_arrival_confirmed) {
-        frm.add_custom_button(__("Confirm Arrival"), () => confirm_arrival(frm), group);
+        frm.add_custom_button(__("Confirm Arrival"), () => confirm_arrival(frm));
     } else {
-        frm.add_custom_button(__("Deliver Waybill"), () => deliver_waybill(frm), group);
+        frm.add_custom_button(__("Deliver Waybill"), () => deliver_waybill(frm));
     }
 }
 
