@@ -117,3 +117,187 @@ function add_custom_buttons(frm) {
     //     });
     // });
 }
+
+// ─────────────────────────────────────────────────────────────────────────────────
+// Warehouse movement: arrival at the destination, then delivery per waybill.
+// Registered as a second form.on block so the existing buttons above are untouched.
+// Frappe merges handlers for the same doctype.
+// ─────────────────────────────────────────────────────────────────────────────────
+
+frappe.ui.form.on("Job Details", {
+    refresh: function (frm) {
+        if (frm.is_new() || frm.doc.job_type !== "CONSOLE") return;
+        add_wms_buttons(frm);
+        set_wms_headline(frm);
+    },
+});
+
+function add_wms_buttons(frm) {
+    const group = __("Warehouse");
+
+    if (!frm.doc.wms_arrival_confirmed) {
+        frm.add_custom_button(__("Confirm Arrival"), () => confirm_arrival(frm), group);
+    } else {
+        frm.add_custom_button(__("Deliver Waybill"), () => deliver_waybill(frm), group);
+    }
+}
+
+function set_wms_headline(frm) {
+    if (frm.doc.wms_arrival_confirmed) {
+        frm.dashboard.set_headline(
+            __("Arrived at {0} on {1}. Deliver each waybill to its customer.", [
+                frm.doc.wms_destination_warehouse || "—",
+                frappe.datetime.str_to_user(frm.doc.wms_arrival_date),
+            ]),
+            "green"
+        );
+    } else if (frm.doc.wms_origin_warehouse) {
+        frm.dashboard.set_headline(
+            __("In transit from {0} to {1}. Confirm arrival when the container is received.", [
+                frm.doc.wms_origin_warehouse,
+                frm.doc.wms_destination_warehouse || __("(destination not set)"),
+            ]),
+            "orange"
+        );
+    }
+}
+
+function confirm_arrival(frm) {
+    const dialog = new frappe.ui.Dialog({
+        title: __("Confirm Arrival"),
+        fields: [
+            {
+                fieldtype: "HTML",
+                options: `<div class="text-muted small">${__(
+                    "This takes space in the destination warehouse and unlocks delivery. It can only be done once."
+                )}</div>`,
+            },
+            {
+                fieldname: "destination_warehouse",
+                fieldtype: "Link",
+                options: "Warehouse Unit",
+                label: __("Destination Warehouse"),
+                reqd: 1,
+                default: frm.doc.wms_destination_warehouse,
+            },
+            {
+                fieldname: "arrival_date",
+                fieldtype: "Date",
+                label: __("Arrival Date"),
+                reqd: 1,
+                default: frappe.datetime.get_today(),
+            },
+            {
+                fieldname: "received_by",
+                fieldtype: "Data",
+                label: __("Received By"),
+            },
+        ],
+        primary_action_label: __("Confirm Arrival"),
+        primary_action(values) {
+            dialog.hide();
+            frappe.call({
+                method: "logistics_management.wms.movement.confirm_arrival",
+                args: Object.assign({ job: frm.doc.name }, values),
+                freeze: true,
+                callback: (r) => {
+                    if (r.exc) return;
+                    frappe.show_alert(
+                        {
+                            message: __("{0} CBM received at {1} across {2} waybills", [
+                                format_number(r.message.cbm, null, 2),
+                                r.message.destination,
+                                r.message.receipts,
+                            ]),
+                            indicator: "green",
+                        },
+                        7
+                    );
+                    frm.reload_doc();
+                },
+            });
+        },
+    });
+    dialog.show();
+}
+
+function deliver_waybill(frm) {
+    frappe.call({
+        method: "logistics_management.wms.movement.get_deliverable_waybills",
+        args: { job: frm.doc.name },
+        callback: (r) => {
+            const waybills = r.message || [];
+            if (!waybills.length) {
+                frappe.msgprint({
+                    title: __("Nothing left to deliver"),
+                    indicator: "blue",
+                    message: __("Every waybill on this job has been delivered."),
+                });
+                return;
+            }
+
+            const dialog = new frappe.ui.Dialog({
+                title: __("Deliver Waybill"),
+                fields: [
+                    {
+                        fieldname: "waybill_console",
+                        fieldtype: "Select",
+                        label: __("Waybill"),
+                        reqd: 1,
+                        options: waybills.map((w) => ({
+                            value: w.name,
+                            label: `${w.waybill_no} — ${w.customer} (${w.volume || 0} CBM)`,
+                        })),
+                    },
+                    {
+                        fieldname: "delivery_mode",
+                        fieldtype: "Select",
+                        label: __("Delivery Mode"),
+                        options: "Delivery\nCollection",
+                        default: "Delivery",
+                        reqd: 1,
+                    },
+                    {
+                        fieldname: "delivery_date",
+                        fieldtype: "Date",
+                        label: __("Date of Delivery"),
+                        default: frappe.datetime.get_today(),
+                        reqd: 1,
+                    },
+                    {
+                        fieldname: "collected_by",
+                        fieldtype: "Data",
+                        label: __("Collected By"),
+                    },
+                    {
+                        fieldname: "create_pod",
+                        fieldtype: "Check",
+                        label: __("Create POD"),
+                        default: 1,
+                        description: __(
+                            "Creates the POD to print, get signed, and upload the scan back onto."
+                        ),
+                    },
+                ],
+                primary_action_label: __("Record Delivery"),
+                primary_action(values) {
+                    dialog.hide();
+                    frappe.call({
+                        method: "logistics_management.wms.movement.record_delivery",
+                        args: values,
+                        freeze: true,
+                        callback: (res) => {
+                            if (res.exc) return;
+                            if (res.message.pod) {
+                                frappe.set_route("Form", "POD", res.message.pod);
+                            } else {
+                                frm.reload_doc();
+                            }
+                        },
+                    });
+                },
+            });
+            dialog.show();
+        },
+    });
+}

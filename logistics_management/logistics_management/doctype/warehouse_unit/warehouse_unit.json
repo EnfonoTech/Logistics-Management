@@ -8,7 +8,11 @@
  "field_order": [
   "warehouse_name",
   "total_area_capacity",
-  "total_available_capacity"
+  "total_available_capacity",
+  "occupied_capacity_cbm",
+  "utilisation_pct",
+  "section_break_wms_cfg",
+  "default_mode_of_transport"
  ],
  "fields": [
   {
@@ -19,14 +23,42 @@
    "unique": 1
   },
   {
+   "description": "Total volume this warehouse can hold, in cubic metres.",
    "fieldname": "total_area_capacity",
    "fieldtype": "Float",
-   "label": "Total Area Capacity"
+   "label": "Total Capacity (CBM)"
   },
   {
+   "description": "Free volume right now. Maintained by receipts, movements, arrivals and deliveries -- do not edit by hand.",
    "fieldname": "total_available_capacity",
    "fieldtype": "Float",
-   "label": "Total Available Capacity"
+   "label": "Available Capacity (CBM)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "occupied_capacity_cbm",
+   "fieldtype": "Float",
+   "label": "Occupied (CBM)",
+   "precision": "3",
+   "read_only": 1
+  },
+  {
+   "fieldname": "utilisation_pct",
+   "fieldtype": "Percent",
+   "label": "Utilisation",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_wms_cfg",
+   "fieldtype": "Section Break",
+   "label": "Movement Defaults"
+  },
+  {
+   "description": "Pre-selected when a movement leaves this warehouse. China normally ships SEA, Dubai LAND. Always overridable.",
+   "fieldname": "default_mode_of_transport",
+   "fieldtype": "Select",
+   "label": "Default Mode of Transport",
+   "options": "\nAIR\nSEA\nLAND"
   }
  ],
  "grid_page_length": 50,
@@ -54,6 +86,7 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "total_available_capacity",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

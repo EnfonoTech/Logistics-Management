@@ -7,6 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "type",
+  "description",
+  "qty",
   "length",
   "width",
   "height",
@@ -24,25 +26,45 @@
    "fieldname": "length",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Length"
+   "label": "Length (cm)"
   },
   {
    "fieldname": "width",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Width"
+   "label": "Width (cm)"
   },
   {
    "fieldname": "height",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Height"
+   "label": "Height (cm)"
   },
   {
+   "description": "Length x Width x Height / 1,000,000 x Qty",
    "fieldname": "cbm",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "CBM"
+   "label": "CBM",
+   "precision": "3",
+   "read_only": 1
+  },
+  {
+   "description": "What the goods are. This is the only identification -- customer cargo is never an Item and never enters stock.",
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Description"
+  },
+  {
+   "default": "1",
+   "description": "How many packages of this type and size.",
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Qty",
+   "non_negative": 1,
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,

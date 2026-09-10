@@ -266,3 +266,29 @@ fixtures = [
 	"Workflow",
 	"Workflow State",
 ]
+
+# ─────────────────────────────────────────────────────────────────────────────────
+# Warehouse management (wms/) — see wms/README.md
+# ─────────────────────────────────────────────────────────────────────────────────
+
+# Sales Invoice belongs to ERPNext, so extending it is exactly what doc_events is for.
+# Stamping the charge on submit and releasing it on cancel is what gives storage the
+# traceability warehouse_3pl's Billing Transaction never had: without it the same work
+# stays billable forever with no record of which invoice took it.
+doc_events = {
+	"Sales Invoice": {
+		"on_submit": "logistics_management.wms.storage_billing.stamp_charges_on_invoice_submit",
+		"on_cancel": "logistics_management.wms.storage_billing.release_charges_on_invoice_cancel",
+	},
+}
+
+# Accrual only — it creates Storage Charges, never invoices. Money documents stay a
+# human action: HSM invoice monthly and want to read the figures first. 02:00 on the
+# 1st, so the month it accrues is closed.
+scheduler_events = {
+	"cron": {
+		"0 2 1 * *": [
+			"logistics_management.wms.storage_billing.accrue_last_month",
+		],
+	},
+}

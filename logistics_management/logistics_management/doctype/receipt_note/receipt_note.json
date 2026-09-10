@@ -1,24 +1,36 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:waybill_no",
+ "autoname": "naming_series:",
  "creation": "2026-01-31 14:37:36.928023",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "basic_details_section",
+  "naming_series",
   "waybill_no",
   "cons_date",
   "mark",
   "warehouse_unit",
+  "section_break_wms_space",
+  "wh_total_cbm",
+  "wh_available_cbm",
+  "column_break_wms_space",
+  "wh_utilisation_pct",
+  "company",
+  "cargo_type",
   "column_break_crll",
   "tracking_no",
   "payment",
   "destination",
   "job_status",
+  "receipt_mode",
+  "pickup_location",
+  "disposition",
   "section_break_nkib",
   "shipper_details_column",
   "shipper",
+  "shipper_name",
   "contact_person_shipper",
   "address_shipper",
   "phone_shipper",
@@ -32,13 +44,26 @@
   "amended_from",
   "section_break_ulxr",
   "package_details",
-  "total_cbm"
+  "total_cbm",
+  "total_packages",
+  "section_break_wms_track",
+  "wms_status",
+  "current_warehouse_unit",
+  "wms_job",
+  "wms_waybill_console",
+  "column_break_wms_track",
+  "wms_movement_date",
+  "wms_arrival_date",
+  "wms_delivery_date"
  ],
  "fields": [
   {
+   "default": "Today",
    "fieldname": "cons_date",
    "fieldtype": "Date",
-   "label": "Cons Date"
+   "in_list_view": 1,
+   "label": "Receipt Date",
+   "reqd": 1
   },
   {
    "fieldname": "destination",
@@ -46,9 +71,13 @@
    "label": "Destination"
   },
   {
+   "description": "Generated automatically. This is the number given to the customer so they can ask where their shipment is.",
    "fieldname": "tracking_no",
    "fieldtype": "Data",
-   "label": "Tracking No"
+   "label": "Tracking No",
+   "no_copy": 1,
+   "read_only": 1,
+   "unique": 1
   },
   {
    "fieldname": "mark",
@@ -76,6 +105,7 @@
    "label": "Shipper Details"
   },
   {
+   "description": "Optional. Leave blank and type the name below for a one-off shipper.",
    "fieldname": "shipper",
    "fieldtype": "Link",
    "label": "Shipper",
@@ -109,8 +139,10 @@
   {
    "fieldname": "consignee",
    "fieldtype": "Link",
-   "label": "Consignee",
-   "options": "Customer"
+   "in_list_view": 1,
+   "label": "Customer (End Customer)",
+   "options": "Customer",
+   "reqd": 1
   },
   {
    "fieldname": "contact_person",
@@ -157,27 +189,206 @@
    "options": "Package Details"
   },
   {
+   "bold": 1,
    "fieldname": "total_cbm",
    "fieldtype": "Float",
-   "label": "Total CBM"
+   "label": "Total CBM",
+   "precision": "3",
+   "read_only": 1
   },
   {
+   "description": "HSM's own consignment note number, entered by hand.",
    "fieldname": "waybill_no",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Waybill No",
+   "reqd": 1,
    "unique": 1
   },
   {
    "fieldname": "warehouse_unit",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Warehouse",
-   "options": "Warehouse Unit"
+   "options": "Warehouse Unit",
+   "reqd": 1
   },
   {
+   "default": "Not Created",
    "fieldname": "job_status",
    "fieldtype": "Select",
    "label": "Job Status",
-   "options": "\nCreated\nNot Created"
+   "no_copy": 1,
+   "options": "\nCreated\nNot Created",
+   "read_only": 1
+  },
+  {
+   "default": "HSM-WR-.YYYY.-.####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "HSM-WR-.YYYY.-.####",
+   "print_hide": 1,
+   "reqd": 1
+  },
+  {
+   "default": ":Company",
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "description": "Sets the storage rate. Dangerous, liquid chemical and reefer cargo are priced differently from general.",
+   "fieldname": "cargo_type",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Cargo Type",
+   "options": "Cargo Type",
+   "reqd": 1
+  },
+  {
+   "default": "Delivery at Warehouse",
+   "fieldname": "receipt_mode",
+   "fieldtype": "Select",
+   "label": "Receipt Mode",
+   "options": "Delivery at Warehouse\nCollection from Customer",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.receipt_mode=='Collection from Customer'",
+   "fieldname": "pickup_location",
+   "fieldtype": "Small Text",
+   "label": "Pickup Location",
+   "mandatory_depends_on": "eval:doc.receipt_mode=='Collection from Customer'"
+  },
+  {
+   "default": "Move to Other Warehouse",
+   "description": "Storage accrues rent here and stays out of the movement list. Move to Other Warehouse makes it selectable for a console job.",
+   "fieldname": "disposition",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Disposition",
+   "options": "Move to Other Warehouse\nStore at Same Warehouse",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_wms_space",
+   "fieldtype": "Section Break",
+   "label": "Warehouse Space"
+  },
+  {
+   "fetch_from": "warehouse_unit.total_area_capacity",
+   "fetch_if_empty": 0,
+   "fieldname": "wh_total_cbm",
+   "fieldtype": "Float",
+   "label": "Warehouse Total (CBM)",
+   "no_copy": 1,
+   "precision": "3",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "warehouse_unit.total_available_capacity",
+   "fetch_if_empty": 0,
+   "fieldname": "wh_available_cbm",
+   "fieldtype": "Float",
+   "label": "Warehouse Available (CBM)",
+   "no_copy": 1,
+   "precision": "3",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_wms_space",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wh_utilisation_pct",
+   "fieldtype": "Percent",
+   "label": "Warehouse Utilisation",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_packages",
+   "fieldtype": "Int",
+   "label": "Total Packages",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_wms_track",
+   "fieldtype": "Section Break",
+   "label": "Shipment Status"
+  },
+  {
+   "bold": 1,
+   "default": "In Warehouse",
+   "fieldname": "wms_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "In Warehouse\nIn Movement\nArrived at Destination\nDelivered",
+   "read_only": 1
+  },
+  {
+   "description": "Blank while in transit, and once delivered.",
+   "fieldname": "current_warehouse_unit",
+   "fieldtype": "Link",
+   "label": "Currently At",
+   "no_copy": 1,
+   "options": "Warehouse Unit",
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_job",
+   "fieldtype": "Link",
+   "label": "Movement Job",
+   "no_copy": 1,
+   "options": "Job Details",
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_waybill_console",
+   "fieldtype": "Link",
+   "label": "Waybill Console",
+   "no_copy": 1,
+   "options": "Waybill Console",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_wms_track",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wms_movement_date",
+   "fieldtype": "Date",
+   "label": "Moved On",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_arrival_date",
+   "fieldtype": "Date",
+   "label": "Arrived On",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivered On",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "description": "Filled from the Shipper when one is selected. Type it here for a shipper with no master record.",
+   "fieldname": "shipper_name",
+   "fieldtype": "Data",
+   "label": "Shipper Name"
   }
  ],
  "grid_page_length": 50,
@@ -188,7 +399,7 @@
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Receipt Note",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -207,7 +418,10 @@
  ],
  "row_format": "Dynamic",
  "rows_threshold_for_grid_search": 20,
+ "search_fields": "waybill_no,tracking_no,consignee,warehouse_unit",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "waybill_no"
 }

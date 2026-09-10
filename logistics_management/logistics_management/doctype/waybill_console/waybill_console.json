@@ -1,17 +1,25 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:waybill_no",
+ "autoname": "naming_series:",
  "creation": "2024-07-23 23:00:27.815692",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "naming_series",
   "waybill_no",
   "shipper",
   "sales_person",
   "delivery_mode",
   "invoice_status",
   "job_details",
+  "section_break_wms",
+  "wms_receipt_note",
+  "wms_status",
+  "column_break_wms",
+  "wms_delivered",
+  "wms_delivery_date",
+  "wms_collected_by",
   "column_break_qtdl",
   "customer",
   "no_of_packages",
@@ -23,7 +31,9 @@
   {
    "fieldname": "waybill_no",
    "fieldtype": "Data",
-   "label": "WayBill No",
+   "in_list_view": 1,
+   "label": "Waybill No",
+   "reqd": 1,
    "unique": 1
   },
   {
@@ -39,8 +49,9 @@
   },
   {
    "fieldname": "delivery_mode",
-   "fieldtype": "Data",
-   "label": "Delivery Mode"
+   "fieldtype": "Select",
+   "label": "Delivery Mode",
+   "options": "\nDelivery\nCollection"
   },
   {
    "fieldname": "invoice_status",
@@ -54,6 +65,7 @@
   {
    "fieldname": "customer",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Customer",
    "options": "Customer"
   },
@@ -82,6 +94,64 @@
    "fieldtype": "Link",
    "label": "Job Details",
    "options": "Job Details"
+  },
+  {
+   "default": "WBC-.YYYY.-.####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "no_copy": 1,
+   "options": "WBC-.YYYY.-.####",
+   "print_hide": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_wms",
+   "fieldtype": "Section Break",
+   "label": "Warehouse Movement"
+  },
+  {
+   "fieldname": "wms_receipt_note",
+   "fieldtype": "Link",
+   "label": "Receipt Note",
+   "options": "Receipt Note",
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "\nIn Movement\nArrived at Destination\nDelivered",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_wms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "wms_delivered",
+   "fieldtype": "Check",
+   "label": "Delivered",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_delivery_date",
+   "fieldtype": "Date",
+   "label": "Delivery Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_collected_by",
+   "fieldtype": "Data",
+   "label": "Collected By",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -101,7 +171,7 @@
  "modified_by": "Administrator",
  "module": "Logistics Management",
  "name": "Waybill Console",
- "naming_rule": "By fieldname",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -117,7 +187,10 @@
    "write": 1
   }
  ],
+ "search_fields": "waybill_no,customer,job_details",
+ "show_title_field_in_link": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "title_field": "waybill_no"
 }

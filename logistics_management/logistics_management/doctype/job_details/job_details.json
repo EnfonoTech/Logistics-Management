@@ -26,6 +26,14 @@
   "quotation",
   "section_break_cvyz",
   "console_shipment",
+  "section_break_wms",
+  "wms_origin_warehouse",
+  "wms_destination_warehouse",
+  "wms_movement_date",
+  "column_break_wms",
+  "wms_arrival_confirmed",
+  "wms_arrival_date",
+  "wms_received_by",
   "section_break_qgln",
   "job_id",
   "pol",
@@ -660,6 +668,56 @@
    "fieldname": "qty",
    "fieldtype": "Data",
    "label": "Qty"
+  },
+  {
+   "fieldname": "section_break_wms",
+   "fieldtype": "Section Break",
+   "label": "Warehouse Movement"
+  },
+  {
+   "fieldname": "wms_origin_warehouse",
+   "fieldtype": "Link",
+   "label": "Origin Warehouse",
+   "options": "Warehouse Unit",
+   "read_only": 1
+  },
+  {
+   "description": "Where the container is going. Space is taken there on arrival.",
+   "fieldname": "wms_destination_warehouse",
+   "fieldtype": "Link",
+   "label": "Destination Warehouse",
+   "options": "Warehouse Unit"
+  },
+  {
+   "fieldname": "wms_movement_date",
+   "fieldtype": "Date",
+   "label": "Movement Date"
+  },
+  {
+   "fieldname": "column_break_wms",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "wms_arrival_confirmed",
+   "fieldtype": "Check",
+   "label": "Arrival Confirmed",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_arrival_date",
+   "fieldtype": "Date",
+   "label": "Arrival Date",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_received_by",
+   "fieldtype": "Data",
+   "label": "Received By",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,

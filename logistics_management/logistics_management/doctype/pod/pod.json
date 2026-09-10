@@ -26,6 +26,12 @@
   "date_generated",
   "gross_weight",
   "waybill_console",
+  "section_break_wms_pod",
+  "signed_pod",
+  "collected_by",
+  "column_break_wms_pod",
+  "wms_delivered_at",
+  "wms_pod_received",
   "section_break_wobf",
   "description_of_goods",
   "number_of_packages",
@@ -240,6 +246,41 @@
    "fieldtype": "Link",
    "label": "Waybill Console",
    "options": "Waybill Console"
+  },
+  {
+   "fieldname": "section_break_wms_pod",
+   "fieldtype": "Section Break",
+   "label": "Proof of Delivery"
+  },
+  {
+   "description": "The scan or photo of the POD the customer signed.",
+   "fieldname": "signed_pod",
+   "fieldtype": "Attach",
+   "label": "Signed POD"
+  },
+  {
+   "description": "Who actually took the cargo.",
+   "fieldname": "collected_by",
+   "fieldtype": "Data",
+   "label": "Collected By"
+  },
+  {
+   "fieldname": "column_break_wms_pod",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "wms_delivered_at",
+   "fieldtype": "Datetime",
+   "label": "Delivered At"
+  },
+  {
+   "default": "0",
+   "fieldname": "wms_pod_received",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Signed POD Received",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -264,6 +305,7 @@
    "write": 1
   }
  ],
+ "search_fields": "waybill_console,customer_name,job_details",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
