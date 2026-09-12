@@ -258,10 +258,21 @@ report_override_html = {
 # declaring Workflow / Workflow State; Python kept only the last binding, so those two
 # were silently never exported and the active Direct Shipping Workflow existed only in
 # the site database. Keep this list as the one and only `fixtures` in the module.
+# 🔴 A bare doctype name here means NO FILTER, and export_json then writes EVERY record of
+# that doctype on the site into this app's fixtures. That is how report.json came to hold
+# 204 records — all of ERPNext's standard reports — and print_format.json 45. Installing
+# this app elsewhere would then import another app's reports over the top.
+#
+# Standard reports and print formats are already versioned as folders under report/ and
+# print_format/, so the only ones worth capturing are the site-only records: the ones
+# somebody built through the UI and that exist nowhere else. Hence standard = "No".
 fixtures = [
-	"Client Script",
-	"Print Format",
-	"Report",
+	{"doctype": "Client Script", "filters": {"module": "Logistics Management"}},
+	{"doctype": "Print Format", "filters": {"module": "Logistics Management", "standard": "No"}},
+	{"doctype": "Report", "filters": {"module": "Logistics Management", "is_standard": "No"}},
+	# Property Setter carries no module on 210 of its 211 rows here, so there is no honest
+	# filter yet; it stays unscoped and over-broad. Narrowing it means attributing each row
+	# to an app by hand — worth doing, but not by guessing.
 	"Property Setter",
 	"Workflow",
 	"Workflow State",
