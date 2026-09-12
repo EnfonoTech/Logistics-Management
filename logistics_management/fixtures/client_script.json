@@ -2,56 +2,12 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Sales Order",
-  "enabled": 0,
-  "modified": "2024-05-08 07:10:33.734500",
-  "module": null,
-  "name": "List view",
-  "script": "frappe.set_route('List', 'Sales Order', 'List', {'Sales Team.sales_person': 'Sales Team'});\n",
-  "view": "List"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Sales Order",
-  "enabled": 0,
-  "modified": "2024-04-24 18:58:31.474765",
-  "module": null,
-  "name": "type",
-  "script": "frappe.listview_settings['Sales Order'] = {\n    onload: function(listview) {\n        var df = {\n            fieldname: 'sales_person', \n            label: \"Sales Person\",\n            fieldtype: \"Link\", \n            options: \"Sales Person\",\n            onchange: function() {\n                listview.start = 0;\n                listview.refresh();\n                listview.on_filter_change();\n            }\n        };\n        listview.page.add_field(df);\n    }\n};\n",
-  "view": "List"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Sales Order",
-  "enabled": 0,
-  "modified": "2024-05-08 07:10:27.735543",
-  "module": null,
-  "name": "test",
-  "script": "// frappe.ui.form.on('Sales Order', {\n//     refresh: function(frm) {\n//         // Function to hide the edit button\n//         var hideEditButton = function() {\n//             cur_frm.fields_dict['items'].grid.wrapper.find('.btn-open-row').hide();\n//         };\n\n//         // Hide the edit button initially\n//         hideEditButton();\n\n//         // Bind the function to the grid-render event\n//         frm.fields_dict['items'].grid.on('grid-render', function() {\n//             hideEditButton(); // Hide the edit button whenever the grid is rendered\n//         });\n//     }\n// });\nfrappe.ui.form.on('Sales Order', {\n    refresh: function(frm) {\n        var hideButton = function() {\n            cur_frm.fields_dict['items'].grid.wrapper.find('.btn-open-row').hide();\n        };\n\n        hideButton();\n\n        $(document).on('grid-row-render', function(event) {\n            hideButton();\n        });\n    }\n});\n\n\n\n\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Sales Invoice",
-  "enabled": 0,
-  "modified": "2024-05-30 08:27:41.172601",
-  "module": null,
-  "name": "Warehouse",
-  "script": "frappe.ui.form.on('Sales Order', {\n    currency: function(frm) {\n        // Fetch the warehouse associated with the selected currency\n        if(frm.doc.currency) {\n            frappe.call({\n                method: 'frappe.client.get_list',\n                args: {\n                    doctype: 'Warehouse',\n                    filters: {\n                        'custom_currency': frm.doc.currency\n                    },\n                    fields: ['name']\n                },\n                callback: function(response) {\n                    if(response && response.message && response.message.length > 0) {\n                        let warehouse = response.message[0].name;\n                        // Set the fetched warehouse in the appropriate field\n                        frm.set_value('warehouse', warehouse);\n                    } else {\n                        // Clear the warehouse field if no match is found\n                        frm.set_value('warehouse', '');\n                        frappe.msgprint(__('No warehouse found for the selected currency.'));\n                    }\n                }\n            });\n        } else {\n            // Clear the warehouse field if currency is not set\n            frm.set_value('warehouse', '');\n        }\n    }\n});\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Sales Order",
-  "enabled": 0,
-  "modified": "2024-05-30 08:41:05.110600",
-  "module": null,
-  "name": "Wh",
-  "script": "// frappe.ui.form.on('Sales Order', {\n//     currency: function(frm) {\n//         if(frm.doc.currency) {\n//             frappe.call({\n//                 method: 'frappe.client.get_list',\n//                 args: {\n//                     doctype: 'Warehouse',\n//                     filters: {\n//                         'custom_currency': frm.doc.currency\n//                     },\n//                     fields: ['name']\n//                 },\n//                 callback: function(response) {\n//                     if(response && response.message && response.message.length > 0) {\n//                         let warehouse = response.message[0].name;\n//                         frm.set_value('set_warehouse', warehouse);\n//                     } else {\n//                         frm.set_value('set_warehouse', '');\n//                         frappe.msgprint(__('No warehouse found for the selected currency.'));\n//                     }\n//                 }\n//             });\n//         } else {\n//             frm.set_value('set_warehouse', '');\n//         }\n//     }\n// });\n\n\nfrappe.ui.form.on('Sales Order', {\n    onload: function(frm) {\n        frm.set_query('set_warehouse', function() {\n            if (frm.doc.currency) {\n                return {\n                    filters: {\n                        'custom_currency': frm.doc.currency\n                    }\n                };\n            } else {\n                return {\n                    filters: {}\n                };\n            }\n        });\n    },\n    currency: function(frm) {\n        frm.set_value('set_warehouse', '');\n    }\n});\n",
+  "dt": "Journal Entry",
+  "enabled": 1,
+  "modified": "2024-06-14 07:50:01.135208",
+  "module": "Logistics Management",
+  "name": "Ledger -Reference",
+  "script": "frappe.ui.form.on('Journal Entry', {\n    refresh: function(frm) {\n        frm.add_custom_button(__('General Ledger Report'), function() {\n            // Define the route to the General Ledger report with filters\n            frappe.set_route('query-report', 'General Ledger-Ref No.', {\n                company: frm.doc.company,\n                from_date: frm.doc.posting_date,\n                to_date: frm.doc.posting_date,\n                voucher_no: frm.doc.name\n            });\n        }, __('View Ledger'));\n    }\n});\n",
   "view": "Form"
  },
  {
@@ -60,7 +16,7 @@
   "dt": "Sales Invoice",
   "enabled": 1,
   "modified": "2024-06-18 19:45:54.510175",
-  "module": null,
+  "module": "Logistics Management",
   "name": "console",
   "script": "frappe.ui.form.on('Sales Invoice', {\n    custom_job_number: function(frm) {\n        if (frm.doc.custom_job_number) {\n            frappe.call({ \n                method: 'frappe.client.get', \n                args: {\n                    doctype: \"Job Details\", \n                    filters: {\n                        name: frm.doc.custom_job_number\n                    }\n                },\n                callback: function(r) { \n                    if (r.message) { \n                        frm.clear_table('custom_console_shipment');\n                        r.message.console_shipment.forEach(function(item) {\n                            // Check if the customer in the Sales Invoice matches the customer in the child table\n                            if (item.customer === frm.doc.customer) {\n                                var child = frm.add_child('custom_console_shipment'); \n                                child.cn = item.cn; \n                                child.customer = item.customer;\n                                child.nopkgs = item.nopkgs;\n                                child.pkg_type = item.pkg_type;\n                                child.mode_of_delivery = item.mode_of_delivery;\n                                child.invoice_no = item.invoice_no;\n                                child.payment_type = item.payment_type;\n                                child.shipper_name = item.shipper_name;\n                                child.sales_person = item.sales_person;\n                                child.remarks = item.remarks;\n                            }\n                        });\n                        frm.refresh_field('custom_console_shipment'); \n                    }\n                }\n            });\n        }\n    }\n});\n",
   "view": "Form"
@@ -71,7 +27,7 @@
   "dt": "Job Details",
   "enabled": 1,
   "modified": "2024-08-05 10:54:14.036308",
-  "module": null,
+  "module": "Logistics Management",
   "name": "naming",
   "script": "frappe.ui.form.on('Job Details', {\n    company_name: function(frm) {\n        if (frm.doc.company === 'SecOnd Company') {\n            frm.set_value('naming_series', 'HSMN./.####');\n        }\n    }\n});\n",
   "view": "Form"
