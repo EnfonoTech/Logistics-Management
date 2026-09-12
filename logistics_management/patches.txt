@@ -10,3 +10,4 @@ logistics_management.patches.v1_0.backfill_wms_fields
 logistics_management.patches.v1_0.add_wms_workspace_links
 logistics_management.patches.v1_1.add_wms_workspace_content
 logistics_management.patches.v1_1.create_wms_settings
+logistics_management.patches.v1_1.recount_packages

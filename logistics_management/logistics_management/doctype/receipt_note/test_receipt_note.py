@@ -50,6 +50,23 @@ class TestReceiptNote(FrappeTestCase):
 		self.assertEqual(doc.package_details[0].qty, 1)
 		self.assertAlmostEqual(flt(doc.total_cbm), 1.0, places=6)
 
+	def test_a_blank_grid_row_is_not_a_package(self):
+		"""A leftover empty row put "Total No. of Package(s): 3" on a note carrying two."""
+		doc = testing.receipt(
+			self.customer, self.wh, packages=((80, 46, 43, 1), (75, 43, 42, 1)), submit=False
+		)
+		doc.append("package_details", {"qty": 1})      # the blank row the grid leaves behind
+		doc.save()
+		self.assertEqual(doc.total_packages, 2)
+		self.assertAlmostEqual(flt(doc.package_details[2].cbm), 0.0, places=6)
+
+	def test_a_blank_row_with_a_real_quantity_still_counts(self):
+		"""Somebody typing 5 meant it, even with no type or size yet."""
+		doc = testing.receipt(self.customer, self.wh, packages=((80, 46, 43, 1),), submit=False)
+		doc.append("package_details", {"qty": 5})
+		doc.save()
+		self.assertEqual(doc.total_packages, 6)
+
 	def test_zero_dimension_gives_zero_cbm_not_an_error(self):
 		doc = testing.receipt(self.customer, self.wh, packages=((0, 30, 30, 5),), submit=False)
 		self.assertAlmostEqual(flt(doc.package_details[0].cbm), 0.0, places=6)

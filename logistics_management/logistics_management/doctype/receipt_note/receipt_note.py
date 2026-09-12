@@ -98,6 +98,13 @@ class ReceiptNote(Document):
 		for row in self.package_details or []:
 			qty = cint(row.qty) or 1
 			row.qty = qty
+
+			# A wholly blank row is a leftover from the grid, not a package. Counting it
+			# put "Total No. of Package(s): 3" on a consignment note carrying two.
+			# An explicit qty above one means somebody meant it, so that still counts.
+			if self._is_blank_package_row(row) and qty <= 1:
+				row.cbm = 0.0
+				continue
 			# The divisor depends on the unit staff type dimensions in, which is a
 			# setting -- it used to assume centimetres in a module constant.
 			unit_cbm = (
@@ -111,6 +118,13 @@ class ReceiptNote(Document):
 
 		self.total_cbm = total_cbm
 		self.total_packages = total_packages
+
+	@staticmethod
+	def _is_blank_package_row(row):
+		"""No type, no description and no dimensions -- an empty grid row."""
+		return not (row.type or (row.description or "").strip()) and not (
+			flt(row.length) or flt(row.width) or flt(row.height)
+		)
 
 	@property
 	def total_package_cbm(self):
