@@ -278,6 +278,72 @@ function deliver_waybill(frm) {
                         label: __("Collected By"),
                     },
                     {
+                        fieldtype: "Section Break",
+                        label: __("Driver and Vehicle"),
+                    },
+                    {
+                        fieldname: "driver",
+                        fieldtype: "Link",
+                        options: "Driver",
+                        label: __("Driver"),
+                        get_query: () => ({ filters: { status: "Active" } }),
+                        onchange() {
+                            const driver = dialog.get_value("driver");
+                            if (!driver) {
+                                dialog.set_df_property("driver_info", "options", "");
+                                return;
+                            }
+                            frappe.call({
+                                method: "logistics_management.wms.movement.get_driver_details",
+                                args: { driver },
+                                callback: (dr) => {
+                                    const d = dr.message;
+                                    if (!d) return;
+                                    // Only fill an empty vehicle -- never overwrite a truck
+                                    // the user has already chosen for this run.
+                                    if (d.vehicle && !dialog.get_value("vehicle")) {
+                                        dialog.set_value("vehicle", d.vehicle);
+                                    }
+                                    const bits = [];
+                                    if (d.cell_number) bits.push(frappe.utils.escape_html(d.cell_number));
+                                    if (d.license_number)
+                                        bits.push(
+                                            __("Licence {0}", [frappe.utils.escape_html(d.license_number)])
+                                        );
+                                    if (d.licence_expired)
+                                        bits.push(
+                                            `<span class="text-danger">${__("Licence expired")}</span>`
+                                        );
+                                    dialog.set_df_property(
+                                        "driver_info",
+                                        "options",
+                                        bits.length
+                                            ? `<div class="text-muted small">${bits.join(" &middot; ")}</div>`
+                                            : ""
+                                    );
+                                },
+                            });
+                        },
+                    },
+                    {
+                        fieldname: "driver_info",
+                        fieldtype: "HTML",
+                    },
+                    {
+                        fieldname: "column_break_driver",
+                        fieldtype: "Column Break",
+                    },
+                    {
+                        fieldname: "vehicle",
+                        fieldtype: "Link",
+                        options: "Vehicle",
+                        label: __("Vehicle"),
+                        description: __("Printed on the POD as the assigned vehicle number."),
+                    },
+                    {
+                        fieldtype: "Section Break",
+                    },
+                    {
                         fieldname: "create_pod",
                         fieldtype: "Check",
                         label: __("Create POD"),

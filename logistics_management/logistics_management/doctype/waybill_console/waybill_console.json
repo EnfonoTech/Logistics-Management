@@ -21,6 +21,9 @@
   "wms_delivery_mode",
   "wms_delivery_date",
   "wms_collected_by",
+  "wms_driver",
+  "wms_driver_name",
+  "wms_vehicle",
   "column_break_qtdl",
   "customer",
   "no_of_packages",
@@ -160,6 +163,25 @@
    "fieldtype": "Select",
    "label": "Delivery Mode",
    "options": "\nDelivery\nCollection"
+  },
+  {
+   "fieldname": "wms_driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
+  },
+  {
+   "fetch_from": "wms_driver.full_name",
+   "fieldname": "wms_driver_name",
+   "fieldtype": "Data",
+   "label": "Driver Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "wms_vehicle",
+   "fieldtype": "Link",
+   "label": "Vehicle",
+   "options": "Vehicle"
   }
  ],
  "index_web_pages_for_search": 1,

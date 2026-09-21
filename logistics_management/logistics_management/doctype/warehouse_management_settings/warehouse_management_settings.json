@@ -22,6 +22,11 @@
   "default_shipment_mode",
   "column_break_mov",
   "fallback_mode_of_transport",
+  "delivery_section",
+  "require_driver_on_delivery",
+  "warn_on_expired_licence",
+  "column_break_del",
+  "default_delivery_vehicle",
   "billing_section",
   "storage_item",
   "storage_uom",
@@ -137,6 +142,36 @@
    "fieldtype": "Select",
    "label": "Fallback Mode of Transport",
    "options": "AIR\nSEA\nLAND"
+  },
+  {
+   "fieldname": "delivery_section",
+   "fieldtype": "Section Break",
+   "label": "Delivery"
+  },
+  {
+   "default": "0",
+   "description": "Refuse a delivery (not a collection) that names no driver.",
+   "fieldname": "require_driver_on_delivery",
+   "fieldtype": "Check",
+   "label": "Require a driver on delivery"
+  },
+  {
+   "default": "1",
+   "description": "Warn, but still allow, when the driver's licence expired before the delivery date.",
+   "fieldname": "warn_on_expired_licence",
+   "fieldtype": "Check",
+   "label": "Warn on an expired driving licence"
+  },
+  {
+   "fieldname": "column_break_del",
+   "fieldtype": "Column Break"
+  },
+  {
+   "description": "Offered in the Deliver Waybill dialog when the driver has no vehicle of their own.",
+   "fieldname": "default_delivery_vehicle",
+   "fieldtype": "Link",
+   "label": "Default Delivery Vehicle",
+   "options": "Vehicle"
   },
   {
    "fieldname": "billing_section",

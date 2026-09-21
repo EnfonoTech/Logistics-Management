@@ -10,7 +10,7 @@ import frappe
 from frappe import _
 from frappe.utils import cint, flt, getdate, nowdate
 
-from logistics_management.wms import capacity
+from logistics_management.wms import capacity, settings
 
 STATUS_IN_WAREHOUSE = "In Warehouse"
 STATUS_IN_MOVEMENT = "In Movement"
@@ -98,7 +98,7 @@ def confirm_arrival(job, arrival_date=None, received_by=None, destination_wareho
 
 @frappe.whitelist()
 def record_delivery(waybill_console, delivery_date=None, delivery_mode=None, collected_by=None,
-                    create_pod=True):
+                    driver=None, vehicle=None, create_pod=True):
 	"""Deliver one waybill to its customer and free the space it occupied.
 
 	Refuses before arrival is confirmed: HSM cannot hand over cargo the destination
@@ -126,6 +126,11 @@ def record_delivery(waybill_console, delivery_date=None, delivery_mode=None, col
 		)
 
 	delivery_date = getdate(delivery_date or nowdate())
+	delivery_mode = delivery_mode or "Delivery"
+	driver_row = _check_driver(driver, delivery_mode, delivery_date)
+	vehicle = vehicle or (driver_row or {}).get("wms_default_vehicle") \
+		or settings.default_delivery_vehicle()
+
 	receipt = None
 	if console.wms_receipt_note:
 		receipt = frappe.db.get_value(
@@ -146,8 +151,12 @@ def record_delivery(waybill_console, delivery_date=None, delivery_mode=None, col
 			"wms_status": STATUS_DELIVERED,
 			"wms_delivered": 1,
 			"wms_delivery_date": delivery_date,
-			"wms_delivery_mode": delivery_mode or "Delivery",
+			"wms_delivery_mode": delivery_mode,
 			"wms_collected_by": collected_by or "",
+			"wms_driver": driver or None,
+			# fetch_from does not fire for db.set_value, so the name is written here.
+			"wms_driver_name": (driver_row or {}).get("full_name") or "",
+			"wms_vehicle": vehicle or None,
 		},
 		update_modified=False,
 	)
@@ -166,12 +175,18 @@ def record_delivery(waybill_console, delivery_date=None, delivery_mode=None, col
 
 	pod = None
 	if cint(create_pod):
-		pod = make_pod(waybill_console, delivery_date=delivery_date, collected_by=collected_by)
+		pod = make_pod(
+			waybill_console, delivery_date=delivery_date, collected_by=collected_by,
+			driver=driver_row, vehicle=vehicle,
+		)
 
-	return frappe._dict(waybill_console=waybill_console, pod=pod, delivery_date=delivery_date)
+	return frappe._dict(
+		waybill_console=waybill_console, pod=pod, delivery_date=delivery_date,
+		driver=driver or None, vehicle=vehicle or None,
+	)
 
 
-def make_pod(waybill_console, delivery_date=None, collected_by=None):
+def make_pod(waybill_console, delivery_date=None, collected_by=None, driver=None, vehicle=None):
 	"""Create the POD for a delivered waybill, prefilled from the console and its job.
 
 	The blank print of this is what the driver takes to the customer; the signed scan
@@ -179,6 +194,9 @@ def make_pod(waybill_console, delivery_date=None, collected_by=None):
 	"""
 	existing = frappe.db.exists("POD", {"waybill_console": waybill_console})
 	if existing:
+		# The POD is already there -- fill in the driver block if it is still blank rather
+		# than returning a print that says nothing about who carried the cargo.
+		_stamp_driver_on_pod(existing, driver, vehicle)
 		return existing
 
 	console = frappe.get_doc("Waybill Console", waybill_console)
@@ -192,6 +210,14 @@ def make_pod(waybill_console, delivery_date=None, collected_by=None):
 	pod.date = getdate(delivery_date or nowdate())
 	pod.collected_by = collected_by or ""
 	pod.wms_delivered_at = frappe.utils.now()
+
+	# These three are already laid out on the POD print, under the Truck Driver Signature
+	# line, and have printed blank on every POD so far because nothing wrote them.
+	if driver:
+		pod.assigned_driver_name = driver.get("full_name") or ""
+		pod.contact_no = driver.get("cell_number") or ""
+	if vehicle:
+		pod.assigned_vehicle_no = vehicle
 
 	if job:
 		pod.job_details = job.name
@@ -221,3 +247,85 @@ def get_deliverable_waybills(job):
 		fields=["name", "waybill_no", "customer", "no_of_packages", "volume"],
 		order_by="waybill_no",
 	)
+
+
+def _check_driver(driver, delivery_mode, delivery_date):
+	"""Read the driver once, and decide what is a refusal and what is only a warning.
+
+	Only one thing here refuses: a delivery with no driver when HSM have switched that
+	requirement on. Everything else warns, because the alternative is a backdated delivery
+	that cannot be recorded at all -- a driver who has since left the company, or whose
+	licence expired after the cargo was already handed over, is history, not an error.
+	"""
+	if not driver:
+		if delivery_mode == "Delivery" and settings.require_driver_on_delivery():
+			frappe.throw(
+				_("Name the driver who is making this delivery."),
+				title=_("Driver Required"),
+			)
+		return None
+
+	row = frappe.db.get_value(
+		"Driver", driver,
+		["name", "full_name", "status", "cell_number", "license_number", "expiry_date"],
+		as_dict=True,
+	)
+	if not row:
+		frappe.throw(_("Driver {0} does not exist").format(driver))
+
+	row.wms_default_vehicle = frappe.db.get_value("Driver", driver, "wms_default_vehicle") \
+		if frappe.get_meta("Driver").has_field("wms_default_vehicle") else None
+
+	if row.status != "Active":
+		frappe.msgprint(
+			_("Driver {0} is {1}.").format(row.full_name or driver, _(row.status or "")),
+			indicator="orange", alert=True,
+		)
+
+	if settings.warn_on_expired_licence() and row.expiry_date \
+			and getdate(row.expiry_date) < getdate(delivery_date):
+		frappe.msgprint(
+			_("Driver {0}'s licence expired on {1}.").format(
+				row.full_name or driver, frappe.format(row.expiry_date, {"fieldtype": "Date"}),
+			),
+			indicator="orange", alert=True,
+		)
+
+	return row
+
+
+def _stamp_driver_on_pod(pod_name, driver, vehicle):
+	"""Fill a POD's driver block only where it is empty -- never overwrite what staff typed."""
+	current = frappe.db.get_value(
+		"POD", pod_name, ["assigned_driver_name", "assigned_vehicle_no", "contact_no"],
+		as_dict=True,
+	) or {}
+	updates = {}
+	if driver and not current.get("assigned_driver_name"):
+		updates["assigned_driver_name"] = driver.get("full_name") or ""
+	if driver and not current.get("contact_no"):
+		updates["contact_no"] = driver.get("cell_number") or ""
+	if vehicle and not current.get("assigned_vehicle_no"):
+		updates["assigned_vehicle_no"] = vehicle
+	if updates:
+		frappe.db.set_value("POD", pod_name, updates, update_modified=False)
+
+
+@frappe.whitelist()
+def get_driver_details(driver):
+	"""What the Deliver Waybill dialog shows once a driver is picked."""
+	frappe.has_permission("Driver", "read", throw=True)
+	row = frappe.db.get_value(
+		"Driver", driver,
+		["name", "full_name", "status", "cell_number", "license_number", "expiry_date"],
+		as_dict=True,
+	)
+	if not row:
+		return None
+	if frappe.get_meta("Driver").has_field("wms_default_vehicle"):
+		row.vehicle = frappe.db.get_value("Driver", driver, "wms_default_vehicle")
+	else:
+		row.vehicle = None
+	row.vehicle = row.vehicle or settings.default_delivery_vehicle()
+	row.licence_expired = bool(row.expiry_date and getdate(row.expiry_date) < getdate(nowdate()))
+	return row

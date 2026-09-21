@@ -13,9 +13,19 @@ from frappe.utils import flt, nowdate
 
 from logistics_management.wms import consolidation, movement, testing
 
+SETTINGS = "Warehouse Management Settings"
+
+
+def _set_setting(**kwargs):
+	for key, value in kwargs.items():
+		frappe.db.set_single_value(SETTINGS, key, value)
+	frappe.clear_cache(doctype=SETTINGS)
+
 
 class TestJobDetails(FrappeTestCase):
 	def setUp(self):
+		# Driver policy is off unless a test turns it on, so nothing leaks between them.
+		_set_setting(require_driver_on_delivery=0, warn_on_expired_licence=1)
 		self.origin = testing.warehouse("Origin", capacity_cbm=500.0)
 		self.destination = testing.warehouse("Destination", capacity_cbm=500.0)
 		self.a = testing.customer("A")
@@ -263,3 +273,132 @@ class TestJobDetails(FrappeTestCase):
 		pod.save()
 		self.assertTrue(pod.wms_pod_received)
 		self.assertTrue(pod.wms_delivered_at)
+
+	# ── driver and vehicle ────────────────────────────────────────────────────────
+
+	def _arrived(self, cust=None, cbm_qty=1):
+		"""A waybill standing at the destination, ready to be handed over."""
+		receipt = self._receipt(cust or self.a, cbm_qty=cbm_qty)
+		result = consolidation.create_console_job_from_receipts(
+			[receipt.name], destination_warehouse=self.destination
+		)
+		movement.confirm_arrival(result.job)
+		return result
+
+	def test_a_vehicle_needs_nothing_but_its_plate(self):
+		"""ERPNext wants make, model and an odometer reading before a Vehicle will save.
+
+		A clerk recording a delivery by a hired truck has none of those, so
+		setup_driver_customisations relaxes them. If that ever stops being applied this
+		is the test that says so, rather than every driver test failing obscurely.
+		"""
+		plate = testing.vehicle("TEST-PLATE-ONLY")
+		doc = frappe.get_doc("Vehicle", plate)
+		self.assertEqual(doc.license_plate, plate)
+		# Still mandatory in core, so the defaults have to carry them.
+		self.assertEqual(doc.fuel_type, "Diesel")
+
+	def test_driver_and_vehicle_land_on_the_console(self):
+		result = self._arrived()
+		driver = testing.driver("Console")
+		van = testing.vehicle("TEST-VAN-1")
+
+		movement.record_delivery(
+			result.waybill_consoles[0], driver=driver, vehicle=van, create_pod=0
+		)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertEqual(console.wms_driver, driver)
+		self.assertEqual(console.wms_vehicle, van)
+		# fetch_from does not fire for db.set_value, so record_delivery writes the name.
+		self.assertEqual(console.wms_driver_name, f"{testing.PREFIX} Driver Console")
+
+	def test_pod_carries_the_driver_block_that_used_to_print_blank(self):
+		"""assigned_driver_name and assigned_vehicle_no are already on the POD print,
+		under the Truck Driver Signature line, and nothing has ever written them."""
+		result = self._arrived()
+		driver = testing.driver("Pod", cell="55599887")
+		van = testing.vehicle("TEST-VAN-2")
+
+		delivered = movement.record_delivery(
+			result.waybill_consoles[0], driver=driver, vehicle=van, create_pod=1
+		)
+
+		pod = frappe.get_doc("POD", delivered.pod)
+		self.assertEqual(pod.assigned_driver_name, f"{testing.PREFIX} Driver Pod")
+		self.assertEqual(pod.assigned_vehicle_no, van)
+		self.assertEqual(pod.contact_no, "55599887")
+
+	def test_vehicle_defaults_from_the_drivers_own(self):
+		result = self._arrived()
+		van = testing.vehicle("TEST-VAN-3")
+		driver = testing.driver("Owner", default_vehicle=van)
+
+		movement.record_delivery(result.waybill_consoles[0], driver=driver, create_pod=0)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertEqual(console.wms_vehicle, van)
+
+	def test_an_explicit_vehicle_beats_the_drivers_default(self):
+		"""Drivers swap trucks; the one named for this run wins."""
+		result = self._arrived()
+		usual = testing.vehicle("TEST-VAN-4")
+		today = testing.vehicle("TEST-VAN-5")
+		driver = testing.driver("Swap", default_vehicle=usual)
+
+		movement.record_delivery(
+			result.waybill_consoles[0], driver=driver, vehicle=today, create_pod=0
+		)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertEqual(console.wms_vehicle, today)
+
+	def test_delivery_without_a_driver_is_refused_when_hsm_require_one(self):
+		result = self._arrived()
+		_set_setting(require_driver_on_delivery=1)
+		self.assertRaises(
+			frappe.ValidationError, movement.record_delivery,
+			result.waybill_consoles[0], delivery_mode="Delivery",
+		)
+
+	def test_a_collection_never_needs_a_driver(self):
+		"""The customer's own truck came for it -- HSM have no driver to name."""
+		result = self._arrived()
+		_set_setting(require_driver_on_delivery=1)
+
+		movement.record_delivery(
+			result.waybill_consoles[0], delivery_mode="Collection",
+			collected_by="Customer's man", create_pod=0,
+		)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertTrue(console.wms_delivered)
+		self.assertFalse(console.wms_driver)
+
+	def test_a_driver_that_does_not_exist_is_refused(self):
+		result = self._arrived()
+		self.assertRaises(
+			frappe.ValidationError, movement.record_delivery,
+			result.waybill_consoles[0], driver="NO SUCH DRIVER",
+		)
+
+	def test_an_expired_licence_warns_but_still_records_the_delivery(self):
+		"""The cargo is already handed over. Refusing the record would only lose it."""
+		result = self._arrived()
+		driver = testing.driver("Expired", expiry_date="2020-01-01")
+		_set_setting(warn_on_expired_licence=1)
+
+		movement.record_delivery(result.waybill_consoles[0], driver=driver, create_pod=0)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertTrue(console.wms_delivered)
+		self.assertEqual(console.wms_driver, driver)
+
+	def test_a_driver_who_has_left_still_gets_a_backdated_delivery_recorded(self):
+		result = self._arrived()
+		driver = testing.driver("Left", status="Left")
+
+		movement.record_delivery(result.waybill_consoles[0], driver=driver, create_pod=0)
+
+		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
+		self.assertEqual(console.wms_driver, driver)

@@ -131,3 +131,52 @@ def receipt(
 
 def available(wh):
 	return flt(frappe.db.get_value("Warehouse Unit", wh, "total_available_capacity"))
+
+
+def ensure_driver_customisations():
+	"""Driver.wms_default_vehicle and the relaxed Vehicle master.
+
+	after_install puts these on a fresh site and the v1_2 patch on an existing one, but a
+	test site can be older than both, so the suite asks for them itself. Idempotent.
+	"""
+	from logistics_management.wms.setup import setup_driver_customisations
+
+	if not frappe.get_meta("Driver").has_field("wms_default_vehicle"):
+		setup_driver_customisations()
+		frappe.clear_cache(doctype="Driver")
+		frappe.clear_cache(doctype="Vehicle")
+
+
+def vehicle(plate="TEST-0001"):
+	"""A Vehicle carrying nothing but its plate.
+
+	Deliberately minimal: ERPNext makes make, model and the odometer mandatory, and this
+	saving at all is what proves setup_driver_customisations relaxed them.
+	"""
+	ensure_driver_customisations()
+	if not frappe.db.exists("Vehicle", plate):
+		frappe.get_doc({"doctype": "Vehicle", "license_plate": plate}).insert(
+			ignore_permissions=True
+		)
+	return plate
+
+
+def driver(suffix="A", status="Active", default_vehicle=None, expiry_date=None, cell="55512345"):
+	ensure_driver_customisations()
+	full_name = f"{PREFIX} Driver {suffix}"
+	name = frappe.db.get_value("Driver", {"full_name": full_name}, "name")
+	if not name:
+		name = frappe.get_doc({
+			"doctype": "Driver",
+			"full_name": full_name,
+			"status": status,
+			"cell_number": cell,
+		}).insert(ignore_permissions=True).name
+
+	frappe.db.set_value("Driver", name, {
+		"status": status,
+		"cell_number": cell,
+		"expiry_date": expiry_date,
+		"wms_default_vehicle": default_vehicle,
+	}, update_modified=False)
+	return name

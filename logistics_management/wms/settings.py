@@ -39,6 +39,9 @@ DEFAULTS = {
 	"capacity_warning_threshold": 85.0,
 	"default_shipment_mode": "IMPORT",
 	"fallback_mode_of_transport": "LAND",
+	"require_driver_on_delivery": 0,
+	"warn_on_expired_licence": 1,
+	"default_delivery_vehicle": None,
 	"storage_item": "WMS-STORAGE",
 	"storage_uom": "CBM-Day",
 	"day_count_method": "Both days inclusive",
@@ -97,3 +100,17 @@ def capacity_warning_threshold():
 
 def stop_on_missing_rate():
 	return get("missing_rate_action") == "Stop"
+
+
+def require_driver_on_delivery():
+	"""Whether a delivery (not a collection) must name a driver."""
+	return bool(cint(get("require_driver_on_delivery")))
+
+
+def warn_on_expired_licence():
+	return bool(cint(get("warn_on_expired_licence")))
+
+
+def default_delivery_vehicle():
+	"""Offered when the driver has no vehicle of their own. None is a valid answer."""
+	return get("default_delivery_vehicle") or None

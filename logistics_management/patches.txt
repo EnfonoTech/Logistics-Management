@@ -12,3 +12,4 @@ logistics_management.patches.v1_1.add_wms_workspace_content
 logistics_management.patches.v1_1.create_wms_settings
 logistics_management.patches.v1_1.recount_packages
 logistics_management.patches.v1_1.prune_duplicate_reports
+logistics_management.patches.v1_2.setup_driver_tracking
