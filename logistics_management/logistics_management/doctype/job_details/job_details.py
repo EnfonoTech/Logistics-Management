@@ -59,3 +59,52 @@ class JobDetails(Document):
 #         doc.save(ignore_permissions=True)
 
 #         return doc.project
+
+
+@frappe.whitelist()
+def get_job_financials(job):
+	"""Revenue, cost and what is still owed on one job, in a single round trip.
+
+	The form used to ask for the same three totals with three frappe.client.get_list calls
+	nested inside each other's callbacks, so the numbers only appeared after three
+	sequential requests had returned. Same three reads, one request, and the outstanding
+	amount -- which the old code already fetched and then threw away -- is now used.
+
+	Read-only. Nothing here writes.
+	"""
+	from frappe.query_builder.functions import Sum
+	from frappe.utils import flt
+
+	frappe.has_permission("Job Details", "read", doc=job, throw=True)
+
+	def totals(doctype, *fieldnames):
+		table = frappe.qb.DocType(doctype)
+		query = frappe.qb.from_(table).where(
+			(table.custom_job_number == job) & (table.docstatus == 1)
+		)
+		for fieldname in fieldnames:
+			query = query.select(Sum(getattr(table, fieldname)))
+		row = query.run()
+		return [flt(value) for value in (row[0] if row else [0] * len(fieldnames))]
+
+	revenue, outstanding = totals("Sales Invoice", "base_grand_total", "outstanding_amount")
+	purchases = totals("Purchase Invoice", "base_grand_total")[0]
+	journals = totals("Journal Entry", "total_debit")[0]
+
+	cost = purchases + journals
+	profit = revenue - cost
+
+	return frappe._dict(
+		currency=frappe.get_cached_value(
+			"Company", frappe.db.get_value("Job Details", job, "company"), "default_currency"
+		),
+		revenue=revenue,
+		purchase_invoices=purchases,
+		journal_entries=journals,
+		cost=cost,
+		profit=profit,
+		# A job with no invoice yet has no margin, which is not the same as a margin of 0.
+		margin=(profit / revenue * 100.0) if revenue else None,
+		outstanding=outstanding,
+		received=revenue - outstanding,
+	)

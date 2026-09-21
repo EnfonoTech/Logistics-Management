@@ -6,6 +6,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "registration_tab",
   "general_section",
   "naming_series",
   "job_type",
@@ -26,6 +27,7 @@
   "quotation",
   "section_break_cvyz",
   "console_shipment",
+  "warehouse_tab",
   "section_break_wms",
   "wms_origin_warehouse",
   "wms_destination_warehouse",
@@ -34,6 +36,7 @@
   "wms_arrival_confirmed",
   "wms_arrival_date",
   "wms_received_by",
+  "shipment_tab",
   "section_break_qgln",
   "job_id",
   "pol",
@@ -66,6 +69,7 @@
   "cargo_details",
   "section_break_ipkd",
   "dimension",
+  "delivery_order_tab",
   "delivery_order_information_section",
   "shipper",
   "shipper_name",
@@ -89,6 +93,7 @@
   "column_break_51c5",
   "approval_date",
   "issuing_authority",
+  "status_tab",
   "section_break_eohf",
   "job_status",
   "costing_status",
@@ -718,6 +723,31 @@
    "label": "Received By",
    "no_copy": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "registration_tab",
+   "fieldtype": "Tab Break",
+   "label": "Registration"
+  },
+  {
+   "fieldname": "warehouse_tab",
+   "fieldtype": "Tab Break",
+   "label": "Warehouse"
+  },
+  {
+   "fieldname": "shipment_tab",
+   "fieldtype": "Tab Break",
+   "label": "Shipment"
+  },
+  {
+   "fieldname": "delivery_order_tab",
+   "fieldtype": "Tab Break",
+   "label": "Delivery Order"
+  },
+  {
+   "fieldname": "status_tab",
+   "fieldtype": "Tab Break",
+   "label": "Status & Receipts"
   }
  ],
  "index_web_pages_for_search": 1,

@@ -11,6 +11,7 @@ import frappe
 from frappe.tests.utils import FrappeTestCase
 from frappe.utils import flt, nowdate
 
+from logistics_management.logistics_management.doctype.job_details import job_details
 from logistics_management.wms import consolidation, movement, testing
 
 SETTINGS = "Warehouse Management Settings"
@@ -419,3 +420,49 @@ class TestJobDetails(FrappeTestCase):
 
 		console = frappe.get_doc("Waybill Console", result.waybill_consoles[0])
 		self.assertEqual(console.wms_driver, driver)
+
+	# ── job summary ───────────────────────────────────────────────────────────────
+
+	def test_a_job_with_nothing_booked_has_no_margin_rather_than_a_margin_of_zero(self):
+		"""Zero revenue is not a zero-margin job, and a card reading 0.0% would say it is."""
+		receipt = self._receipt(self.a, cbm_qty=1)
+		result = consolidation.create_console_job_from_receipts(
+			[receipt.name], destination_warehouse=self.destination
+		)
+
+		money = job_details.get_job_financials(result.job)
+
+		self.assertEqual(money.revenue, 0)
+		self.assertEqual(money.cost, 0)
+		self.assertEqual(money.profit, 0)
+		self.assertIsNone(money.margin)
+		self.assertEqual(money.outstanding, 0)
+
+	def test_the_summary_reports_in_the_job_company_currency(self):
+		receipt = self._receipt(self.a, cbm_qty=1)
+		result = consolidation.create_console_job_from_receipts(
+			[receipt.name], destination_warehouse=self.destination
+		)
+		job = frappe.get_doc("Job Details", result.job)
+
+		money = job_details.get_job_financials(job.name)
+
+		self.assertEqual(
+			money.currency,
+			frappe.get_cached_value("Company", job.company, "default_currency"),
+		)
+
+	def test_the_summary_refuses_a_job_the_user_cannot_read(self):
+		receipt = self._receipt(self.a, cbm_qty=1)
+		result = consolidation.create_console_job_from_receipts(
+			[receipt.name], destination_warehouse=self.destination
+		)
+		# Every whitelisted method is a public HTTP endpoint, so the check is on the method
+		# and not on whatever called it.
+		frappe.set_user("Guest")
+		try:
+			self.assertRaises(
+				frappe.PermissionError, job_details.get_job_financials, result.job
+			)
+		finally:
+			frappe.set_user("Administrator")

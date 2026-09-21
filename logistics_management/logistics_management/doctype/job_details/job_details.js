@@ -1,103 +1,134 @@
+// ─────────────────────────────────────────────────────────────────────────────────
+// Job Summary.
+//
+// The money on a job is the first thing an operator wants off this screen. It used to
+// arrive as four indicator pills, computed by three frappe.client.get_list calls nested
+// in each other's callbacks -- three sequential round trips before anything appeared.
+// One read-only endpoint now returns all of it, and it is drawn as cards.
+// ─────────────────────────────────────────────────────────────────────────────────
+
+const JOB_STATUS_COLOURS = {
+    "Pending": "orange",
+    "In Progress": "blue",
+    "Completed": "green",
+    "On Hold": "yellow",
+    "Cancelled": "red",
+};
+
+const CARD_INK = {
+    revenue: "#1C4AA0",
+    cost: "#55616f",
+    good: "#2e9e5b",
+    warn: "#a36a00",
+    bad: "#b3261e",
+};
+
 frappe.ui.form.on("Job Details", {
-    refresh: function(frm) {
+    refresh: function (frm) {
         add_custom_buttons(frm);
-        frm.events.set_dashboard_indicators(frm);
+        set_status_indicator(frm);
+        show_job_summary(frm);
     },
-
-    set_dashboard_indicators: function(frm) {
-        function process_invoices(invoices, includeOutstanding = false) {
-            var totals = { grandTotal: 0, outstandingTotal: 0 };
-            if (invoices && invoices.length > 0) {
-                invoices.forEach(function(invoice) {
-                    totals.grandTotal += invoice.base_grand_total;
-                    if (includeOutstanding) {
-                        totals.outstandingTotal += invoice.outstanding_amount;
-                    }
-                });
-            }
-            return totals;
-        }
-
-        function process_journal_entries(entries) {
-            var totalDebit = 0;
-            if (entries && entries.length > 0) {
-                entries.forEach(function(entry) {
-                    totalDebit += entry.total_debit;
-                });
-            }
-            return totalDebit;
-        }
-
-        frappe.call({
-            method: 'frappe.client.get_list',
-            args: {
-                doctype: 'Sales Invoice',
-                filters: {
-                    custom_job_number: frm.doc.name,
-                    docstatus: 1
-                },
-                fields: ['base_grand_total', 'outstanding_amount']
-            },
-            callback: function(response) {
-                var salesInvoiceTotals = process_invoices(response.message, true);
-
-                frappe.call({
-                    method: 'frappe.client.get_list',
-                    args: {
-                        doctype: 'Purchase Invoice',
-                        filters: {
-                            custom_job_number: frm.doc.name,
-                            docstatus: 1
-                        },
-                        fields: ['base_grand_total', 'outstanding_amount']
-                    },
-                    callback: function(response) {
-                        var purchaseInvoiceTotals = process_invoices(response.message, true);
-
-                        frappe.call({
-                            method: 'frappe.client.get_list',
-                            args: {
-                                doctype: 'Journal Entry',
-                                filters: {
-                                    custom_job_number: frm.doc.name,
-                                    docstatus: 1
-                                },
-                                fields: ['total_debit']
-                            },
-                            callback: function(response) {
-                                var journalEntryTotalDebit = process_journal_entries(response.message);
-
-                                var totalExpenses = purchaseInvoiceTotals.grandTotal + journalEntryTotalDebit;
-                                var profitAndLoss = salesInvoiceTotals.grandTotal - totalExpenses;
-
-                                frm.dashboard.add_indicator(
-                                    __('Total Sales Invoice: {0}', [format_currency(salesInvoiceTotals.grandTotal, frm.doc.currency)]), 
-                                    'blue'
-                                );
-                                frm.dashboard.add_indicator(
-                                    __('Total Purchase Invoice: {0}', [format_currency(purchaseInvoiceTotals.grandTotal, frm.doc.currency)]), 
-                                    'orange'
-                                );
-                                frm.dashboard.add_indicator(
-                                    __('Total Journal Entries: {0}', [format_currency(journalEntryTotalDebit, frm.doc.currency)]), 
-                                    'purple'
-                                );
-                                frm.dashboard.add_indicator(
-                                    __('P&L: {0}', [format_currency(profitAndLoss, frm.doc.currency)]), 
-                                    profitAndLoss >= 0 ? 'green' : 'red'
-                                );
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
 });
 
+function set_status_indicator(frm) {
+    // Which of the five states a job is in, on the title, instead of scrolled to
+    // somewhere past field 84.
+    if (frm.is_new() || !frm.doc.job_status) return;
+    frm.page.set_indicator(
+        __(frm.doc.job_status),
+        JOB_STATUS_COLOURS[frm.doc.job_status] || "gray"
+    );
+}
+
+function show_job_summary(frm) {
+    if (frm.is_new()) return;
+
+    frappe.call({
+        method:
+            "logistics_management.logistics_management.doctype.job_details.job_details.get_job_financials",
+        args: { job: frm.doc.name },
+        callback: (r) => {
+            const d = r.message;
+            if (!d) return;
+            // A job that has never been invoiced or costed has nothing to summarise, and
+            // six cards of zero are worse than no cards.
+            if (!d.revenue && !d.cost) return;
+
+            render_summary_cards(frm, d);
+        },
+    });
+}
+
+function render_summary_cards(frm, d) {
+    const cur = d.currency;
+    const margin_ink =
+        d.margin === null ? CARD_INK.cost
+            : d.margin < 0 ? CARD_INK.bad
+            : d.margin < 10 ? CARD_INK.warn
+            : CARD_INK.good;
+
+    const tiles = [
+        { label: __("Revenue"), value: format_currency(d.revenue, cur), ink: CARD_INK.revenue },
+        { label: __("Cost"), value: format_currency(d.cost, cur), ink: CARD_INK.cost },
+        { label: __("Gross Profit"), value: format_currency(d.profit, cur), ink: margin_ink },
+        {
+            label: __("Margin"),
+            // Null margin means no revenue yet. That is not a margin of zero.
+            value: d.margin === null ? "—" : `${format_number(d.margin, null, 1)}%`,
+            ink: margin_ink,
+        },
+        { label: __("Received"), value: format_currency(d.received, cur), ink: CARD_INK.good },
+        {
+            label: __("Outstanding"),
+            value: format_currency(d.outstanding, cur),
+            ink: d.outstanding > 0 ? CARD_INK.warn : CARD_INK.cost,
+        },
+    ];
+
+    const html = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;padding:4px 0 10px;">
+            ${tiles
+                .map(
+                    (t) => `
+                <div style="border:1px solid var(--border-color);border-radius:8px;padding:10px 12px;background:var(--card-bg);">
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);">${t.label}</div>
+                    <div style="font-size:17px;font-weight:600;color:${t.ink};margin-top:2px;white-space:nowrap;">${t.value}</div>
+                </div>`
+                )
+                .join("")}
+        </div>`;
+
+    frm.dashboard.add_section(html, __("Job Summary"));
+
+    if (d.outstanding > 0) {
+        frm.dashboard.add_indicator(
+            __("{0} still outstanding", [format_currency(d.outstanding, cur)]),
+            "orange"
+        );
+    }
+    // The split behind Cost, kept because the old pills showed it and the two numbers
+    // are booked in different places.
+    if (d.journal_entries) {
+        frm.dashboard.add_indicator(
+            __("Purchase {0} · Journal {1}", [
+                format_currency(d.purchase_invoices, cur),
+                format_currency(d.journal_entries, cur),
+            ]),
+            "gray"
+        );
+    }
+}
+
 function add_custom_buttons(frm) {
+    // 🔴 This routed to 'Job Details Metric', one of the eleven duplicate reports pruned
+    // on 2026-09-12, so View > Job Ledger has opened an empty query-report page on every
+    // job since. Nothing referenced the name in the DB -- no workspace link, no shortcut,
+    // no Client Script -- so the reference scan that cleared the prune never saw it: it
+    // was hardcoded in this file. 'Job Details Report' is the survivor and takes the same
+    // job_details filter.
     frm.add_custom_button(__('Job Ledger'), function() {
-        frappe.set_route('query-report', 'Job Details Metric', {
+        frappe.set_route('query-report', 'Job Details Report', {
             job_details: frm.doc.name
         });
     }, __('View'));
