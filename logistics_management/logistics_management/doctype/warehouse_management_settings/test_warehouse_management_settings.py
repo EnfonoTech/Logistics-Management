@@ -7,7 +7,7 @@ import frappe
 from frappe.tests.utils import FrappeTestCase
 from frappe.utils import flt
 
-from logistics_management.wms import capacity, settings, storage_billing, testing
+from logistics_management.wms import capacity, settings, setup, storage_billing, testing
 
 SETTINGS = "Warehouse Management Settings"
 
@@ -153,3 +153,38 @@ class TestWarehouseManagementSettings(FrappeTestCase):
 		self.assertEqual(settings.DEFAULTS["dimension_uom"], "Centimetre")
 		self.assertEqual(settings.DAY_COUNT_OFFSETS["Both days inclusive"], 1)
 		self.assertAlmostEqual(settings.DIMENSION_DIVISORS["Centimetre"], 1_000_000.0)
+
+	# ── the Singles trap ──────────────────────────────────────────────────────────
+
+	def test_a_check_that_ships_as_one_reads_as_false_with_no_singles_row(self):
+		"""This is the failure, pinned so nobody "simplifies" the DEFAULTS fallback.
+
+		settings.get() returns DEFAULTS when the value is None, and for a Check it never
+		gets None: get_single_value ends with cast_fieldtype("Check", None), which is
+		cint(None) -- zero. warn_on_expired_licence shipped as 1 and was live on hsm-erp
+		reading False.
+		"""
+		frappe.db.delete("Singles", {"doctype": SETTINGS, "field": "warn_on_expired_licence"})
+		frappe.db.value_cache.pop(SETTINGS, None)
+
+		self.assertEqual(settings.DEFAULTS["warn_on_expired_licence"], 1)
+		self.assertFalse(settings.warn_on_expired_licence())
+
+	def test_seeding_the_defaults_gives_the_check_the_value_it_shipped_with(self):
+		frappe.db.delete("Singles", {"doctype": SETTINGS, "field": "warn_on_expired_licence"})
+		frappe.db.value_cache.pop(SETTINGS, None)
+
+		seeded = setup.seed_settings_defaults()
+
+		self.assertIn("warn_on_expired_licence", seeded)
+		frappe.db.value_cache.pop(SETTINGS, None)
+		self.assertTrue(settings.warn_on_expired_licence())
+
+	def test_seeding_never_switches_back_on_something_hsm_switched_off(self):
+		set_setting(warn_on_expired_licence=0)
+
+		seeded = setup.seed_settings_defaults()
+
+		self.assertNotIn("warn_on_expired_licence", seeded)
+		frappe.db.value_cache.pop(SETTINGS, None)
+		self.assertFalse(settings.warn_on_expired_licence())

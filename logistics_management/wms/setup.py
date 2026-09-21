@@ -109,7 +109,43 @@ def setup_driver_customisations():
 		)
 
 
+def seed_settings_defaults():
+	"""Write the shipped defaults into Singles for any setting that has no row yet.
+
+	🔴 settings.get() falls back to DEFAULTS when the value is None -- and for a Check
+	field it never gets None. frappe.db.get_single_value ends with
+	cast_fieldtype(df.fieldtype, val), and cast_fieldtype("Check", None) is cint(None),
+	which is 0. So a Check that ships as 1 reads as False on every site whose Single
+	predates the field, with no error anywhere. warn_on_expired_licence was live on
+	hsm-erp reading False before this existed.
+
+	Only fields with no row at all are written, so a setting HSM have deliberately
+	switched off is never switched back on.
+	"""
+	if not frappe.db.exists("DocType", "Warehouse Management Settings"):
+		return []
+
+	from logistics_management.wms.settings import DEFAULTS, SETTINGS
+
+	meta = frappe.get_meta(SETTINGS)
+	seeded = []
+
+	for fieldname, value in DEFAULTS.items():
+		if value is None or not meta.get_field(fieldname):
+			continue
+		if frappe.db.exists("Singles", {"doctype": SETTINGS, "field": fieldname}):
+			continue
+		frappe.db.set_single_value(SETTINGS, fieldname, value)
+		seeded.append(fieldname)
+
+	if seeded:
+		frappe.db.value_cache.pop(SETTINGS, None)
+		frappe.clear_cache(doctype=SETTINGS)
+	return seeded
+
+
 def after_install():
 	"""Runs on a fresh install, where the seed patch is marked done but never executed."""
 	seed_masters()
 	setup_driver_customisations()
+	seed_settings_defaults()
