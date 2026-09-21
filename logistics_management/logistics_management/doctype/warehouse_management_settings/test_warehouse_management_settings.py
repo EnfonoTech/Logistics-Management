@@ -188,3 +188,17 @@ class TestWarehouseManagementSettings(FrappeTestCase):
 		self.assertNotIn("warn_on_expired_licence", seeded)
 		frappe.db.value_cache.pop(SETTINGS, None)
 		self.assertFalse(settings.warn_on_expired_licence())
+
+	def test_seeding_leaves_every_setting_that_already_has_a_row_alone(self):
+		"""frappe.db.exists("Singles", ...) finds nothing -- tabSingles has no name column --
+		so a guard written that way reports every setting as unseeded and overwrites the
+		lot with defaults."""
+		set_setting(day_count_method="Exclude both days", minimum_chargeable_days=3)
+
+		seeded = setup.seed_settings_defaults()
+
+		self.assertNotIn("day_count_method", seeded)
+		self.assertNotIn("minimum_chargeable_days", seeded)
+		frappe.db.value_cache.pop(SETTINGS, None)
+		self.assertEqual(settings.get("day_count_method"), "Exclude both days")
+		self.assertEqual(settings.minimum_chargeable_days(), 3)

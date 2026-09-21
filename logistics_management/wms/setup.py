@@ -128,12 +128,17 @@ def seed_settings_defaults():
 	from logistics_management.wms.settings import DEFAULTS, SETTINGS
 
 	meta = frappe.get_meta(SETTINGS)
+	# 🔴 NOT frappe.db.exists("Singles", ...). tabSingles has no name column, so exists()
+	# finds nothing and every setting looks unseeded -- which would have overwritten all
+	# of HSM's choices with the shipped defaults. get_singles_dict is keyed on exactly the
+	# fields that do have a row.
+	already = set(frappe.db.get_singles_dict(SETTINGS) or {})
 	seeded = []
 
 	for fieldname, value in DEFAULTS.items():
 		if value is None or not meta.get_field(fieldname):
 			continue
-		if frappe.db.exists("Singles", {"doctype": SETTINGS, "field": fieldname}):
+		if fieldname in already:
 			continue
 		frappe.db.set_single_value(SETTINGS, fieldname, value)
 		seeded.append(fieldname)
