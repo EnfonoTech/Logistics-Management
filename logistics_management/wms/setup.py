@@ -87,6 +87,14 @@ def setup_driver_customisations():
 		},
 	)
 
+	# The POD's Contact No is a Phone field and will not take a bare local number, so say
+	# so where the number is typed rather than leaving the POD quietly blank.
+	make_property_setter(
+		"Driver", "cell_number", "description",
+		"Store with the country code, e.g. +974 5551 2345, so it reaches the POD.",
+		"Small Text", validate_fields_for_doctype=False,
+	)
+
 	for fieldname in VEHICLE_OPTIONAL:
 		make_property_setter("Vehicle", fieldname, "reqd", 0, "Check", validate_fields_for_doctype=False)
 

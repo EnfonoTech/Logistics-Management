@@ -317,7 +317,7 @@ class TestJobDetails(FrappeTestCase):
 		"""assigned_driver_name and assigned_vehicle_no are already on the POD print,
 		under the Truck Driver Signature line, and nothing has ever written them."""
 		result = self._arrived()
-		driver = testing.driver("Pod", cell="55599887")
+		driver = testing.driver("Pod", cell="+97455599887")
 		van = testing.vehicle("TEST-VAN-2")
 
 		delivered = movement.record_delivery(
@@ -327,7 +327,24 @@ class TestJobDetails(FrappeTestCase):
 		pod = frappe.get_doc("POD", delivered.pod)
 		self.assertEqual(pod.assigned_driver_name, f"{testing.PREFIX} Driver Pod")
 		self.assertEqual(pod.assigned_vehicle_no, van)
-		self.assertEqual(pod.contact_no, "55599887")
+		self.assertEqual(pod.contact_no, "+97455599887")
+
+	def test_a_local_mobile_leaves_the_pod_phone_blank_rather_than_failing(self):
+		"""POD.contact_no is a Phone field and Frappe refuses one it cannot parse.
+
+		Driver.cell_number is free text, so a clerk who types the Qatari number the way it
+		is dialled locally must still be able to record the delivery.
+		"""
+		result = self._arrived()
+		driver = testing.driver("LocalMobile", cell="55512345")
+
+		delivered = movement.record_delivery(
+			result.waybill_consoles[0], driver=driver, create_pod=1
+		)
+
+		pod = frappe.get_doc("POD", delivered.pod)
+		self.assertEqual(pod.assigned_driver_name, f"{testing.PREFIX} Driver LocalMobile")
+		self.assertFalse(pod.contact_no)
 
 	def test_vehicle_defaults_from_the_drivers_own(self):
 		result = self._arrived()

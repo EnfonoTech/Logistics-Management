@@ -23,8 +23,12 @@ class TestDriverTripReport(FrappeTestCase):
 		self.origin = testing.warehouse("TripOrigin", capacity_cbm=500.0)
 		self.destination = testing.warehouse("TripDest", capacity_cbm=500.0)
 		self.customer = testing.customer("Trip")
-		self.driver = testing.driver("Trip")
-		self.other_driver = testing.driver("TripOther")
+		# FrappeTestCase rolls back per class, not per test, so deliveries recorded by an
+		# earlier test are still in the table when a later one queries. Every test gets
+		# its own driver and the counts are then its own, whatever order they run in.
+		tag = frappe.generate_hash(length=6).upper()
+		self.driver = testing.driver(f"Trip {tag}")
+		self.other_driver = testing.driver(f"TripOther {tag}")
 		self.van = testing.vehicle("TEST-TRIP-VAN")
 
 	def _deliver(self, driver=None, vehicle=None, delivery_date=None, cbm_qty=1, mode="Delivery"):
@@ -110,7 +114,7 @@ class TestDriverTripReport(FrappeTestCase):
 
 		self.assertEqual(row["customer"], self.customer)
 		self.assertEqual(row["wms_vehicle"], self.van)
-		self.assertEqual(row["driver_name"], f"{testing.PREFIX} Driver Trip")
+		self.assertEqual(row["driver_name"], frappe.db.get_value("Driver", self.driver, "full_name"))
 		self.assertAlmostEqual(flt(row["total_cbm"]), 4.0, places=6)
 		self.assertEqual(row["wms_delivery_mode"], "Delivery")
 
@@ -128,11 +132,13 @@ class TestDriverTripReport(FrappeTestCase):
 			self._deliver(driver=self.driver, vehicle=self.van)
 
 		_cols, _data, _msg, chart, _summary = self._run(driver=self.driver)
-		self.assertEqual(chart["datasets"][0]["values"], [1])
+		self.assertEqual(chart["data"]["datasets"][0]["values"], [1])
+		self.assertEqual(len(chart["data"]["labels"]), 1)
 
 	def test_an_empty_range_returns_no_summary_rather_than_zeroes(self):
 		_cols, data, _msg, chart, summary = self._run(
-			from_date=add_days(nowdate(), -400), to_date=add_days(nowdate(), -390)
+			driver=self.driver,
+			from_date=add_days(nowdate(), -400), to_date=add_days(nowdate(), -390),
 		)
 		self.assertEqual(data, [])
 		self.assertIsNone(summary)

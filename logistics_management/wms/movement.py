@@ -215,7 +215,8 @@ def make_pod(waybill_console, delivery_date=None, collected_by=None, driver=None
 	# line, and have printed blank on every POD so far because nothing wrote them.
 	if driver:
 		pod.assigned_driver_name = driver.get("full_name") or ""
-		pod.contact_no = driver.get("cell_number") or ""
+		if _is_dialable(driver.get("cell_number")):
+			pod.contact_no = driver["cell_number"]
 	if vehicle:
 		pod.assigned_vehicle_no = vehicle
 
@@ -294,6 +295,25 @@ def _check_driver(driver, delivery_mode, delivery_date):
 	return row
 
 
+def _is_dialable(number):
+	"""Whether this number can go in POD.contact_no without taking the delivery with it.
+
+	contact_no is a Phone field and Frappe refuses one phonenumbers cannot parse --
+	"Please select a country code". Driver.cell_number is free text, so a clerk typing a
+	local Qatari mobile would otherwise make every POD insert throw and the delivery fail
+	outright. Parsed here rather than through frappe.utils, whose version throws and would
+	put a red toast in front of the user for something being handled.
+	"""
+	if not number:
+		return False
+	try:
+		from phonenumbers import NumberParseException, is_valid_number, parse
+
+		return bool(is_valid_number(parse(str(number))))
+	except Exception:
+		return False
+
+
 def _stamp_driver_on_pod(pod_name, driver, vehicle):
 	"""Fill a POD's driver block only where it is empty -- never overwrite what staff typed."""
 	current = frappe.db.get_value(
@@ -303,8 +323,8 @@ def _stamp_driver_on_pod(pod_name, driver, vehicle):
 	updates = {}
 	if driver and not current.get("assigned_driver_name"):
 		updates["assigned_driver_name"] = driver.get("full_name") or ""
-	if driver and not current.get("contact_no"):
-		updates["contact_no"] = driver.get("cell_number") or ""
+	if driver and not current.get("contact_no") and _is_dialable(driver.get("cell_number")):
+		updates["contact_no"] = driver["cell_number"]
 	if vehicle and not current.get("assigned_vehicle_no"):
 		updates["assigned_vehicle_no"] = vehicle
 	if updates:
